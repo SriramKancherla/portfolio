@@ -1,0 +1,189 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 40% 8%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 40% 8%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 190 95% 55%;
+    --primary-foreground: 222 47% 5%;
+    --primary-glow: 200 100% 65%;
+
+    --secondary: 217 33% 14%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 12%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 220 90% 60%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 18%;
+    --input: 217 33% 14%;
+    --ring: 190 95% 55%;
+
+    --radius: 0.875rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(190 95% 55%), hsl(220 90% 60%));
+    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(190 95% 55% / 0.18), transparent 60%);
+    --gradient-card: linear-gradient(135deg, hsl(222 40% 10% / 0.8), hsl(222 40% 6% / 0.6));
+    --shadow-glow: 0 20px 60px -20px hsl(190 95% 55% / 0.4);
+    --shadow-elegant: 0 10px 40px -10px hsl(220 90% 30% / 0.4);
+
+    --sidebar-background: 222 47% 5%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 190 95% 55%;
+    --sidebar-primary-foreground: 222 47% 5%;
+    --sidebar-accent: 217 33% 14%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 18%;
+    --sidebar-ring: 190 95% 55%;
+  }
+
+  .dark {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, sans-serif;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(190 95% 55% / 0.15), transparent),
+      radial-gradient(ellipse 60% 50% at 80% 50%, hsl(220 90% 40% / 0.08), transparent);
+    background-attachment: fixed;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    letter-spacing: -0.02em;
+  }
+  code, .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  ::selection {
+    background: hsl(var(--primary) / 0.3);
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  .glass {
+    @apply backdrop-blur-xl bg-card/40 border border-border/50;
+  }
+  .glass-strong {
+    @apply backdrop-blur-2xl bg-card/60 border border-border/60;
+  }
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .glow {
+    box-shadow: var(--shadow-glow);
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+  .story-link {
+    @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+  }
+  .hover-lift {
+    @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_hsl(var(--primary)/0.35)] hover:scale-[1.01];
+  }
+  .section-fluid {
+    @apply relative z-10;
+  }
+  .fluid-card {
+    @apply glass rounded-2xl transition-all duration-500 ease-out;
+    animation: fluid-float 8s ease-in-out infinite;
+  }
+  .fluid-glow {
+    position: relative;
+  }
+  .fluid-glow::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: -1;
+    filter: blur(12px);
+  }
+  .name-script {
+    font-family: 'Dancing Script', cursive;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .fluid-glow:hover::before {
+    opacity: 1;
+  }
+}
+
+@keyframes letter-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.4em) rotate(-6deg) scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+}
+
+.animate-letter-reveal {
+  animation: letter-reveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.9; }
+}
+
+@keyframes fluid-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes fluid-wave {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes fluid-wave-reverse {
+  0% { transform: translateX(-25%); }
+  100% { transform: translateX(0); }
+}
+
+.animate-fluid-wave {
+  animation: fluid-wave 18s linear infinite;
+}
+
+.animate-fluid-wave-reverse {
+  animation: fluid-wave-reverse 24s linear infinite;
+}
