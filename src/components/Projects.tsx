@@ -1,11 +1,29 @@
 import { useState } from "react";
 import { Github, ExternalLink, TrendingUp, Shield, Activity, Cpu, BookOpen } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { SectionEyebrow } from "./SectionEyebrow";
 import { Button } from "@/components/ui/button";
+import { NUS_CREDENTIALS_URL } from "@/lib/site";
 
 type Category = "All" | "ML" | "Analytics" | "AI" | "Full-Stack";
 
-const projects = [
+type Project = {
+  title: string;
+  period: string;
+  category: Category[];
+  icon: typeof Cpu;
+  description: string;
+  tech: string[];
+  metrics: { label: string; value: string }[];
+  accent: string;
+  codeUrl?: string;
+  liveUrl?: string;
+  highlightLive?: boolean;
+  detailsUrl?: string;
+  detailsLabel?: string;
+};
+
+const projects: Project[] = [
   {
     title: "Image Based Wafer Map Pattern Intelligence",
     period: "Feb 2026 — Present",
@@ -20,6 +38,7 @@ const projects = [
       { label: "Domain", value: "Semiconductor" },
     ],
     accent: "from-violet-500/20 to-cyan-500/20",
+    codeUrl: "https://github.com/SriramKancherla/Image-based-Wafer-Map-Pattern-intelligence",
   },
   {
     title: "Ainvestify — Stock Insights",
@@ -27,7 +46,7 @@ const projects = [
     category: ["ML", "Full-Stack", "Analytics"] as Category[],
     icon: TrendingUp,
     description:
-      "Full-stack stock analysis web app combining ML, sentiment analysis, and real-time visualization. Multi-model scoring with Random Forest, XGBoost, and Neural Networks for fundamentals; Logistic Regression + TF-IDF for news sentiment. Containerized with Docker and deployed on Render.",
+      "Full-stack stock analysis platform with ML-driven fundamentals scoring, news sentiment, and interactive charts. Live on Render — try the website for stock insights, comparisons, and an AI chatbot backed by production FastAPI endpoints.",
     tech: ["Python", "FastAPI", "XGBoost", "TensorFlow", "Docker", "REST APIs"],
     metrics: [
       { label: "ML Models", value: "4+" },
@@ -35,6 +54,9 @@ const projects = [
       { label: "Deployed", value: "Render" },
     ],
     accent: "from-emerald-500/20 to-cyan-500/20",
+    codeUrl: "https://github.com/SriramKancherla/AInvestify",
+    liveUrl: "https://ainvestify.onrender.com",
+    highlightLive: true,
   },
   {
     title: "Shiksha Sahayak",
@@ -50,6 +72,7 @@ const projects = [
       { label: "Privacy", value: "Local LLM" },
     ],
     accent: "from-amber-500/20 to-orange-500/20",
+    codeUrl: "https://github.com/SriramKancherla/Shiksha-Sahayak",
   },
   {
     title: "Healthcare Analytics — IITK D&G Capstone",
@@ -65,6 +88,9 @@ const projects = [
       { label: "Partner", value: "IITK D&G" },
     ],
     accent: "from-rose-500/20 to-violet-500/20",
+    codeUrl: "https://github.com/SriramKancherla/Healthcare-Management---IITK-D-G-Capstone-Project",
+    detailsUrl: "/documents/iitk-dg-professional-certificate.pdf",
+    detailsLabel: "Certificate",
   },
   {
     title: "Insider Threat Detection",
@@ -80,6 +106,8 @@ const projects = [
       { label: "Features", value: "120+" },
     ],
     accent: "from-cyan-500/20 to-blue-500/20",
+    detailsUrl: NUS_CREDENTIALS_URL,
+    detailsLabel: "NUS Certificate",
   },
 ];
 
@@ -90,12 +118,12 @@ export const Projects = () => {
   const filtered = active === "All" ? projects : projects.filter((p) => p.category.includes(active));
 
   return (
-    <section id="projects" className="section-fluid relative py-28">
+    <section id="projects" className="section-fluid relative">
       <div className="container">
         <Reveal>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12 max-w-5xl">
             <div>
-              <p className="mono text-xs text-primary mb-3">// 03 — featured projects</p>
+              <SectionEyebrow>Projects</SectionEyebrow>
               <h2 className="text-4xl md:text-5xl font-bold">Things I've built.</h2>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -137,6 +165,17 @@ export const Projects = () => {
                       </div>
                     </div>
                     <h3 className="text-2xl md:text-3xl font-semibold mb-3 group-hover:text-gradient transition-all duration-500">{p.title}</h3>
+                    {p.highlightLive && p.liveUrl && (
+                      <a
+                        href={p.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 mb-4 px-3 py-2 rounded-xl border border-primary/40 bg-primary/10 text-sm font-medium text-primary hover:bg-primary/20 hover:border-primary/60 transition-all duration-300"
+                      >
+                        <ExternalLink size={15} />
+                        <span>Live website — ainvestify.onrender.com</span>
+                      </a>
+                    )}
                     <p className="text-muted-foreground leading-relaxed mb-5 max-w-2xl">{p.description}</p>
                     <div className="flex flex-wrap gap-2 mb-6">
                       {p.tech.map((t) => (
@@ -145,17 +184,43 @@ export const Projects = () => {
                         </span>
                       ))}
                     </div>
-                    <div className="flex gap-3">
-                      <Button asChild size="sm" variant="outline" className="border-border bg-card/40 transition-all duration-300 hover:scale-105">
-                        <a href="https://github.com/sriramkancherla" target="_blank" rel="noopener noreferrer" aria-label={`${p.title} GitHub`}>
-                          <Github size={14} className="mr-1" /> Code
-                        </a>
-                      </Button>
-                      <Button asChild size="sm" variant="ghost" className="transition-all duration-300 hover:scale-105">
-                        <a href="https://www.linkedin.com/in/sriram-kancherla-80a7b028a/" target="_blank" rel="noopener noreferrer" aria-label={`${p.title} details`}>
-                          <ExternalLink size={14} className="mr-1" /> Details
-                        </a>
-                      </Button>
+                    <div className="flex flex-wrap gap-3">
+                      {p.liveUrl && (
+                        <Button
+                          asChild
+                          size="sm"
+                          className={
+                            p.highlightLive
+                              ? "bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90 glow"
+                              : "border-border bg-card/40"
+                          }
+                          variant={p.highlightLive ? "default" : "outline"}
+                        >
+                          <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} live website`}>
+                            <ExternalLink size={14} className="mr-1" />
+                            {p.highlightLive ? "Visit Website" : "Live"}
+                          </a>
+                        </Button>
+                      )}
+                      {p.codeUrl && (
+                        <Button asChild size="sm" variant="outline" className="border-border bg-card/40 transition-all duration-300 hover:scale-105">
+                          <a href={p.codeUrl} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} source code`}>
+                            <Github size={14} className="mr-1" /> Code
+                          </a>
+                        </Button>
+                      )}
+                      {p.detailsUrl && (
+                        <Button asChild size="sm" variant="ghost" className="transition-all duration-300 hover:scale-105">
+                          <a
+                            href={p.detailsUrl}
+                            target={p.detailsUrl.startsWith("http") ? "_blank" : undefined}
+                            rel={p.detailsUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+                            aria-label={`${p.title} ${p.detailsLabel ?? "details"}`}
+                          >
+                            <ExternalLink size={14} className="mr-1" /> {p.detailsLabel ?? "Details"}
+                          </a>
+                        </Button>
+                      )}
                     </div>
                   </div>
                   <div className="grid grid-cols-3 md:grid-cols-1 gap-3 md:min-w-[180px]">

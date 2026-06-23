@@ -1,22 +1,22 @@
 import { GraduationCap, Target, Code2, Languages } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { SectionEyebrow } from "./SectionEyebrow";
 
 export const About = () => {
   return (
-    <section id="about" className="section-fluid relative py-28">
+    <section id="about" className="section-fluid relative">
       <div className="container">
         <Reveal>
           <div className="max-w-3xl mb-16">
-            <p className="mono text-xs text-primary mb-3">// 01 — about</p>
+            <SectionEyebrow>About</SectionEyebrow>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Curious by nature.<br />
-              <span className="text-gradient">Engineer by craft.</span>
+              CS undergrad at VIT.<br />
+              <span className="text-gradient">ML & data analytics.</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              I'm a Computer Science undergraduate at VIT Vellore (2023–2027), passionate about
-              machine learning, data analytics, and building production-ready AI systems. From
-              insider threat detection to semiconductor wafer classification, I turn complex
-              datasets into actionable insights.
+              I study Computer Science at VIT Vellore (2023–2027) and focus on turning raw data into
+              models and tools people can actually use — from training and evaluation through APIs,
+              dashboards, and deployment.
             </p>
           </div>
         </Reveal>
@@ -31,7 +31,7 @@ export const About = () => {
             {
               icon: Code2,
               title: "Focus Areas",
-              body: "Computer vision, anomaly detection, NLP & sentiment analysis, full-stack ML apps with FastAPI and Docker.",
+              body: "Machine learning, data analytics, and finance — plus computer vision, NLP, anomaly detection, and full-stack ML apps with FastAPI and Docker.",
             },
             {
               icon: Target,

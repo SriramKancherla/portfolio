@@ -10,7 +10,6 @@ const links = [
   { href: "#projects", label: "Projects" },
   { href: "#skills", label: "Skills" },
   { href: "#certifications", label: "Certs" },
-  { href: "#showcase", label: "Showcase" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -24,10 +23,17 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
-        scrolled ? "py-3" : "py-5"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 pt-[env(safe-area-inset-top)] ${
+        scrolled ? "py-3" : "py-4 sm:py-5"
       }`}
       style={{
         opacity: visible ? 1 : 0,
@@ -38,7 +44,7 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
     >
       <div className="container">
         <nav
-          className={`flex items-center justify-between rounded-2xl px-5 py-3 transition-all ${
+          className={`flex items-center justify-between rounded-2xl px-3 sm:px-5 py-3 transition-all ${
             scrolled ? "glass-strong" : "bg-transparent"
           }`}
         >
@@ -75,19 +81,28 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
         </nav>
 
         {open && (
-          <div className="md:hidden mt-2 glass-strong rounded-2xl p-5 animate-fade-in">
+          <div className="md:hidden mt-2 glass-strong rounded-2xl p-5 animate-fade-in max-h-[calc(100dvh-6rem)] overflow-y-auto">
             <ul className="flex flex-col gap-4">
               {links.map((l) => (
                 <li key={l.href}>
                   <a
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="block text-muted-foreground hover:text-foreground"
+                    className="block text-muted-foreground hover:text-foreground py-1"
                   >
                     {l.label}
                   </a>
                 </li>
               ))}
+              <li>
+                <Link
+                  to={RESUME_PAGE_PATH}
+                  onClick={() => setOpen(false)}
+                  className="block text-primary font-medium py-1"
+                >
+                  Resume
+                </Link>
+              </li>
             </ul>
           </div>
         )}

@@ -67,10 +67,6 @@
   body {
     @apply bg-background text-foreground font-sans antialiased;
     font-family: 'Inter', system-ui, sans-serif;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 50% -20%, hsl(190 95% 55% / 0.15), transparent),
-      radial-gradient(ellipse 60% 50% at 80% 50%, hsl(220 90% 40% / 0.08), transparent);
-    background-attachment: fixed;
   }
   h1, h2, h3, h4 {
     font-family: 'Space Grotesk', system-ui, sans-serif;
@@ -115,7 +111,31 @@
     @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_hsl(var(--primary)/0.35)] hover:scale-[1.01];
   }
   .section-fluid {
-    @apply relative z-10;
+    @apply relative z-10 py-16 md:py-24 lg:py-28;
+  }
+  .section-eyebrow {
+    @apply relative inline-flex items-center gap-3 mb-5;
+  }
+  .section-eyebrow__glow {
+    @apply absolute -inset-x-4 -inset-y-2 rounded-full opacity-60 blur-xl pointer-events-none;
+    background: radial-gradient(ellipse at center, hsl(var(--primary) / 0.2), transparent 70%);
+  }
+  .section-eyebrow__line {
+    @apply relative h-px w-10 shrink-0;
+    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.9), hsl(var(--accent) / 0.7));
+  }
+  .section-eyebrow__label {
+    @apply relative inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[11px] font-medium uppercase tracking-[0.2em];
+    color: hsl(var(--primary));
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--accent) / 0.06));
+    border: 1px solid hsl(var(--primary) / 0.22);
+    box-shadow: 0 0 24px -10px hsl(var(--primary) / 0.45);
+  }
+  .section-eyebrow__label::before {
+    content: "";
+    @apply h-1.5 w-1.5 rounded-full shrink-0;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    box-shadow: 0 0 8px hsl(var(--primary) / 0.8);
   }
   .fluid-card {
     @apply glass rounded-2xl transition-all duration-500 ease-out;
@@ -140,6 +160,37 @@
     font-weight: 500;
     letter-spacing: 0.03em;
   }
+  .name-intro-reveal {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    gap: 0;
+    overflow: visible;
+    clip-path: inset(0 100% 0 0);
+    animation: name-write-reveal 2.85s cubic-bezier(0.45, 0.05, 0.25, 1) forwards;
+  }
+  .name-intro-reveal--done {
+    clip-path: none;
+    animation: none;
+  }
+  .name-intro-hat {
+    @apply absolute z-20 pointer-events-none w-11 h-8 sm:w-14 sm:h-10 md:w-[5.5rem] md:h-16;
+    transform: translate(-50%, -100%) rotate(-14deg);
+    transform-origin: center bottom;
+  }
+  .name-intro-hat--drop {
+    transform: translate(-50%, -100%) rotate(18deg) scale(1.15);
+  }
+  .name-intro-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 0.72em;
+    margin-left: 2px;
+    vertical-align: baseline;
+    background: hsl(var(--primary) / 0.75);
+    animation: cursor-blink 0.9s ease-in-out infinite;
+  }
   .fluid-glow:hover::before {
     opacity: 1;
   }
@@ -160,9 +211,25 @@
   animation: letter-reveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+@keyframes hat-wobble {
+  0%, 100% { transform: rotate(-14deg); }
+  25% { transform: rotate(-10deg); }
+  50% { transform: rotate(-16deg); }
+  75% { transform: rotate(-12deg); }
+}
+
+.hat-wobble-anim {
+  animation: hat-wobble 0.55s ease-in-out;
+  transform-origin: center bottom;
+}
+
 @keyframes cursor-blink {
   0%, 100% { opacity: 0.2; }
   50% { opacity: 0.9; }
+}
+
+@keyframes name-write-reveal {
+  to { clip-path: inset(0 0 0 0); }
 }
 
 @keyframes fluid-float {
@@ -186,4 +253,105 @@
 
 .animate-fluid-wave-reverse {
   animation: fluid-wave-reverse 24s linear infinite;
+}
+
+/* ── Aurora background ── */
+.aurora-bg__base {
+  @apply absolute inset-0;
+  background: hsl(222 47% 5%);
+}
+
+.aurora-bg__band {
+  @apply absolute rounded-[100%];
+  width: 160%;
+  height: 50%;
+  left: -30%;
+  filter: blur(72px);
+  will-change: transform;
+}
+
+.aurora-bg__band--1 {
+  top: -8%;
+  opacity: 0.55;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(190 95% 55% / 0.22) 28%,
+    hsl(255 75% 62% / 0.18) 52%,
+    hsl(220 90% 60% / 0.2) 78%,
+    transparent 100%
+  );
+  animation: aurora-drift-1 28s ease-in-out infinite;
+}
+
+.aurora-bg__band--2 {
+  top: 22%;
+  height: 42%;
+  opacity: 0.45;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(220 90% 60% / 0.14) 22%,
+    hsl(270 65% 58% / 0.2) 48%,
+    hsl(190 95% 55% / 0.16) 74%,
+    transparent 100%
+  );
+  animation: aurora-drift-2 36s ease-in-out infinite;
+}
+
+.aurora-bg__band--3 {
+  top: 48%;
+  height: 38%;
+  opacity: 0.4;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(255 70% 60% / 0.12) 30%,
+    hsl(200 90% 58% / 0.18) 55%,
+    hsl(235 85% 62% / 0.14) 80%,
+    transparent 100%
+  );
+  animation: aurora-drift-3 32s ease-in-out infinite;
+}
+
+.aurora-bg__band--4 {
+  top: 68%;
+  height: 32%;
+  opacity: 0.35;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    hsl(190 95% 55% / 0.1) 35%,
+    hsl(260 60% 55% / 0.14) 60%,
+    hsl(220 90% 60% / 0.1) 85%,
+    transparent 100%
+  );
+  animation: aurora-drift-4 42s ease-in-out infinite;
+}
+
+.aurora-bg__veil {
+  @apply absolute inset-0;
+  background:
+    radial-gradient(ellipse 90% 70% at 50% 40%, transparent 25%, hsl(222 47% 5% / 0.55) 100%),
+    linear-gradient(180deg, hsl(222 47% 5% / 0.15) 0%, transparent 35%, transparent 65%, hsl(222 47% 5% / 0.35) 100%);
+}
+
+@keyframes aurora-drift-1 {
+  0%, 100% { transform: translateX(-8%) translateY(0); }
+  50% { transform: translateX(12%) translateY(3%); }
+}
+
+@keyframes aurora-drift-2 {
+  0%, 100% { transform: translateX(10%) translateY(0); }
+  50% { transform: translateX(-14%) translateY(-2%); }
+}
+
+@keyframes aurora-drift-3 {
+  0%, 100% { transform: translateX(-6%) translateY(0); }
+  50% { transform: translateX(10%) translateY(2%); }
+}
+
+@keyframes aurora-drift-4 {
+  0%, 100% { transform: translateX(8%) translateY(0); }
+  50% { transform: translateX(-10%) translateY(-1%); }
 }

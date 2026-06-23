@@ -1,12 +1,10 @@
 import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
-import { FluidBackground } from "./FluidBackground";
+import { AuroraBackground } from "./AuroraBackground";
+import { StrawHat } from "./StrawHat";
 import { prepareHomeIntro } from "@/lib/intro";
+import { NAME_HERO_TITLE_CLASS } from "@/lib/site";
 
-const FIRST_NAME = "Sriram ";
-const LAST_NAME = "Kancherla";
-const FULL_NAME = FIRST_NAME + LAST_NAME;
-
-type Phase = "typing" | "hold" | "morph" | "exit";
+type Phase = "typing" | "hat" | "hold" | "morph" | "exit";
 
 type NameIntroProps = {
   targetRef: React.RefObject<HTMLHeadingElement>;
@@ -15,12 +13,29 @@ type NameIntroProps = {
 
 export const NameIntro = ({ targetRef, onComplete }: NameIntroProps) => {
   const introRef = useRef<HTMLDivElement>(null);
+  const introTitleRef = useRef<HTMLHeadingElement>(null);
+  const firstNameRef = useRef<HTMLSpanElement>(null);
   const [phase, setPhase] = useState<Phase>("typing");
-  const [visibleCount, setVisibleCount] = useState(0);
+  const [writeDone, setWriteDone] = useState(false);
   const [morphStyle, setMorphStyle] = useState<React.CSSProperties>({});
   const [overlayOpacity, setOverlayOpacity] = useState(1);
+  const [hatLanded, setHatLanded] = useState(false);
+  const [hatVisible, setHatVisible] = useState(false);
+  const [hatPos, setHatPos] = useState<{ x: number; y: number } | null>(null);
 
-  const chars = FULL_NAME.split("");
+  const updateHatPosition = useCallback(() => {
+    const first = firstNameRef.current;
+    const intro = introRef.current;
+    if (!first || !intro) return;
+
+    const firstRect = first.getBoundingClientRect();
+    const introRect = intro.getBoundingClientRect();
+
+    setHatPos({
+      x: firstRect.left - introRect.left + firstRect.width / 2,
+      y: firstRect.top - introRect.top - 4,
+    });
+  }, []);
 
   useLayoutEffect(() => {
     prepareHomeIntro();
@@ -32,40 +47,81 @@ export const NameIntro = ({ targetRef, onComplete }: NameIntroProps) => {
 
   useEffect(() => {
     if (phase !== "typing") return;
+    const fallback = setTimeout(() => {
+      setWriteDone((done) => {
+        if (!done) setPhase("hat");
+        return true;
+      });
+    }, 3200);
+    return () => clearTimeout(fallback);
+  }, [phase]);
 
-    if (visibleCount >= chars.length) {
-      const holdTimer = setTimeout(() => setPhase("hold"), 550);
-      return () => clearTimeout(holdTimer);
-    }
+  const handleWriteEnd = useCallback(() => {
+    if (writeDone) return;
+    setWriteDone(true);
+    setTimeout(() => setPhase("hat"), 350);
+  }, [writeDone]);
 
-    const delay = chars[visibleCount] === " " ? 120 : 95;
-    const timer = setTimeout(() => setVisibleCount((c) => c + 1), delay);
-    return () => clearTimeout(timer);
-  }, [phase, visibleCount, chars]);
+  useLayoutEffect(() => {
+    if (!writeDone) return;
+    updateHatPosition();
+  }, [writeDone, updateHatPosition]);
+
+  useEffect(() => {
+    if (!hatVisible) return;
+    updateHatPosition();
+    window.addEventListener("resize", updateHatPosition);
+    return () => window.removeEventListener("resize", updateHatPosition);
+  }, [hatVisible, updateHatPosition]);
+
+  useEffect(() => {
+    if (phase !== "hat") return;
+
+    updateHatPosition();
+    setHatVisible(true);
+    const dropFrame = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setHatLanded(true));
+    });
+
+    const landTimer = setTimeout(() => setPhase("hold"), 950);
+
+    return () => {
+      cancelAnimationFrame(dropFrame);
+      clearTimeout(landTimer);
+    };
+  }, [phase, updateHatPosition]);
 
   useEffect(() => {
     if (phase !== "hold") return;
-    const timer = setTimeout(() => setPhase("morph"), 750);
+    const timer = setTimeout(() => setPhase("morph"), 700);
     return () => clearTimeout(timer);
   }, [phase]);
 
+  useEffect(() => {
+    if (phase !== "morph") return;
+    setHatVisible(false);
+  }, [phase]);
+
   const runMorph = useCallback(() => {
-    const intro = introRef.current;
+    const introTitle = introTitleRef.current;
     const target = targetRef.current;
-    if (!intro || !target) {
+    if (!introTitle || !target) {
       onComplete();
       return;
     }
 
-    const iRect = intro.getBoundingClientRect();
+    const iRect = introTitle.getBoundingClientRect();
     const tRect = target.getBoundingClientRect();
+    const introFont = parseFloat(getComputedStyle(introTitle).fontSize);
+    const targetFont = parseFloat(getComputedStyle(target).fontSize);
+    const scale = introFont > 0 ? targetFont / introFont : 1;
 
-    const scale = tRect.height / iRect.height;
     const dx = tRect.left + tRect.width / 2 - (iRect.left + iRect.width / 2);
     const dy = tRect.top + tRect.height / 2 - (iRect.top + iRect.height / 2);
 
     setMorphStyle({
       transform: `translate(${dx}px, ${dy}px) scale(${scale})`,
+      transformOrigin: "center center",
       transition: "transform 1.35s cubic-bezier(0.22, 1, 0.36, 1)",
     });
   }, [targetRef, onComplete]);
@@ -73,13 +129,19 @@ export const NameIntro = ({ targetRef, onComplete }: NameIntroProps) => {
   useEffect(() => {
     if (phase !== "morph") return;
 
-    const frame = requestAnimationFrame(() => runMorph());
+    let frame = 0;
+    const startMorph = () => {
+      frame = requestAnimationFrame(() => {
+        frame = requestAnimationFrame(runMorph);
+      });
+    };
+    startMorph();
 
     const completeTimer = setTimeout(() => {
       onComplete();
       setPhase("exit");
       setOverlayOpacity(0);
-    }, 1380);
+    }, 1360);
 
     return () => {
       cancelAnimationFrame(frame);
@@ -87,41 +149,17 @@ export const NameIntro = ({ targetRef, onComplete }: NameIntroProps) => {
     };
   }, [phase, runMorph, onComplete]);
 
-  const renderLetters = () =>
-    chars.map((char, i) => {
-      const isLastName = i >= FIRST_NAME.length;
-      const visible = i < visibleCount;
-      const wave = Math.sin(i * 0.45) * 3;
-
-      return (
-        <span
-          key={`${char}-${i}`}
-          className={`name-script text-7xl sm:text-8xl md:text-9xl lg:text-[7rem] inline-block ${isLastName ? "text-gradient" : "text-foreground"}`}
-          style={{
-            opacity: visible ? 1 : 0,
-            transform: visible
-              ? "translateY(0) rotate(0deg)"
-              : `translateY(0.35em) rotate(${-8 + wave}deg)`,
-            transition: "opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1)",
-          }}
-          aria-hidden={!visible}
-        >
-          {char === " " ? "\u00A0" : char}
-        </span>
-      );
-    });
-
   return (
     <div
-      className="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none"
+      className="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none overflow-visible"
       style={{
         opacity: overlayOpacity,
         transition: "opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
       }}
       aria-hidden={phase === "exit"}
     >
-      <div className="absolute inset-0 bg-background">
-        <FluidBackground />
+      <div className="absolute inset-0 bg-background overflow-hidden">
+        <AuroraBackground />
         <div
           className="absolute inset-0"
           style={{
@@ -133,17 +171,48 @@ export const NameIntro = ({ targetRef, onComplete }: NameIntroProps) => {
 
       <div
         ref={introRef}
-        className="relative z-10 text-center will-change-transform px-4"
-        style={morphStyle}
+        className="relative z-10 text-center w-full max-w-4xl mx-auto px-4 sm:px-6 overflow-visible"
       >
-        <h1 className="whitespace-nowrap leading-none">{renderLetters()}</h1>
-        {phase === "typing" && visibleCount < chars.length && (
-          <span
-            className="inline-block w-px h-[0.75em] bg-primary/70 ml-0.5 align-middle"
-            style={{ animation: "cursor-blink 1s ease-in-out infinite" }}
-            aria-hidden="true"
-          />
+        {hatVisible && hatPos && phase !== "morph" && phase !== "exit" && (
+          <div
+            className={`name-intro-hat ${!hatLanded ? "name-intro-hat--drop" : ""}`}
+            style={{
+              left: hatPos.x,
+              top: hatLanded ? hatPos.y : "-120vh",
+              opacity: 1,
+              transition: hatLanded
+                ? "top 0.8s cubic-bezier(0.34, 1.45, 0.64, 1), transform 0.8s cubic-bezier(0.34, 1.45, 0.64, 1), opacity 0.35s ease"
+                : "top 0.05s linear, transform 0.05s linear, opacity 0.25s ease",
+            }}
+          >
+            <StrawHat
+              landed={hatLanded}
+              className={`w-full h-full ${hatLanded && phase === "hold" ? "hat-wobble-anim" : ""}`}
+            />
+          </div>
         )}
+
+        <h1
+          ref={introTitleRef}
+          className={`relative z-10 ${NAME_HERO_TITLE_CLASS} will-change-transform overflow-visible`}
+          style={{
+            ...morphStyle,
+            visibility: phase === "exit" ? "hidden" : "visible",
+          }}
+        >
+          <span
+            className={`name-intro-reveal ${writeDone ? "name-intro-reveal--done" : ""}`}
+            onAnimationEnd={handleWriteEnd}
+          >
+            <span ref={firstNameRef} className="text-foreground">
+              Sriram
+            </span>{" "}
+            <span className="text-gradient">Kancherla</span>
+            {phase === "typing" && !writeDone && (
+              <span className="name-intro-cursor" aria-hidden="true" />
+            )}
+          </span>
+        </h1>
       </div>
     </div>
   );

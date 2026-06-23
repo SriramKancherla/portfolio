@@ -1,20 +1,24 @@
 import { useLayoutEffect } from "react";
 import { useLocation } from "react-router-dom";
-import { isPageReload, prepareHomeIntro, resetScrollRestoration } from "@/lib/intro";
+import { isPageReload, prepareHomeIntro, resetScrollRestoration, SPA_ROUTES } from "@/lib/intro";
 
-/** On reload: non-home routes go to `/`; home always resets scroll/hash for the intro. */
+/** On reload: unknown routes go to `/`; home resets scroll/hash for the intro. */
 export const ReloadRedirect = () => {
   const { pathname } = useLocation();
 
   useLayoutEffect(() => {
-    if (pathname !== "/") {
+    const isKnownRoute = SPA_ROUTES.includes(pathname as (typeof SPA_ROUTES)[number]);
+
+    if (!isKnownRoute) {
       if (isPageReload()) {
         window.location.replace("/");
       }
       return;
     }
 
-    prepareHomeIntro();
+    if (pathname === "/") {
+      prepareHomeIntro();
+    }
 
     return () => {
       resetScrollRestoration();

@@ -1,5 +1,6 @@
 import { Award, ExternalLink } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { SectionEyebrow } from "./SectionEyebrow";
 
 const items = [
   {
@@ -7,18 +8,6 @@ const items = [
     issuer: "E&ICT Academy, IIT Kanpur",
     date: "Dec 2025",
     url: "/documents/iitk-dg-professional-certificate.pdf",
-  },
-  {
-    title: "Business Analytics with Excel",
-    issuer: "E&ICT Academy, IIT Kanpur",
-    date: "2025",
-    url: "/documents/iitk-dg-business-analytics-excel.pdf",
-  },
-  {
-    title: "ETL (Extract, Transform, Load)",
-    issuer: "E&ICT Academy, IIT Kanpur",
-    date: "2025",
-    url: "/documents/iitk-dg-etl.pdf",
   },
   {
     title: "Oracle Cloud Infrastructure Generative AI Professional",
@@ -66,11 +55,11 @@ const items = [
 
 export const Certifications = () => {
   return (
-    <section id="certifications" className="section-fluid relative py-28">
+    <section id="certifications" className="section-fluid relative">
       <div className="container">
         <Reveal>
           <div className="mb-14 max-w-3xl">
-            <p className="mono text-xs text-primary mb-3">// 05 — credentials</p>
+            <SectionEyebrow>Certifications</SectionEyebrow>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Certifications & achievements.</h2>
             <p className="text-lg text-muted-foreground">
               Verified credentials from IIT Kanpur, Oracle, AWS, and more — with downloadable certificates from my personal records.

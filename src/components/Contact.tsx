@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Reveal } from "./Reveal";
+import { SectionEyebrow } from "./SectionEyebrow";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/site";
 
 const WEB3FORMS_ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY as string | undefined;
@@ -78,12 +79,12 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="section-fluid relative py-28">
+    <section id="contact" className="section-fluid relative">
       <div className="container">
-        <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           <Reveal>
             <div>
-              <p className="mono text-xs text-primary mb-3">// 07 — contact</p>
+              <SectionEyebrow>Contact</SectionEyebrow>
               <h2 className="text-4xl md:text-5xl font-bold mb-6">
                 Let's build something <span className="text-gradient">together.</span>
               </h2>

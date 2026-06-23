@@ -1,18 +1,18 @@
 import { Github, Linkedin, Mail } from "lucide-react";
-import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/site";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL, ROLE_LINE } from "@/lib/site";
 
 export const Footer = () => {
   return (
-    <footer className="relative border-t border-border/50 mt-20 py-12 z-10">
+    <footer className="relative border-t border-border/50 mt-12 sm:mt-20 py-10 sm:py-12 z-10 pb-[max(2.5rem,env(safe-area-inset-bottom))]">
       <div className="container">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div className="flex items-center gap-3">
             <span className="grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br from-primary to-accent text-primary-foreground font-bold">
               SK
             </span>
             <div>
               <div className="font-display font-semibold">Sriram Kancherla</div>
-              <div className="text-xs text-muted-foreground mono">ML Intern @ FlyRank AI · VIT Vellore</div>
+              <div className="text-xs text-muted-foreground mono">{ROLE_LINE} · VIT Vellore</div>
             </div>
           </div>
 

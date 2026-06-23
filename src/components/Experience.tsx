@@ -1,5 +1,6 @@
 import { Briefcase, FileText, MapPin } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { SectionEyebrow } from "./SectionEyebrow";
 import { FLYRANK_CONFIRMATION_URL, NUS_CREDENTIALS_URL } from "@/lib/site";
 
 const experiences = [
@@ -38,11 +39,11 @@ const experiences = [
 
 export const Experience = () => {
   return (
-    <section id="experience" className="section-fluid relative py-28">
+    <section id="experience" className="section-fluid relative">
       <div className="container">
         <Reveal>
           <div className="mb-16 max-w-3xl">
-            <p className="mono text-xs text-primary mb-3">// 02 — experience</p>
+            <SectionEyebrow>Experience</SectionEyebrow>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Where I've been building.</h2>
             <p className="text-lg text-muted-foreground">
               Academic research at NUS and an upcoming ML engineering internship at FlyRank AI — with verified certificates and confirmation letters.
@@ -62,7 +63,7 @@ export const Experience = () => {
                   </div>
                   <div className="pl-14 md:pl-0 md:[direction:ltr]">
                     <div className="glass rounded-2xl p-6 hover-lift fluid-glow">
-                      <div className="flex items-center gap-2 mono text-xs text-primary mb-2">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mono text-xs text-primary mb-2">
                         <span>{exp.period}</span>
                         <span>·</span>
                         <MapPin size={12} />
