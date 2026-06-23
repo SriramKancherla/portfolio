@@ -79,21 +79,21 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="section-fluid relative">
+    <section id="contact" className="section-fluid fluid-section relative">
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           <Reveal>
             <div>
-              <SectionEyebrow>Contact</SectionEyebrow>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
-                Let's build something <span className="text-gradient">together.</span>
+              <SectionEyebrow index="06">Contact</SectionEyebrow>
+              <h2 className="text-3xl md:text-4xl font-bold mb-5 tracking-tight">
+                Let's build something together.
               </h2>
               <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
                 I'm open to internships, full-time roles, research collaborations, and interesting projects
                 in machine learning, data analytics, and AI engineering. Based in Vellore, Tamil Nadu.
               </p>
 
-              <div className="space-y-3">
+              <div className="space-y-4 mb-8">
                 {[
                   { icon: Mail, label: EMAIL, href: `mailto:${EMAIL}` },
                   { icon: Linkedin, label: "linkedin.com/in/sriram-kancherla", href: LINKEDIN_URL },
@@ -104,12 +104,10 @@ export const Contact = () => {
                     href={c.href}
                     target={c.href.startsWith("mailto") ? undefined : "_blank"}
                     rel={c.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                    className="flex items-center gap-4 glass rounded-xl p-4 hover-lift fluid-glow group"
+                    className="flex items-center gap-3 text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
-                    <div className="grid place-items-center h-10 w-10 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 border border-primary/30 group-hover:scale-110 transition-transform duration-500">
-                      <c.icon size={18} className="text-primary" />
-                    </div>
-                    <span className="text-sm text-foreground/90 group-hover:text-primary transition-colors duration-300">{c.label}</span>
+                    <c.icon size={16} className="shrink-0" />
+                    <span>{c.label}</span>
                   </a>
                 ))}
               </div>
@@ -117,7 +115,7 @@ export const Contact = () => {
           </Reveal>
 
           <Reveal delay={120}>
-            <form onSubmit={onSubmit} className="glass-strong rounded-3xl p-6 md:p-8 space-y-5 fluid-glow" noValidate>
+            <form onSubmit={onSubmit} className="border border-border/70 rounded-lg p-6 md:p-8 space-y-5" noValidate>
               <div className="grid sm:grid-cols-2 gap-5">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name</Label>
@@ -126,7 +124,7 @@ export const Contact = () => {
                     name="name"
                     required
                     placeholder="Your name"
-                    className="bg-card/40 border-border transition-all duration-300 focus:scale-[1.02]"
+                    className="bg-background border-border"
                   />
                 </div>
                 <div className="space-y-2">
@@ -143,7 +141,7 @@ export const Contact = () => {
                     aria-invalid={!!emailError}
                     aria-describedby={emailError ? "email-error" : undefined}
                     onChange={() => emailError && setEmailError("")}
-                    className={`bg-card/40 border-border transition-all duration-300 focus:scale-[1.02] ${
+                    className={`bg-background border-border ${
                       emailError ? "border-destructive focus-visible:ring-destructive" : ""
                     }`}
                   />
@@ -161,7 +159,7 @@ export const Contact = () => {
                   name="subject"
                   required
                   placeholder="What's this about?"
-                  className="bg-card/40 border-border transition-all duration-300 focus:scale-[1.02]"
+                  className="bg-background border-border"
                 />
               </div>
               <div className="space-y-2">
@@ -172,7 +170,7 @@ export const Contact = () => {
                   required
                   rows={5}
                   placeholder="Tell me a bit more..."
-                  className="bg-card/40 border-border resize-none transition-all duration-300 focus:scale-[1.01]"
+                  className="bg-background border-border resize-none"
                 />
               </div>
               <p className="text-xs text-muted-foreground">
@@ -182,7 +180,7 @@ export const Contact = () => {
                 type="submit"
                 disabled={sending}
                 size="lg"
-                className="w-full bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90 glow transition-all duration-500 hover:scale-[1.02]"
+                className="w-full"
               >
                 {sending ? "Sending..." : (<><Send size={16} className="mr-2" /> Send Message</>)}
               </Button>

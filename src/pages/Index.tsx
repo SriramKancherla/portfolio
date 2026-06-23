@@ -8,7 +8,7 @@ import { Skills } from "@/components/Skills";
 import { Certifications } from "@/components/Certifications";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
-import { AuroraBackground } from "@/components/AuroraBackground";
+import { SiteBackground } from "@/components/SiteBackground";
 import { FluidDivider } from "@/components/FluidDivider";
 
 import { hasIntroCompleted } from "@/lib/intro";
@@ -18,7 +18,7 @@ const Index = () => {
 
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
-      <AuroraBackground />
+      <SiteBackground />
       <div className="relative z-10">
         <Navbar visible={introDone} />
         <main>
@@ -34,7 +34,7 @@ const Index = () => {
             <Skills />
             <FluidDivider />
             <Certifications />
-            <FluidDivider />
+            <FluidDivider flip />
             <Contact />
           </div>
         </main>

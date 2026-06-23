@@ -1,4 +1,4 @@
-import { Award, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
 
@@ -55,40 +55,39 @@ const items = [
 
 export const Certifications = () => {
   return (
-    <section id="certifications" className="section-fluid relative">
-      <div className="container">
+    <section id="certifications" className="section-fluid fluid-section relative">
+      <div className="container max-w-4xl">
         <Reveal>
-          <div className="mb-14 max-w-3xl">
-            <SectionEyebrow>Certifications</SectionEyebrow>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Certifications & achievements.</h2>
-            <p className="text-lg text-muted-foreground">
-              Verified credentials from IIT Kanpur, Oracle, AWS, and more — with downloadable certificates from my personal records.
-            </p>
-          </div>
+          <SectionEyebrow index="05">Certifications</SectionEyebrow>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Certifications & achievements.</h2>
+          <p className="text-base md:text-lg text-muted-foreground mb-10 max-w-3xl">
+            Verified credentials from IIT Kanpur, Oracle, AWS, and more.
+          </p>
         </Reveal>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <ul className="divide-y divide-border/70 border-t border-border/70">
           {items.map((it, i) => (
-            <Reveal key={it.title} delay={i * 60}>
-              <div className="glass rounded-2xl p-6 h-full hover-lift fluid-glow relative overflow-hidden group">
-                <div className="absolute top-0 right-0 mono text-[10px] uppercase tracking-wider px-2 py-1 rounded-bl-lg bg-primary/10 text-primary border-l border-b border-primary/30">
-                  {it.date}
+            <Reveal key={it.title} delay={i * 40}>
+              <li className="py-5 md:py-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                <div className="min-w-0">
+                  <h3 className="font-medium text-foreground leading-snug">{it.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{it.issuer}</p>
                 </div>
-                <Award className="text-primary mb-4 group-hover:scale-110 transition-transform duration-500" size={28} />
-                <h3 className="font-semibold mb-2 leading-snug pr-8">{it.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{it.issuer}</p>
-                <a
-                  href={it.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-primary hover:underline transition-all duration-300"
-                >
-                  <ExternalLink size={12} /> View Certificate
-                </a>
-              </div>
+                <div className="flex items-center gap-4 shrink-0 sm:text-right">
+                  <span className="mono text-xs text-muted-foreground">{it.date}</span>
+                  <a
+                    href={it.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                  >
+                    View <ExternalLink size={12} />
+                  </a>
+                </div>
+              </li>
             </Reveal>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   );

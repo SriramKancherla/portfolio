@@ -10,6 +10,9 @@ export const FLYRANK_CONFIRMATION_URL = "/documents/flyrank-internship-confirmat
 /** Current role — keep hero, footer, meta, and OG image in sync. */
 export const ROLE_LINE = "ML Intern @ FlyRank AI";
 
+/** Role titles shown in hero (from experience). */
+export const ROLES_LINE = "ML Engineer · Data Analyst · Student";
+
 /** Set VITE_SITE_URL at build time for absolute canonical / OG URLs. */
 export const SITE_URL = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\/$/, "") ?? "";
 

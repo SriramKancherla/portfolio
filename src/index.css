@@ -4,56 +4,57 @@
 
 @layer base {
   :root {
-    --background: 222 47% 5%;
-    --foreground: 210 40% 98%;
+    /* Carbon Copper — dark industrial + copper accent */
+    --background: 25 8% 7%;
+    --foreground: 30 12% 95%;
 
-    --card: 222 40% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 25 6% 10%;
+    --card-foreground: 30 12% 95%;
 
-    --popover: 222 40% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 25 6% 10%;
+    --popover-foreground: 30 12% 95%;
 
-    --primary: 190 95% 55%;
-    --primary-foreground: 222 47% 5%;
-    --primary-glow: 200 100% 65%;
+    --primary: 22 68% 55%;
+    --primary-foreground: 25 8% 7%;
+    --primary-glow: 22 72% 62%;
 
-    --secondary: 217 33% 14%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 25 6% 14%;
+    --secondary-foreground: 30 12% 95%;
 
-    --muted: 217 33% 12%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 25 5% 13%;
+    --muted-foreground: 25 6% 54%;
 
-    --accent: 220 90% 60%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 18 50% 40%;
+    --accent-foreground: 30 12% 95%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 58%;
+    --destructive-foreground: 30 12% 95%;
 
-    --border: 217 33% 18%;
-    --input: 217 33% 14%;
-    --ring: 190 95% 55%;
+    --border: 25 8% 17%;
+    --input: 25 6% 14%;
+    --ring: 22 68% 55%;
 
     --radius: 0.875rem;
 
-    --gradient-primary: linear-gradient(135deg, hsl(190 95% 55%), hsl(220 90% 60%));
-    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(190 95% 55% / 0.18), transparent 60%);
-    --gradient-card: linear-gradient(135deg, hsl(222 40% 10% / 0.8), hsl(222 40% 6% / 0.6));
-    --shadow-glow: 0 20px 60px -20px hsl(190 95% 55% / 0.4);
-    --shadow-elegant: 0 10px 40px -10px hsl(220 90% 30% / 0.4);
+    --gradient-primary: linear-gradient(135deg, hsl(22 68% 55%), hsl(18 50% 40%));
+    --gradient-glow: radial-gradient(circle at 50% 0%, hsl(22 68% 55% / 0.14), transparent 60%);
+    --gradient-card: linear-gradient(135deg, hsl(25 6% 11% / 0.85), hsl(25 8% 7% / 0.65));
+    --shadow-glow: 0 20px 60px -20px hsl(22 68% 55% / 0.24);
+    --shadow-elegant: 0 10px 40px -10px hsl(25 8% 4% / 0.5);
 
-    --sidebar-background: 222 47% 5%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 190 95% 55%;
-    --sidebar-primary-foreground: 222 47% 5%;
-    --sidebar-accent: 217 33% 14%;
-    --sidebar-accent-foreground: 210 40% 98%;
-    --sidebar-border: 217 33% 18%;
-    --sidebar-ring: 190 95% 55%;
+    --sidebar-background: 25 8% 7%;
+    --sidebar-foreground: 30 12% 95%;
+    --sidebar-primary: 22 68% 55%;
+    --sidebar-primary-foreground: 25 8% 7%;
+    --sidebar-accent: 25 6% 14%;
+    --sidebar-accent-foreground: 30 12% 95%;
+    --sidebar-border: 25 8% 17%;
+    --sidebar-ring: 22 68% 55%;
   }
 
   .dark {
-    --background: 222 47% 5%;
-    --foreground: 210 40% 98%;
+    --background: 25 8% 7%;
+    --foreground: 30 12% 95%;
   }
 }
 
@@ -99,43 +100,60 @@
   }
   .grid-bg {
     background-image:
-      linear-gradient(hsl(var(--border) / 0.3) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(var(--border) / 0.3) 1px, transparent 1px);
+      linear-gradient(hsl(var(--border) / 0.22) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.22) 1px, transparent 1px);
     background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
+    opacity: 0.45;
   }
   .story-link {
     @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
   }
   .hover-lift {
-    @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_hsl(var(--primary)/0.35)] hover:scale-[1.01];
+    @apply transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_20px_50px_-15px_hsl(var(--primary)/0.2)] hover:scale-[1.01];
   }
   .section-fluid {
-    @apply relative z-10 py-16 md:py-24 lg:py-28;
+    @apply relative z-10 py-14 md:py-20 lg:py-24;
+  }
+  .fluid-section {
+    @apply relative overflow-hidden;
+  }
+  .fluid-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 90% 55% at 50% 0%, hsl(var(--primary) / 0.05), transparent 68%);
+    pointer-events: none;
+  }
+  .fluid-canvas {
+    opacity: 0.75;
+    mix-blend-mode: screen;
+  }
+  .fluid-marquee {
+    @apply py-3 md:py-3.5;
+  }
+  .fluid-marquee__track {
+    display: flex;
+    width: max-content;
+    animation: fluid-marquee 38s linear infinite;
+  }
+  .fluid-marquee__track--slow {
+    animation-duration: 52s;
+  }
+  .fluid-marquee__item {
+    @apply mono text-xs md:text-sm uppercase tracking-[0.28em] text-muted-foreground whitespace-nowrap px-6 md:px-8;
+    display: inline-flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  .fluid-marquee__dot {
+    @apply inline-block w-1.5 h-1.5 rounded-full bg-primary/60;
   }
   .section-eyebrow {
-    @apply relative inline-flex items-center gap-3 mb-5;
+    @apply mono text-xs uppercase tracking-[0.22em] text-primary mb-4;
   }
-  .section-eyebrow__glow {
-    @apply absolute -inset-x-4 -inset-y-2 rounded-full opacity-60 blur-xl pointer-events-none;
-    background: radial-gradient(ellipse at center, hsl(var(--primary) / 0.2), transparent 70%);
-  }
-  .section-eyebrow__line {
-    @apply relative h-px w-10 shrink-0;
-    background: linear-gradient(90deg, transparent, hsl(var(--primary) / 0.9), hsl(var(--accent) / 0.7));
-  }
-  .section-eyebrow__label {
-    @apply relative inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[11px] font-medium uppercase tracking-[0.2em];
-    color: hsl(var(--primary));
-    background: linear-gradient(135deg, hsl(var(--primary) / 0.12), hsl(var(--accent) / 0.06));
-    border: 1px solid hsl(var(--primary) / 0.22);
-    box-shadow: 0 0 24px -10px hsl(var(--primary) / 0.45);
-  }
-  .section-eyebrow__label::before {
-    content: "";
-    @apply h-1.5 w-1.5 rounded-full shrink-0;
-    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
-    box-shadow: 0 0 8px hsl(var(--primary) / 0.8);
+  .section-rule {
+    @apply container border-t border-border/60 my-0;
   }
   .fluid-card {
     @apply glass rounded-2xl transition-all duration-500 ease-out;
@@ -255,103 +273,116 @@
   animation: fluid-wave-reverse 24s linear infinite;
 }
 
-/* ── Aurora background ── */
+/* ── Mesh blob background (Carbon Copper) ── */
 .aurora-bg__base {
   @apply absolute inset-0;
-  background: hsl(222 47% 5%);
+  background: hsl(25 8% 7%);
 }
 
-.aurora-bg__band {
-  @apply absolute rounded-[100%];
-  width: 160%;
-  height: 50%;
-  left: -30%;
-  filter: blur(72px);
+.aurora-bg__mesh {
+  @apply absolute inset-0;
+}
+
+.aurora-bg__orb {
+  @apply absolute rounded-full;
+  filter: blur(80px);
   will-change: transform;
 }
 
-.aurora-bg__band--1 {
-  top: -8%;
-  opacity: 0.55;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    hsl(190 95% 55% / 0.22) 28%,
-    hsl(255 75% 62% / 0.18) 52%,
-    hsl(220 90% 60% / 0.2) 78%,
-    transparent 100%
-  );
-  animation: aurora-drift-1 28s ease-in-out infinite;
+.aurora-bg__orb--1 {
+  width: min(58vw, 520px);
+  height: min(58vw, 520px);
+  top: -12%;
+  right: -8%;
+  background: radial-gradient(circle, hsl(22 72% 58% / 0.32) 0%, hsl(22 68% 55% / 0.14) 42%, transparent 72%);
+  animation: mesh-float-1 22s ease-in-out infinite;
 }
 
-.aurora-bg__band--2 {
-  top: 22%;
-  height: 42%;
-  opacity: 0.45;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    hsl(220 90% 60% / 0.14) 22%,
-    hsl(270 65% 58% / 0.2) 48%,
-    hsl(190 95% 55% / 0.16) 74%,
-    transparent 100%
-  );
-  animation: aurora-drift-2 36s ease-in-out infinite;
+.aurora-bg__orb--2 {
+  width: min(50vw, 460px);
+  height: min(50vw, 460px);
+  top: 8%;
+  left: -14%;
+  background: radial-gradient(circle, hsl(35 75% 52% / 0.32) 0%, hsl(28 60% 45% / 0.14) 45%, transparent 70%);
+  animation: mesh-float-2 28s ease-in-out infinite;
 }
 
-.aurora-bg__band--3 {
-  top: 48%;
-  height: 38%;
-  opacity: 0.4;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    hsl(255 70% 60% / 0.12) 30%,
-    hsl(200 90% 58% / 0.18) 55%,
-    hsl(235 85% 62% / 0.14) 80%,
-    transparent 100%
-  );
-  animation: aurora-drift-3 32s ease-in-out infinite;
+.aurora-bg__orb--3 {
+  width: min(44vw, 400px);
+  height: min(44vw, 400px);
+  top: 42%;
+  right: 10%;
+  background: radial-gradient(circle, hsl(18 55% 42% / 0.36) 0%, hsl(18 50% 40% / 0.12) 48%, transparent 72%);
+  animation: mesh-float-3 26s ease-in-out infinite;
 }
 
-.aurora-bg__band--4 {
-  top: 68%;
-  height: 32%;
-  opacity: 0.35;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    hsl(190 95% 55% / 0.1) 35%,
-    hsl(260 60% 55% / 0.14) 60%,
-    hsl(220 90% 60% / 0.1) 85%,
-    transparent 100%
-  );
-  animation: aurora-drift-4 42s ease-in-out infinite;
+.aurora-bg__orb--4 {
+  width: min(62vw, 560px);
+  height: min(62vw, 560px);
+  bottom: -18%;
+  left: 18%;
+  background: radial-gradient(circle, hsl(22 68% 55% / 0.28) 0%, hsl(25 45% 35% / 0.1) 50%, transparent 74%);
+  animation: mesh-float-4 32s ease-in-out infinite;
+}
+
+.aurora-bg__orb--5 {
+  width: min(36vw, 320px);
+  height: min(36vw, 320px);
+  top: 55%;
+  left: 42%;
+  background: radial-gradient(circle, hsl(12 70% 48% / 0.22) 0%, transparent 68%);
+  animation: mesh-float-5 24s ease-in-out infinite;
 }
 
 .aurora-bg__veil {
   @apply absolute inset-0;
   background:
-    radial-gradient(ellipse 90% 70% at 50% 40%, transparent 25%, hsl(222 47% 5% / 0.55) 100%),
-    linear-gradient(180deg, hsl(222 47% 5% / 0.15) 0%, transparent 35%, transparent 65%, hsl(222 47% 5% / 0.35) 100%);
+    radial-gradient(ellipse 80% 55% at 50% 45%, transparent 20%, hsl(25 8% 7% / 0.72) 100%),
+    linear-gradient(180deg, hsl(25 8% 7% / 0.35) 0%, transparent 28%, transparent 72%, hsl(25 8% 7% / 0.5) 100%);
 }
 
-@keyframes aurora-drift-1 {
-  0%, 100% { transform: translateX(-8%) translateY(0); }
-  50% { transform: translateX(12%) translateY(3%); }
+.aurora-bg__noise {
+  @apply absolute inset-0 opacity-[0.035];
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
 }
 
-@keyframes aurora-drift-2 {
-  0%, 100% { transform: translateX(10%) translateY(0); }
-  50% { transform: translateX(-14%) translateY(-2%); }
+@keyframes fluid-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
-@keyframes aurora-drift-3 {
-  0%, 100% { transform: translateX(-6%) translateY(0); }
-  50% { transform: translateX(10%) translateY(2%); }
+@keyframes mesh-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-4%, 3%) scale(1.06); }
 }
 
-@keyframes aurora-drift-4 {
-  0%, 100% { transform: translateX(8%) translateY(0); }
-  50% { transform: translateX(-10%) translateY(-1%); }
+@keyframes mesh-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(5%, -2%) scale(1.04); }
+}
+
+@keyframes mesh-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-3%, 4%) scale(1.05); }
+}
+
+@keyframes mesh-float-4 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(4%, -3%) scale(1.03); }
+}
+
+@keyframes mesh-float-5 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-2%, 2%) scale(1.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fluid-marquee__track,
+  .animate-fluid-wave,
+  .animate-fluid-wave-reverse,
+  .aurora-bg__orb,
+  .fluid-canvas {
+    animation: none !important;
+  }
 }

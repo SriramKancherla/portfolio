@@ -39,11 +39,11 @@ const experiences = [
 
 export const Experience = () => {
   return (
-    <section id="experience" className="section-fluid relative">
+    <section id="experience" className="section-fluid fluid-section relative">
       <div className="container">
         <Reveal>
           <div className="mb-16 max-w-3xl">
-            <SectionEyebrow>Experience</SectionEyebrow>
+            <SectionEyebrow index="02">Experience</SectionEyebrow>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">Where I've been building.</h2>
             <p className="text-lg text-muted-foreground">
               Academic research at NUS and an upcoming ML engineering internship at FlyRank AI — with verified certificates and confirmation letters.

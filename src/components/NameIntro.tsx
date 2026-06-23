@@ -164,7 +164,7 @@ export const NameIntro = ({ targetRef, onComplete }: NameIntroProps) => {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(ellipse 70% 50% at 50% 50%, hsl(190 95% 55% / 0.1), transparent 70%)",
+              "radial-gradient(ellipse 70% 50% at 50% 50%, hsl(var(--primary) / 0.1), transparent 70%)",
           }}
         />
       </div>
