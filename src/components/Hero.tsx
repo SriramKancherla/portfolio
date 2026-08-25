@@ -19,6 +19,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
   const [introDone, setIntroDone] = useState(true);
   const [showIntro, setShowIntro] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const scrollCueRef = useRef<HTMLDivElement>(null);
 
   const handleIntroComplete = useCallback(() => {
@@ -45,6 +46,10 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
     const fallback = setTimeout(handleIntroComplete, 6000);
     return () => clearTimeout(fallback);
   }, [introDone, handleIntroComplete]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 80);
@@ -189,7 +194,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
       <div
         ref={scrollCueRef}
         className="flex justify-center pb-10 transition-opacity duration-500"
-        style={{ opacity: scrolled ? 0 : 1 }}
+        style={{ opacity: mounted ? (scrolled ? 0 : 1) : 1 }}
         aria-hidden="true"
       >
         <div className="scroll-cue">

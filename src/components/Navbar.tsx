@@ -20,7 +20,12 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -69,9 +74,9 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
     <header
       className="fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top)]"
       style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(-12px)",
-        pointerEvents: visible ? "auto" : "none",
+        opacity: mounted ? (visible ? 1 : 0) : 1,
+        transform: mounted ? (visible ? "translateY(0)" : "translateY(-12px)") : "translateY(0)",
+        pointerEvents: mounted ? (visible ? "auto" : "none") : "auto",
         transition: "opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)",
       }}
     >
