@@ -16,8 +16,8 @@ function shouldPlayIntro() {
 }
 
 export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
-  const [introDone, setIntroDone] = useState(() => !shouldPlayIntro());
-  const [showIntro, setShowIntro] = useState(() => shouldPlayIntro());
+  const [introDone, setIntroDone] = useState(true);
+  const [showIntro, setShowIntro] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const scrollCueRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +30,11 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
   }, [onIntroComplete]);
 
   useEffect(() => {
-    if (!shouldPlayIntro()) {
+    const play = shouldPlayIntro();
+    if (play) {
+      setIntroDone(false);
+      setShowIntro(true);
+    } else {
       markIntroCompleted();
       onIntroComplete?.();
     }
