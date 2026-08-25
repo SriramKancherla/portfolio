@@ -1,4 +1,5 @@
 export function isPageReload() {
+  if (typeof performance === "undefined") return false;
   const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
   return nav?.type === "reload";
 }
@@ -7,6 +8,7 @@ const INTRO_STORAGE_KEY = "portfolio:intro-done";
 
 /** Survives client-side route changes; resets automatically on full page reload. */
 let introCompletedThisSession = false;
+let sessionSynced = false;
 
 /** Valid client-side routes — reload on these should not bounce to home. */
 export const SPA_ROUTES = ["/", "/resume"] as const;
@@ -36,7 +38,8 @@ function clearIntroStorage() {
 }
 
 function syncIntroSession() {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined" || sessionSynced) return;
+  sessionSynced = true;
 
   if (isPageReload()) {
     clearIntroStorage();
@@ -49,18 +52,20 @@ function syncIntroSession() {
   }
 }
 
-syncIntroSession();
-
 export function hasIntroCompleted() {
+  syncIntroSession();
   return introCompletedThisSession;
 }
 
 export function markIntroCompleted() {
+  syncIntroSession();
   introCompletedThisSession = true;
   writeIntroToStorage();
 }
 
 export function prepareHomeIntro() {
+  if (typeof window === "undefined") return;
+
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
@@ -73,6 +78,7 @@ export function prepareHomeIntro() {
 }
 
 export function resetScrollRestoration() {
+  if (typeof window === "undefined") return;
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "auto";
   }

@@ -11,12 +11,12 @@ export const ROLE_LINE = "ML Intern @ FlyRank AI";
 /** Role titles shown in hero (from experience). */
 export const ROLES_LINE = "ML Engineer · Data Analyst · Student";
 
-/** Set VITE_SITE_URL at build time for absolute canonical / OG URLs. */
-export const SITE_URL = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\/$/, "") ?? "";
+/** Set NEXT_PUBLIC_SITE_URL at build time for absolute canonical / OG URLs. */
+export const SITE_URL =
+  (typeof process !== "undefined" ? process.env.NEXT_PUBLIC_SITE_URL : undefined)?.replace(/\/$/, "") ?? "";
 
-/** Shared title styling — intro morph must match hero exactly on all breakpoints. */
+/** Hero name styling — clean grotesk, no script face. */
 export const NAME_TITLE_CLASS =
-  "name-script text-[clamp(2.35rem,8.2vw,5.5rem)] leading-[1.2] tracking-normal";
+  "font-display font-bold text-[clamp(2.5rem,7.5vw,5rem)] leading-[1.08] tracking-tight";
 
-/** Hero + intro name markup must stay identical so the morph lands at 1:1 size. */
-export const NAME_HERO_TITLE_CLASS = `${NAME_TITLE_CLASS} inline-flex flex-wrap justify-center items-end gap-x-[0.15em] max-w-full`;
+export const NAME_HERO_TITLE_CLASS = `${NAME_TITLE_CLASS} inline-flex flex-wrap justify-center items-baseline gap-x-[0.25em] max-w-full`;

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
@@ -8,9 +10,7 @@ import { Skills } from "@/components/Skills";
 import { Certifications } from "@/components/Certifications";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
-import { SiteBackground } from "@/components/SiteBackground";
 import { PatternDivider } from "@/components/PatternDivider";
-
 import { hasIntroCompleted } from "@/lib/intro";
 
 function isIntroDoneInitially() {
@@ -21,12 +21,11 @@ function isIntroDoneInitially() {
   return false;
 }
 
-const Index = () => {
+export default function HomePage() {
   const [introDone, setIntroDone] = useState(() => isIntroDoneInitially());
 
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
-      <SiteBackground />
       <div className="relative z-10">
         <Navbar visible={introDone} />
         <main>
@@ -34,15 +33,10 @@ const Index = () => {
           <div className={introDone ? undefined : "hidden"} aria-hidden={!introDone}>
             <PatternDivider />
             <About />
-            <PatternDivider flip />
             <Experience />
-            <PatternDivider />
             <Projects />
-            <PatternDivider flip />
             <Skills />
-            <PatternDivider />
             <Certifications />
-            <PatternDivider flip />
             <Contact />
           </div>
         </main>
@@ -52,6 +46,4 @@ const Index = () => {
       </div>
     </div>
   );
-};
-
-export default Index;
+}

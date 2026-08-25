@@ -10,10 +10,14 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+.next
+.open-next
+.wrangler
 *.local
 .env
 .env.*
 !.env.example
+.dev.vars
 .venv
 
 # Private source documents — synced to public/documents/ at build time only

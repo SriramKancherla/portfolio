@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Github, ExternalLink } from "lucide-react";
 import { Reveal } from "./Reveal";
@@ -105,7 +107,7 @@ export const Projects = () => {
   const filtered = active === "All" ? projects : projects.filter((p) => p.category.includes(active));
 
   return (
-    <section id="projects" className="section-fluid fluid-section pattern-section pattern-section--kolam relative">
+    <section id="projects" className="section-fluid fluid-section relative">
       <div className="container max-w-4xl relative z-[1]">
         <Reveal>
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">

@@ -1,4 +1,5 @@
 import { Github, Linkedin, Mail } from "lucide-react";
+import { StrawHat } from "./StrawHat";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL, ROLE_LINE } from "@/lib/site";
 
 export const Footer = () => {
@@ -7,7 +8,12 @@ export const Footer = () => {
       <div className="container">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div>
-            <div className="font-display font-semibold">Sriram Kancherla</div>
+            <div className="font-display font-semibold inline-flex items-center gap-2">
+              Sriram Kancherla
+              <span className="footer-hat" title="One Piece is real">
+                <StrawHat landed className="w-5 h-4" />
+              </span>
+            </div>
             <div className="text-xs text-muted-foreground mono">{ROLE_LINE} · VIT Vellore</div>
           </div>
 

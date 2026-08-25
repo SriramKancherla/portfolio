@@ -1,33 +1,33 @@
 const LIMITS = { name: 100, email: 254, subject: 200, message: 5000 };
 
-function json(data, status = 200) {
-  return new Response(JSON.stringify(data), {
+function json(data: unknown, status = 200) {
+  return Response.json(data, {
     status,
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
+    headers: { Accept: "application/json" },
   });
 }
 
-function isValidEmail(value) {
+function isValidEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-/** Cloudflare Pages Function — POST /api/contact */
-export async function onRequestPost(context) {
-  const key = String(context.env.WEB3FORMS_ACCESS_KEY || "").trim();
+/** POST /api/contact — proxies to Web3Forms; key stays server-side. */
+export async function POST(request: Request) {
+  const key = String(process.env.WEB3FORMS_ACCESS_KEY || "").trim();
   if (!key) {
     return json(
       {
         success: false,
         message:
-          "Contact form is not configured. Set WEB3FORMS_ACCESS_KEY in Cloudflare Pages → Settings → Environment variables, then redeploy.",
+          "Contact form is not configured. Set WEB3FORMS_ACCESS_KEY as a Cloudflare Worker secret (wrangler secret put WEB3FORMS_ACCESS_KEY), then redeploy.",
       },
       503,
     );
   }
 
-  let body;
+  let body: Record<string, unknown>;
   try {
-    body = await context.request.json();
+    body = await request.json();
   } catch {
     return json({ success: false, message: "Invalid JSON body." }, 400);
   }
@@ -71,7 +71,7 @@ export async function onRequestPost(context) {
     }),
   });
 
-  let result = {};
+  let result: { success?: boolean; message?: string } = {};
   try {
     result = await upstream.json();
   } catch {

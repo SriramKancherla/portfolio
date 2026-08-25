@@ -34,7 +34,7 @@ const experiences = [
 
 export const Experience = () => {
   return (
-    <section id="experience" className="section-fluid fluid-section pattern-section pattern-section--kolam relative">
+    <section id="experience" className="section-fluid fluid-section relative">
       <div className="container relative z-[1]">
         <Reveal>
           <div className="mb-16 max-w-3xl">
@@ -57,7 +57,7 @@ export const Experience = () => {
                     <Briefcase size={14} className="text-primary" />
                   </div>
                   <div className="pl-14 md:pl-0 md:[direction:ltr]">
-                    <div className="glass rounded-2xl p-6 hover-lift fluid-glow">
+                    <div className="glass rounded-2xl p-6 hover-lift">
                       <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mono text-xs text-primary mb-2">
                         <span>{exp.period}</span>
                         <span>·</span>

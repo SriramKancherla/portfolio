@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Github, Linkedin, Mail, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -46,8 +48,8 @@ export const Contact = () => {
 
     setSending(true);
     try {
-      // Proxied through Cloudflare Pages Function so the key stays server-side.
-      // Set WEB3FORMS_ACCESS_KEY (no VITE_ prefix) in Cloudflare Pages env vars.
+      // Proxied through Next.js Route Handler so the key stays server-side.
+      // Set WEB3FORMS_ACCESS_KEY as a Cloudflare Worker secret (no NEXT_PUBLIC_ prefix).
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -82,7 +84,7 @@ export const Contact = () => {
   };
 
   return (
-    <section id="contact" className="section-fluid fluid-section pattern-section pattern-section--kolam relative">
+    <section id="contact" className="section-fluid fluid-section relative">
       <div className="container relative z-[1]">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
           <Reveal>

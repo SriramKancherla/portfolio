@@ -6,14 +6,17 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = join(root, "public");
 const DEFAULT_SITE_URL = "https://sriramkancherla.pages.dev";
 
-const siteUrl = (process.env.VITE_SITE_URL || DEFAULT_SITE_URL).replace(/\/$/, "");
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || process.env.VITE_SITE_URL || DEFAULT_SITE_URL).replace(
+  /\/$/,
+  "",
+);
 const routes = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/resume", changefreq: "monthly", priority: "0.8" },
 ];
 
-if (!siteUrl) {
-  console.warn("VITE_SITE_URL not set — using default production URL.");
+if (!process.env.NEXT_PUBLIC_SITE_URL && !process.env.VITE_SITE_URL) {
+  console.warn("NEXT_PUBLIC_SITE_URL not set — using default production URL.");
 }
 const lastmod = new Date().toISOString().slice(0, 10);
 

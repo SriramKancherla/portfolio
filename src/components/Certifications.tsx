@@ -4,6 +4,12 @@ import { SectionEyebrow } from "./SectionEyebrow";
 
 const items = [
   {
+    title: "Microsoft Azure Fundamentals (AZ-900)",
+    issuer: "Microsoft",
+    date: "Jul 2026",
+    url: "https://www.linkedin.com/in/sriram-kancherla-80a7b028a/details/certifications/",
+  },
+  {
     title: "Professional Certificate in Data Analytics and Generative AI",
     issuer: "E&ICT Academy, IIT Kanpur",
     date: "Dec 2025",
@@ -55,13 +61,13 @@ const items = [
 
 export const Certifications = () => {
   return (
-    <section id="certifications" className="section-fluid fluid-section pattern-section pattern-section--kolam relative">
+    <section id="certifications" className="section-fluid fluid-section relative">
       <div className="container max-w-4xl relative z-[1]">
         <Reveal>
           <SectionEyebrow index="05">Certifications</SectionEyebrow>
           <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Certifications & achievements.</h2>
           <p className="text-base md:text-lg text-muted-foreground mb-10 max-w-3xl">
-            Verified credentials from IIT Kanpur, Oracle, AWS, and more.
+            Verified credentials from Microsoft, IIT Kanpur, Oracle, AWS, and more.
           </p>
         </Reveal>
 

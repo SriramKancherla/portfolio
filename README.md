@@ -1,52 +1,122 @@
 # Sriram Kancherla — Portfolio
 
-Personal portfolio site built with Vite, React, and Tailwind CSS.
+Minimalist cinematic portfolio for **Sriram Kancherla** — ML Intern @ FlyRank AI and CS undergrad at VIT Vellore.
 
 **Live site:** [sriramkancherla.pages.dev](https://sriramkancherla.pages.dev)
 
-Also works via GitHub redirect: [sriramkancherla.github.io/portfolio/](https://sriramkancherla.github.io/portfolio/) → Cloudflare.
+> GitHub Pages stub: [sriramkancherla.github.io/portfolio/](https://sriramkancherla.github.io/portfolio/) redirects to Cloudflare.
 
-> **Note:** `sriramkancherla.github.io` (root) returns 404 because the repo is named `portfolio`. Use **pages.dev** or **github.io/portfolio/**.
+---
 
-## Cloudflare Pages (primary host)
+## Tech stack
 
-Connect this repo in **Cloudflare Dashboard → Workers & Pages → Create → Pages → Connect to Git**.
+| Layer | Choice |
+|-------|--------|
+| Framework | **Next.js** (App Router) + **TypeScript** |
+| Styling | **Tailwind CSS 3** + CSS custom properties |
+| UI | **shadcn/ui** (Radix) |
+| Fonts | **next/font** — Space Grotesk, Inter, JetBrains Mono |
+| Host | **Cloudflare Workers** via [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare) |
+| Contact | Next.js Route Handler → Web3Forms (secret server-side) |
 
-| Setting | Value |
-|---------|--------|
-| Production branch | `main` |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Node.js version | `22` (from `.node-version`) |
+---
 
-### Environment variables (Production)
+## Signature interactions
 
-| Name | Value | Notes |
-|------|--------|--------|
-| `VITE_SITE_URL` | `https://sriramkancherla.pages.dev` | Build-time (canonical / OG URLs) |
-| `WEB3FORMS_ACCESS_KEY` | Your Web3Forms key | **Runtime** secret for `/api/contact` — **no** `VITE_` prefix |
+- **SK curtain intro** (`NameIntro.tsx`) — full-screen preloader: letters fade in, conic glow sweeps once, panel lifts to reveal the hero. Once per session; respects `prefers-reduced-motion`; safety timeout.
+- **Kolam band** — single `PatternDivider` after the hero (not tiled on every section).
+- **Straw hat** — tiny footer easter egg (not the opening moment).
+- **Scroll reveals** (`Reveal.tsx`) — staggered fade/slide-in.
+- **Skills marquee** — one ticker in Skills.
 
-After changing env vars, trigger a **Retry deployment** in Cloudflare Pages.
+Ambient backdrop is **film grain only** — no stacked aurora/blob/node canvases.
 
-> The contact form calls `/api/contact` (a Pages Function). That function reads `WEB3FORMS_ACCESS_KEY` at request time. If you previously set `VITE_WEB3FORMS_ACCESS_KEY`, replace it with `WEB3FORMS_ACCESS_KEY` and redeploy.
+---
+
+## Routes
+
+| Path | Purpose |
+|------|---------|
+| `/` | Home (hero + sections) |
+| `/resume` | Embedded PDF viewer |
+| `/api/contact` | Contact form proxy (POST) |
+
+---
 
 ## Local development
 
 ```bash
 npm install
-npm run dev
+npm run dev          # Next.js at http://localhost:3000
 ```
 
-Open [http://localhost:8080](http://localhost:8080).
+Optional local contact secret (`.dev.vars`, gitignored):
 
-## Build
+```
+NEXTJS_ENV=development
+WEB3FORMS_ACCESS_KEY=your-key
+```
+
+Preview in the Workers runtime:
 
 ```bash
-npm run build:pages
+npm run preview      # opennextjs-cloudflare build + preview
 ```
 
-Output is written to `dist/`. SPA routing uses `public/_redirects`; security headers use `public/_headers`.
+---
 
-## Documents
+## Build & deploy (Cloudflare Workers)
 
-Place source PDFs in `personal/` (gitignored). `npm run build` syncs them into `public/documents/` via `scripts/sync-documents.mjs`. Committed copies in `public/documents/` are used when `personal/` is absent (e.g. Cloudflare CI).
+```bash
+npm run build        # next build (runs prebuild: docs sync, sitemap, OG image)
+npm run deploy       # OpenNext build + deploy Worker named sriramkancherla
+```
+
+Set secrets / build env:
+
+```bash
+wrangler secret put WEB3FORMS_ACCESS_KEY
+# Build-time (CI / Cloudflare dashboard):
+# NEXT_PUBLIC_SITE_URL=https://sriramkancherla.pages.dev
+```
+
+OpenNext deploys a **Worker**, not a static Pages `dist` folder. Point your custom domain / `pages.dev` hostname at the Worker if the dashboard still expects classic Pages.
+
+---
+
+## Environment variables
+
+| Name | Where | Purpose |
+|------|--------|---------|
+| `NEXT_PUBLIC_SITE_URL` | Build | Canonical / OG / sitemap base URL |
+| `WEB3FORMS_ACCESS_KEY` | Runtime secret | Contact form — **never** `NEXT_PUBLIC_` |
+
+---
+
+## Project structure
+
+```
+src/app/                 App Router (layout, pages, api/contact)
+src/components/          UI sections + shadcn primitives
+src/lib/                 site config, intro session helpers
+public/                  favicon, patterns, documents, og-image
+scripts/                 sync-documents, sitemap, OG image
+open-next.config.ts      OpenNext Cloudflare adapter
+wrangler.jsonc           Worker config
+next.config.ts           Next + security headers + OpenNext dev init
+```
+
+---
+
+## Security
+
+- Contact key only on the server (`/api/contact`).
+- Security headers in `next.config.ts` (CSP, frame deny, nosniff, referrer, permissions).
+- `/documents/*` served with `X-Robots-Tag: noindex`.
+- `personal/` and `public/documents/` gitignored for source PDFs; documents sync at build time.
+
+---
+
+## Accessibility
+
+Motion disabled under `prefers-reduced-motion`. Intro never blocks content forever (stall-safety timeout).

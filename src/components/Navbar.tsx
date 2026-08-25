@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RESUME_PAGE_PATH } from "@/lib/site";
@@ -49,7 +51,7 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
           }`}
         >
           <a href="#hero" className="flex items-center gap-2 font-display font-bold text-lg">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-primary to-accent text-primary-foreground">
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-primary-foreground">
               SK
             </span>
             <span className="hidden sm:inline">Sriram Kancherla</span>
@@ -66,8 +68,8 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
           </ul>
 
           <div className="hidden md:block">
-            <Button asChild size="sm" variant="default" className="bg-gradient-to-r from-primary to-accent text-primary-foreground hover:opacity-90">
-              <Link to={RESUME_PAGE_PATH}>Resume</Link>
+            <Button asChild size="sm" variant="default">
+              <Link href={RESUME_PAGE_PATH}>Resume</Link>
             </Button>
           </div>
 
@@ -96,7 +98,7 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
               ))}
               <li>
                 <Link
-                  to={RESUME_PAGE_PATH}
+                  href={RESUME_PAGE_PATH}
                   onClick={() => setOpen(false)}
                   className="block text-primary font-medium py-1"
                 >

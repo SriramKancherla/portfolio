@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo, useState } from "react";
 import {
   ArrowRight,
@@ -14,6 +16,7 @@ import {
 } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
+import { FluidMarquee } from "./FluidMarquee";
 
 type CategoryId = "frontend" | "backend" | "devops" | "databases" | "cloud" | "other";
 
@@ -60,7 +63,7 @@ const categories: Category[] = [
     id: "cloud",
     icon: Cloud,
     label: "Cloud",
-    skills: ["AWS", "OCI", "AWS Glue", "Amazon S3"],
+    skills: ["Azure", "AWS", "OCI", "AWS Glue", "Amazon S3"],
   },
   {
     id: "other",
@@ -103,6 +106,7 @@ const stackMeta: Record<string, Pick<StackItem, "icon" | "IconFallback">> = {
   MySQL: { icon: SI("mysql") },
   SQL: { icon: SI("postgresql") },
   FAISS: { IconFallback: Database },
+  Azure: { icon: `${SKILL_ICONS}/Azure-Dark.svg` },
   AWS: { icon: `${SKILL_ICONS}/AWS-Dark.svg` },
   OCI: { icon: `${DEVICON}/oracle/oracle-original.svg` },
   "AWS Glue": { icon: `${SKILL_ICONS}/AWS-Dark.svg` },
@@ -203,7 +207,7 @@ export const Skills = () => {
   const shuffledStack = useMemo(() => shuffleStack(workStack), []);
 
   return (
-    <section id="skills" className="section-fluid fluid-section pattern-section pattern-section--kolam relative">
+    <section id="skills" className="section-fluid fluid-section relative">
       <div className="container relative z-[1]">
         <Reveal>
           <div className="mb-14 max-w-3xl">
@@ -217,7 +221,7 @@ export const Skills = () => {
 
         <Reveal delay={80}>
           <div className="grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.4fr)] gap-8 lg:gap-6 items-start">
-            <div className="glass rounded-3xl p-6 md:p-8 fluid-glow">
+            <div className="glass rounded-3xl p-6 md:p-8">
               <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-6">
                 Skills
               </h3>
@@ -243,7 +247,7 @@ export const Skills = () => {
                         <span
                           className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border transition-all duration-300 ${
                             isActive
-                              ? "border-primary/40 bg-gradient-to-br from-primary/25 to-accent/25"
+                              ? "border-primary/40 bg-primary/15"
                               : "border-border bg-secondary/40 group-hover:border-primary/30"
                           }`}
                         >
@@ -279,7 +283,7 @@ export const Skills = () => {
               />
             </div>
 
-            <div className="glass rounded-3xl p-6 md:p-8 fluid-glow min-h-[320px]">
+            <div className="glass rounded-3xl p-6 md:p-8 min-h-[320px]">
               <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-6">
                 Work Stack
               </h3>
@@ -302,6 +306,12 @@ export const Skills = () => {
           </div>
         </Reveal>
       </div>
+
+      <FluidMarquee
+        className="relative z-10 mt-10"
+        items={["Python", "React", "FastAPI", "Docker", "MySQL", "TensorFlow", "Git", "Node.js", "FAISS", "CI/CD"]}
+        speed="slow"
+      />
     </section>
   );
 };

@@ -22,7 +22,7 @@ const highlights = [
 
 export const About = () => {
   return (
-    <section id="about" className="section-fluid fluid-section pattern-section pattern-section--kolam relative">
+    <section id="about" className="section-fluid fluid-section relative">
       <div className="container relative z-[1]">
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] gap-10 lg:gap-14 items-start">
           <Reveal>
@@ -43,7 +43,7 @@ export const About = () => {
           <div className="grid sm:grid-cols-2 gap-4">
             {highlights.map((item, i) => (
               <Reveal key={item.title} delay={i * 70}>
-                <article className="glass rounded-2xl p-5 md:p-6 h-full hover-lift fluid-glow">
+                <article className="glass rounded-2xl p-5 md:p-6 h-full hover-lift">
                   <h3 className="text-sm font-semibold text-primary mono uppercase tracking-widest mb-3">
                     {item.title}
                   </h3>

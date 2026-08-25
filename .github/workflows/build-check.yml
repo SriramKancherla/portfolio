@@ -18,7 +18,7 @@ jobs:
 
       - run: npm ci
 
-      - name: Production build (Cloudflare Pages)
+      - name: Production build (Next.js)
         run: npm run build
         env:
-          VITE_SITE_URL: https://sriramkancherla.pages.dev
+          NEXT_PUBLIC_SITE_URL: https://sriramkancherla.pages.dev
