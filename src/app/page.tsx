@@ -15,7 +15,7 @@ import { hasIntroCompleted } from "@/lib/intro";
 
 function isIntroDoneInitially() {
   if (hasIntroCompleted()) return true;
-  if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)")?.matches) {
     return true;
   }
   return false;

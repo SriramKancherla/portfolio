@@ -1,103 +1,199 @@
-import { Briefcase, FileText, MapPin } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
 import { NUS_CREDENTIALS_URL } from "@/lib/site";
 
 const experiences = [
   {
+    meta: "JUL 2026 — AUG 2026 · REMOTE · 8 WEEKS",
     role: "Machine Learning Engineering Intern",
     company: "FlyRank AI (FlyRank Corp.)",
-    period: "Jul 2026 — Aug 2026",
-    location: "Remote · 8 weeks",
-    description:
-      "Accepted into the FlyRank AI Internship program as a Machine Learning Engineering Intern. An 8-week program (Jul 1 – Aug 26, 2026) focused on real-world ML engineering workflows, experimentation, and production-grade pipelines.",
+    body: "Eight weeks on FlyRank AI's ML Engineering internship, July through August. Real ML engineering the whole way — experimentation, workflow design, and pipelines built to run in production rather than sit in a notebook.",
     tags: ["Machine Learning", "ML Engineering", "FlyRank AI"],
-    documents: [] as { label: string; href: string; external?: boolean }[],
+    links: [] as { label: string; href: string }[],
   },
   {
+    meta: "JUN 2025 · SINGAPORE",
     role: "Academic Intern",
     company: "National University of Singapore (NUS)",
-    period: "Jun 2025",
-    location: "Singapore",
-    description:
-      "Conducted exploratory data analysis on large-scale user activity and system log data to identify behavioral patterns and insider threat indicators. Built and evaluated a machine learning model for insider threat detection using Big Data Analytics and Deep Learning concepts, presenting findings under faculty supervision.",
+    body: "Spent June doing exploratory data analysis on large-scale user activity and system log data, looking for the behavioral patterns that turn out to be insider threats. Built and evaluated a detection model using big data analytics and deep learning, then presented the findings under faculty supervision.",
     tags: ["EDA", "Insider Threat Detection", "Deep Learning", "Research"],
-    documents: [
-      {
-        label: "NUS Digital Certificate",
-        href: NUS_CREDENTIALS_URL,
-        external: true,
-      },
+    links: [
+      { label: "NUS Digital Certificate", href: NUS_CREDENTIALS_URL },
     ],
   },
 ];
 
 export const Experience = () => {
   return (
-    <section id="experience" className="section-fluid fluid-section relative">
-      <div className="container relative z-[1]">
+    <section id="experience" aria-labelledby="experience-heading">
+      <div className="hairline" />
+      <div className="section-container section-spacing">
         <Reveal>
-          <div className="mb-16 max-w-3xl">
-            <SectionEyebrow index="02">Experience</SectionEyebrow>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Where I've been building.</h2>
-            <p className="text-lg text-muted-foreground">
-              Academic research at NUS and an upcoming ML engineering internship at FlyRank AI — with verified credentials where available.
-            </p>
-          </div>
+          <SectionEyebrow index="02">EXPERIENCE</SectionEyebrow>
+          <h2
+            id="experience-heading"
+            style={{
+              fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
+              fontWeight: 600,
+              fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
+              letterSpacing: "-0.03em",
+              lineHeight: 1.05,
+              color: "#E8EEF5",
+              marginBottom: "0.75rem",
+            }}
+          >
+            Where I've shown up.
+          </h2>
+          <p style={{ color: "#8697AD", fontSize: "1rem", marginBottom: "3.5rem" }}>
+            Two so far — a June in Singapore and a remote summer. Both beat the syllabus.
+          </p>
         </Reveal>
 
-        <div className="relative max-w-4xl mx-auto">
-          <div className="absolute left-4 md:left-1/2 top-2 bottom-2 w-px bg-gradient-to-b from-primary/60 via-accent/30 to-transparent" aria-hidden="true" />
+        {/* Timeline */}
+        <div className="relative" style={{ maxWidth: "720px" }}>
+          {/* Left rail hairline */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: "11px",
+              top: "24px",
+              bottom: "24px",
+              width: "1px",
+              background: "rgba(232,238,245,0.10)",
+            }}
+          />
 
-          {experiences.map((exp, i) => (
-            <Reveal key={exp.company} delay={i * 100}>
-              <div className={`relative grid md:grid-cols-2 gap-6 mb-14 ${i % 2 === 1 ? "md:[direction:rtl]" : ""}`}>
-                <div className={`md:pr-12 ${i % 2 === 1 ? "md:pl-12 md:pr-0 md:[direction:ltr]" : ""}`}>
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 top-6 grid place-items-center h-9 w-9 rounded-full glass-strong border-2 border-primary/50 z-10">
-                    <Briefcase size={14} className="text-primary" />
+          <div className="flex flex-col gap-10">
+            {experiences.map((exp, i) => (
+              <Reveal key={exp.company} delay={i * 60}>
+                <div className="flex gap-6">
+                  {/* Node dot */}
+                  <div
+                    aria-hidden="true"
+                    style={{
+                      flexShrink: 0,
+                      marginTop: "22px",
+                      width: "23px",
+                      height: "23px",
+                      borderRadius: "9999px",
+                      border: "1px solid rgba(77,163,255,0.45)",
+                      background: "#08111C",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: "7px",
+                        height: "7px",
+                        borderRadius: "9999px",
+                        background: "#4DA3FF",
+                        opacity: 0.7,
+                        display: "block",
+                      }}
+                    />
                   </div>
-                  <div className="pl-14 md:pl-0 md:[direction:ltr]">
-                    <div className="glass rounded-2xl p-6 hover-lift">
-                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mono text-xs text-primary mb-2">
-                        <span>{exp.period}</span>
-                        <span>·</span>
-                        <MapPin size={12} />
-                        <span>{exp.location}</span>
-                      </div>
-                      <h3 className="text-xl font-semibold mb-1">{exp.role}</h3>
-                      <p className="text-accent font-medium mb-3">{exp.company}</p>
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-4">{exp.description}</p>
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {exp.tags.map((t) => (
-                          <span key={t} className="mono text-[11px] px-2 py-1 rounded-md bg-secondary/60 border border-border text-muted-foreground">
-                            {t}
-                          </span>
+
+                  {/* Card */}
+                  <article className="card-bordered p-8 flex-1">
+                    {/* Meta */}
+                    <p
+                      style={{
+                        fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                        fontSize: "11px",
+                        letterSpacing: "0.08em",
+                        textTransform: "uppercase",
+                        color: "#4DA3FF",
+                        marginBottom: "0.5rem",
+                      }}
+                    >
+                      {exp.meta}
+                    </p>
+
+                    {/* Role */}
+                    <h3
+                      style={{
+                        fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "1.125rem",
+                        letterSpacing: "-0.02em",
+                        color: "#E8EEF5",
+                        marginBottom: "0.25rem",
+                      }}
+                    >
+                      {exp.role}
+                    </h3>
+
+                    {/* Company */}
+                    <p
+                      style={{
+                        color: "#4DA3FF",
+                        fontSize: "0.9rem",
+                        fontWeight: 500,
+                        marginBottom: "0.875rem",
+                      }}
+                    >
+                      {exp.company}
+                    </p>
+
+                    {/* Body */}
+                    <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "#8697AD", marginBottom: "1rem" }}>
+                      {exp.body}
+                    </p>
+
+                    {/* Tags */}
+                    <div className="flex flex-wrap gap-2 mb-4">
+                      {exp.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          style={{
+                            fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                            fontSize: "11px",
+                            letterSpacing: "0.05em",
+                            padding: "3px 10px",
+                            border: "1px solid rgba(232,238,245,0.10)",
+                            borderRadius: "4px",
+                            color: "#8697AD",
+                          }}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Links */}
+                    {exp.links.length > 0 && (
+                      <div
+                        style={{
+                          paddingTop: "0.875rem",
+                          borderTop: "1px solid rgba(232,238,245,0.08)",
+                        }}
+                      >
+                        {exp.links.map((link) => (
+                          <a
+                            key={link.label}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
+                            style={{ color: "#4DA3FF" }}
+                            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+                            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+                          >
+                            <ExternalLink size={13} aria-hidden="true" />
+                            {link.label}
+                          </a>
                         ))}
                       </div>
-                      {exp.documents.length > 0 && (
-                        <div className="pt-4 border-t border-border/50 space-y-2">
-                          <p className="mono text-[10px] uppercase tracking-wider text-muted-foreground">Verification</p>
-                          {exp.documents.map((doc) => (
-                            <a
-                              key={doc.label}
-                              href={doc.href}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-2 text-xs text-primary hover:underline transition-colors"
-                            >
-                              <FileText size={13} />
-                              {doc.label}
-                            </a>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
+                    )}
+                  </article>
                 </div>
-                <div className="hidden md:block" />
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -5,8 +5,16 @@ type SectionEyebrowProps = {
 };
 
 export const SectionEyebrow = ({ children, index, className = "" }: SectionEyebrowProps) => (
-  <p className={`section-eyebrow ${className}`.trim()}>
-    {index && <span className="text-muted-foreground/80 mr-3">({index})</span>}
-    {children}
+  <p
+    className={`section-eyebrow ${className}`.trim()}
+    aria-label={index ? `Section ${index}: ${children}` : String(children)}
+  >
+    {index && (
+      <span style={{ color: "#4DA3FF", fontWeight: 500 }}>{index}</span>
+    )}
+    {index && (
+      <span style={{ color: "rgba(232,238,245,0.25)", margin: "0 0.4em" }}>——</span>
+    )}
+    <span style={{ color: "#8697AD" }}>{children}</span>
   </p>
 );

@@ -1,13 +1,20 @@
 import { ExternalLink } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
+import { LINKEDIN_CERTS_URL } from "@/lib/site";
 
-const items = [
+const certifications = [
+  {
+    title: "AWS Certified Cloud Practitioner (CLF-C02)",
+    issuer: "Amazon Web Services",
+    date: "Aug 2026",
+    url: LINKEDIN_CERTS_URL,
+  },
   {
     title: "Microsoft Azure Fundamentals (AZ-900)",
     issuer: "Microsoft",
     date: "Jul 2026",
-    url: "https://www.linkedin.com/in/sriram-kancherla-80a7b028a/details/certifications/",
+    url: LINKEDIN_CERTS_URL,
   },
   {
     title: "Professional Certificate in Data Analytics and Generative AI",
@@ -16,10 +23,22 @@ const items = [
     url: "/documents/iitk-dg-professional-certificate.pdf",
   },
   {
-    title: "Oracle Cloud Infrastructure Generative AI Professional",
+    title: "Postman API Fundamentals Student Expert",
+    issuer: "Postman",
+    date: "Aug 2025",
+    url: LINKEDIN_CERTS_URL,
+  },
+  {
+    title: "Oracle Cloud Infrastructure 2025 Certified Generative AI Professional",
     issuer: "Oracle",
     date: "Jul 2025",
     url: "/documents/oci-genai-professional.pdf",
+  },
+  {
+    title: "AWS AI Practitioner Challenge",
+    issuer: "Amazon Web Services",
+    date: "Jun 2025",
+    url: "/documents/aws-ai-practitioner.pdf",
   },
   {
     title: "Supervised Machine Learning: Regression and Classification",
@@ -40,12 +59,6 @@ const items = [
     url: "https://codechef.com/certificates/public/84eb5d2",
   },
   {
-    title: "AWS AI Practitioner Challenge",
-    issuer: "Amazon Web Services",
-    date: "Jun 2025",
-    url: "/documents/aws-ai-practitioner.pdf",
-  },
-  {
     title: "Docker Foundations Professional",
     issuer: "Docker",
     date: "Mar 2025",
@@ -61,34 +74,98 @@ const items = [
 
 export const Certifications = () => {
   return (
-    <section id="certifications" className="section-fluid fluid-section relative">
-      <div className="container max-w-4xl relative z-[1]">
+    <section id="certifications" aria-labelledby="certifications-heading">
+      <div className="hairline" />
+      <div className="section-container section-spacing">
         <Reveal>
-          <SectionEyebrow index="05">Certifications</SectionEyebrow>
-          <h2 className="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Certifications & achievements.</h2>
-          <p className="text-base md:text-lg text-muted-foreground mb-10 max-w-3xl">
-            Verified credentials from Microsoft, IIT Kanpur, Oracle, AWS, and more.
+          <SectionEyebrow index="05">CERTIFICATIONS</SectionEyebrow>
+          <h2
+            id="certifications-heading"
+            style={{
+              fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
+              fontWeight: 600,
+              fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
+              letterSpacing: "-0.03em",
+              lineHeight: 1.05,
+              color: "#E8EEF5",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Certifications.
+          </h2>
+          <p style={{ color: "#8697AD", fontSize: "1rem", marginBottom: "2.5rem" }}>
+            The receipts. Newest first.
           </p>
         </Reveal>
 
-        <ul className="divide-y divide-border/70 border-t border-border/70">
-          {items.map((it, i) => (
-            <Reveal key={it.title} delay={i * 40}>
-              <li className="py-5 md:py-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-                <div className="min-w-0">
-                  <h3 className="font-medium text-foreground leading-snug">{it.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">{it.issuer}</p>
-                </div>
-                <div className="flex items-center gap-4 shrink-0 sm:text-right">
-                  <span className="mono text-xs text-muted-foreground">{it.date}</span>
-                  <a
-                    href={it.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
-                  >
-                    View <ExternalLink size={12} />
-                  </a>
+        {/* Divided list */}
+        <ul
+          style={{ borderTop: "1px solid rgba(232,238,245,0.10)" }}
+          aria-label="Certifications list"
+        >
+          {certifications.map((cert, i) => (
+            <Reveal key={cert.title} delay={i * 40}>
+              <li
+                style={{
+                  borderBottom: "1px solid rgba(232,238,245,0.10)",
+                  transition: "background-color 200ms ease",
+                }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#0F1B2A"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+              >
+                <div
+                  className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2"
+                  style={{ padding: "1.25rem 0.75rem" }}
+                >
+                  {/* Left: title + issuer */}
+                  <div className="min-w-0">
+                    <p
+                      style={{
+                        color: "#E8EEF5",
+                        fontSize: "0.9375rem",
+                        fontWeight: 500,
+                        lineHeight: 1.4,
+                        marginBottom: "2px",
+                      }}
+                    >
+                      {cert.title}
+                    </p>
+                    <p
+                      style={{
+                        color: "#8697AD",
+                        fontSize: "0.8125rem",
+                      }}
+                    >
+                      {cert.issuer}
+                    </p>
+                  </div>
+
+                  {/* Right: date + link */}
+                  <div className="flex items-center gap-5 shrink-0">
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                        fontSize: "11px",
+                        letterSpacing: "0.06em",
+                        color: "#8697AD",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {cert.date}
+                    </span>
+                    <a
+                      href={cert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-sm transition-colors duration-200 min-h-[44px]"
+                      style={{ color: "#4DA3FF" }}
+                      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+                      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+                      aria-label={`View certificate: ${cert.title}`}
+                    >
+                      View <ExternalLink size={12} aria-hidden="true" />
+                    </a>
+                  </div>
                 </div>
               </li>
             </Reveal>

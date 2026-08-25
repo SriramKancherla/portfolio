@@ -1,31 +1,17 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
-import { prepareHomeIntro } from "@/lib/intro";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { usePrefersReducedMotion } from "@/hooks/use-prefers-reduced-motion";
+import { prepareHomeIntro } from "@/lib/intro";
+import { StrawHat } from "./StrawHat";
 
-/**
- * SK curtain preloader.
- *
- * Timeline (~2.3s):
- *   0–150ms    solid panel, "SK" at 90% scale / 0 opacity
- *   150–650ms  letters scale + fade in, letter-spacing pulls from 0.15em to tight
- *   650–1400ms one conic light sweep rotates behind the letters; glow intensifies
- *   1400–1750ms hold at full glow
- *   1750–2300ms whole panel lifts up (translateY -100%), uncovering the hero
- *
- * Reduced motion: panel simply fades out. A safety timeout guarantees
- * onComplete always fires.
- */
+const NAME = "SRIRAM KANCHERLA";
+const LETTERS = NAME.split("");
 
-type Phase = "enter" | "letters" | "glow" | "hold" | "lift";
+// Indices of "KANCHERLA" (starts at index 7, after "SRIRAM ")
+const KANCHERLA_START = 7; // "SRIRAM " = 7 chars
 
-const LETTERS_AT = 150;
-const GLOW_AT = 650;
-const HOLD_AT = 1400;
-const LIFT_AT = 1750;
-const DONE_AT = 2300;
-const SAFETY_AT = 4500;
+type Phase = "idle" | "letters" | "hold" | "shrink" | "done";
 
 type NameIntroProps = {
   onComplete: () => void;
@@ -33,65 +19,162 @@ type NameIntroProps = {
 
 export const NameIntro = ({ onComplete }: NameIntroProps) => {
   const prefersReducedMotion = usePrefersReducedMotion();
-  const [phase, setPhase] = useState<Phase>("enter");
+  const [phase, setPhase] = useState<Phase>("idle");
+  const [letterVisible, setLetterVisible] = useState<boolean[]>(new Array(LETTERS.length).fill(false));
+  const [hatVisible, setHatVisible] = useState(false);
   const finishedRef = useRef(false);
 
-  const finishIntro = useCallback(() => {
+  const finish = useCallback(() => {
     if (finishedRef.current) return;
     finishedRef.current = true;
+    document.body.style.overflow = "";
     onComplete();
   }, [onComplete]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     prepareHomeIntro();
     document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, []);
 
+  // Skip on click, scroll, or Esc
   useEffect(() => {
-    const safety = setTimeout(finishIntro, SAFETY_AT);
-    return () => clearTimeout(safety);
-  }, [finishIntro]);
+    const skip = () => finish();
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") finish(); };
+    window.addEventListener("click", skip, { once: true });
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("scroll", skip, { once: true, passive: true });
+    return () => {
+      window.removeEventListener("click", skip);
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", skip);
+    };
+  }, [finish]);
+
+  // 6s failsafe
+  useEffect(() => {
+    const t = setTimeout(finish, 6000);
+    return () => clearTimeout(t);
+  }, [finish]);
 
   useEffect(() => {
     if (prefersReducedMotion) {
-      // Skip the choreography — fade the panel out and finish quickly.
-      setPhase("lift");
-      const t = setTimeout(finishIntro, 350);
-      return () => clearTimeout(t);
+      finish();
+      return;
     }
 
-    const timers = [
-      setTimeout(() => setPhase("letters"), LETTERS_AT),
-      setTimeout(() => setPhase("glow"), GLOW_AT),
-      setTimeout(() => setPhase("hold"), HOLD_AT),
-      setTimeout(() => setPhase("lift"), LIFT_AT),
-      setTimeout(finishIntro, DONE_AT),
-    ];
-    return () => timers.forEach(clearTimeout);
-  }, [prefersReducedMotion, finishIntro]);
+    setPhase("letters");
 
-  const lettersIn = phase !== "enter";
-  const glowing = phase === "glow" || phase === "hold" || phase === "lift";
+    // Stagger letters: 40ms each
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    LETTERS.forEach((_, i) => {
+      timers.push(setTimeout(() => {
+        setLetterVisible((prev) => {
+          const next = [...prev];
+          next[i] = true;
+          return next;
+        });
+      }, i * 40));
+    });
+
+    // After all letters visible (~1.6s), hold 400ms
+    const holdAt = LETTERS.length * 40 + 400;
+    timers.push(setTimeout(() => setPhase("hold"), LETTERS.length * 40));
+
+    // Drop hat at end of letter animation
+    timers.push(setTimeout(() => setHatVisible(true), LETTERS.length * 40 + 200));
+
+    // Shrink + fade out at holdAt
+    timers.push(setTimeout(() => setPhase("shrink"), holdAt));
+
+    // Done at ~2.6s
+    timers.push(setTimeout(finish, holdAt + 600));
+
+    return () => timers.forEach(clearTimeout);
+  }, [prefersReducedMotion, finish]);
+
+  if (phase === "done") return null;
+
+  const isShrinking = phase === "shrink";
 
   return (
     <div
-      className={`sk-intro ${phase === "lift" ? "sk-intro--lift" : ""}`}
+      className="intro-overlay"
       aria-hidden="true"
+      style={{
+        opacity: isShrinking ? 0 : 1,
+        transition: isShrinking ? "opacity 600ms cubic-bezier(0.16, 1, 0.3, 1)" : "none",
+      }}
     >
-      <div className="sk-intro__stage">
-        {glowing && <div className="sk-intro__light" />}
+      <div
+        style={{
+          transform: isShrinking ? "scale(0.85)" : "scale(1)",
+          transition: isShrinking ? "transform 600ms cubic-bezier(0.16, 1, 0.3, 1)" : "none",
+          position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <div
-          className={`sk-intro__mark ${lettersIn ? "sk-intro__mark--in" : ""} ${
-            glowing ? "sk-intro__mark--glow" : ""
-          }`}
+          style={{
+            fontFamily: "var(--font-display), 'Inter Tight', 'Inter', sans-serif",
+            fontWeight: 600,
+            fontSize: "clamp(2rem, 7vw, 5rem)",
+            letterSpacing: "-0.03em",
+            lineHeight: 1.05,
+            color: "#E8EEF5",
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "center",
+            gap: "0 0.02em",
+            position: "relative",
+          }}
         >
-          <span>S</span>
-          <span>K</span>
+          {LETTERS.map((letter, i) => {
+            const isKancherla = i >= KANCHERLA_START;
+            const isSpace = letter === " ";
+            const isLastLetter = i === LETTERS.length - 1;
+            return (
+              <span
+                key={i}
+                style={{
+                  display: "inline-block",
+                  color: isKancherla && !isSpace ? "#4DA3FF" : "#E8EEF5",
+                  opacity: letterVisible[i] ? 1 : 0,
+                  transform: letterVisible[i] ? "translateY(0)" : "translateY(20px)",
+                  transition: `opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 400ms cubic-bezier(0.16, 1, 0.3, 1)`,
+                  width: isSpace ? "0.35em" : undefined,
+                  position: isLastLetter ? "relative" : undefined,
+                }}
+              >
+                {isSpace ? "\u00A0" : letter}
+                {isLastLetter && hatVisible && (
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: "-0.55em",
+                      right: "-0.1em",
+                      transform: "rotate(-8deg)",
+                      display: "inline-block",
+                      animation: "hat-drop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards",
+                    }}
+                  >
+                    <StrawHat className="w-8 h-6" style={{}} />
+                  </span>
+                )}
+              </span>
+            );
+          })}
         </div>
       </div>
+
+      <style>{`
+        @keyframes hat-drop-in {
+          from { opacity: 0; transform: rotate(-8deg) translateY(-30px); }
+          to { opacity: 1; transform: rotate(-8deg) translateY(0); }
+        }
+      `}</style>
     </div>
   );
 };
