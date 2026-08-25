@@ -84,33 +84,33 @@ export const Certifications = () => {
             style={{
               fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
               fontWeight: 600,
-              fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+              fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
               letterSpacing: "-0.03em",
               lineHeight: 1.05,
-              color: "#F2F0ED",
+              color: "#E8EEF5",
               marginBottom: "0.5rem",
             }}
           >
             Certifications.
           </h2>
-          <p style={{ color: "#8B8A87", fontSize: "1rem", marginBottom: "2.5rem" }}>
+          <p style={{ color: "#8697AD", fontSize: "1rem", marginBottom: "2.5rem" }}>
             The receipts. Newest first.
           </p>
         </Reveal>
 
         {/* Divided list */}
         <ul
-          style={{ borderTop: "1px solid rgba(242,240,237,0.10)" }}
+          style={{ borderTop: "1px solid rgba(232,238,245,0.10)" }}
           aria-label="Certifications list"
         >
           {certifications.map((cert, i) => (
             <Reveal key={cert.title} delay={i * 40}>
               <li
                 style={{
-                  borderBottom: "1px solid rgba(242,240,237,0.10)",
+                  borderBottom: "1px solid rgba(232,238,245,0.10)",
                   transition: "background-color 200ms ease",
                 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#131316"; }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "#0F1B2A"; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
               >
                 <div
@@ -121,7 +121,7 @@ export const Certifications = () => {
                   <div className="min-w-0">
                     <p
                       style={{
-                        color: "#F2F0ED",
+                        color: "#E8EEF5",
                         fontSize: "0.9375rem",
                         fontWeight: 500,
                         lineHeight: 1.4,
@@ -132,7 +132,7 @@ export const Certifications = () => {
                     </p>
                     <p
                       style={{
-                        color: "#8B8A87",
+                        color: "#8697AD",
                         fontSize: "0.8125rem",
                       }}
                     >
@@ -147,7 +147,7 @@ export const Certifications = () => {
                         fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
                         fontSize: "11px",
                         letterSpacing: "0.06em",
-                        color: "#8B8A87",
+                        color: "#8697AD",
                         whiteSpace: "nowrap",
                       }}
                     >
@@ -158,7 +158,7 @@ export const Certifications = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-sm transition-colors duration-200 min-h-[44px]"
-                      style={{ color: "#D4A24C" }}
+                      style={{ color: "#4DA3FF" }}
                       onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
                       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
                       aria-label={`View certificate: ${cert.title}`}

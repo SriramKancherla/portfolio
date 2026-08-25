@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Github, ExternalLink } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
@@ -102,6 +102,275 @@ const projects: Project[] = [
 
 const filters: Category[] = ["All", "ML", "AI", "Analytics", "Full-Stack"];
 
+// Parse leading integer from a metric value string
+function parseLeadingInt(val: string): { prefix: string; num: number; suffix: string } | null {
+  const match = val.match(/^(\d+)(.*)$/);
+  if (!match) return null;
+  return { prefix: "", num: parseInt(match[1], 10), suffix: match[2] };
+}
+
+// Animated metric counter
+function MetricCounter({ value, label, animate }: { value: string; label: string; animate: boolean }) {
+  const parsed = parseLeadingInt(value);
+  const [displayed, setDisplayed] = useState(parsed ? 0 : null);
+  const rafRef = useRef<number | null>(null);
+  const startRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!animate || !parsed) return;
+    const duration = 900;
+    const target = parsed.num;
+
+    const tick = (now: number) => {
+      if (!startRef.current) startRef.current = now;
+      const elapsed = now - startRef.current;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayed(Math.round(eased * target));
+      if (progress < 1) {
+        rafRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      startRef.current = null;
+    };
+  }, [animate, parsed?.num]);
+
+  if (!parsed) {
+    return (
+      <span>
+        <span className="metric-value" style={{ color: "#E8EEF5" }}>{value}</span>
+        {label && <span style={{ color: "#8697AD" }}> {label}</span>}
+      </span>
+    );
+  }
+
+  return (
+    <span>
+      <span className="metric-value" style={{ color: "#E8EEF5" }}>
+        {parsed.prefix}{animate ? displayed : parsed.num}{parsed.suffix}
+      </span>
+      {label && <span style={{ color: "#8697AD" }}> {label}</span>}
+    </span>
+  );
+}
+
+// Project card with cursor spotlight
+function ProjectCard({ p }: { p: Project; index?: number }) {
+  const cardRef = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
+  const rafRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      const el = cardRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+      el.style.setProperty("--my", `${e.clientY - rect.top}px`);
+      el.classList.add("spotlight-active");
+    });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    cardRef.current?.classList.remove("spotlight-active");
+  }, []);
+
+  return (
+    <article
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        padding: "2rem 2.5rem",
+        marginBottom: "1.5rem",
+        border: "1px solid rgba(232,238,245,0.10)",
+        borderRadius: "20px",
+        background: "#0F1B2A",
+        boxShadow: "inset 0 1px 0 rgba(232,238,245,0.07)",
+        transition: "border-color 250ms cubic-bezier(0.16, 1, 0.3, 1), background-color 250ms cubic-bezier(0.16, 1, 0.3, 1), transform 250ms cubic-bezier(0.16, 1, 0.3, 1)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+      onMouseEnter={(e) => {
+        (e.currentTarget as HTMLElement).style.borderColor = "rgba(77,163,255,0.45)";
+        (e.currentTarget as HTMLElement).style.backgroundColor = "#16293D";
+        (e.currentTarget as HTMLElement).style.transform = "translateY(-3px)";
+      }}
+      onMouseOut={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(232,238,245,0.10)";
+          (e.currentTarget as HTMLElement).style.backgroundColor = "#0F1B2A";
+          (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+        }
+      }}
+    >
+      {/* Cursor spotlight pseudo-element via inline style */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          borderRadius: "inherit",
+          background: "radial-gradient(400px circle at var(--mx, -400px) var(--my, -400px), rgba(77,163,255,0.08), transparent 40%)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+
+      <div style={{ position: "relative", zIndex: 1 }}>
+        {/* Meta line */}
+        <p
+          style={{
+            fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+            fontSize: "11px",
+            letterSpacing: "0.08em",
+            textTransform: "uppercase",
+            color: "#8697AD",
+            marginBottom: "0.625rem",
+          }}
+        >
+          {p.period} · {p.categories.join(", ")}
+        </p>
+
+        {/* Title + live badge */}
+        <div className="flex flex-wrap items-center gap-3 mb-3">
+          <h3
+            style={{
+              fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
+              fontWeight: 600,
+              fontSize: "1.25rem",
+              letterSpacing: "-0.02em",
+              color: "#E8EEF5",
+            }}
+          >
+            {p.title}
+          </h3>
+          {p.liveUrl && p.liveDomain && (
+            <a
+              href={p.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="live-badge"
+              aria-label={`${p.title} — live at ${p.liveDomain}`}
+            >
+              <span className="live-dot" aria-hidden="true" />
+              LIVE
+            </a>
+          )}
+        </div>
+
+        {/* Description */}
+        <p
+          style={{
+            fontSize: "0.9375rem",
+            lineHeight: 1.65,
+            color: "#8697AD",
+            maxWidth: "68ch",
+            marginBottom: "1rem",
+          }}
+        >
+          {p.description}
+        </p>
+
+        {/* Metrics */}
+        <p
+          style={{
+            fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+            fontSize: "12px",
+            letterSpacing: "0.05em",
+            marginBottom: "0.5rem",
+          }}
+        >
+          {p.metrics.map((m, mi) => (
+            <span key={mi}>
+              {mi > 0 && <span style={{ color: "#8697AD", margin: "0 0.5em" }}>·</span>}
+              <MetricCounter value={m.value} label={m.label} animate={inView} />
+            </span>
+          ))}
+        </p>
+
+        {/* Tech stack */}
+        <p
+          style={{
+            fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+            fontSize: "12px",
+            letterSpacing: "0.04em",
+            color: "#8697AD",
+            marginBottom: "1.25rem",
+          }}
+        >
+          {p.tech.join(" · ")}
+        </p>
+
+        {/* Links */}
+        <div className="flex flex-wrap gap-5">
+          {p.codeUrl && (
+            <a
+              href={p.codeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
+              style={{ color: "#4DA3FF" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+            >
+              <Github size={14} aria-hidden="true" />
+              Code
+            </a>
+          )}
+          {p.liveUrl && (
+            <a
+              href={p.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
+              style={{ color: "#4DA3FF" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+            >
+              <ExternalLink size={14} aria-hidden="true" />
+              Live
+            </a>
+          )}
+          {p.certUrl && (
+            <a
+              href={p.certUrl}
+              target={p.certUrl.startsWith("http") ? "_blank" : undefined}
+              rel={p.certUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+              className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
+              style={{ color: "#4DA3FF" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+            >
+              <ExternalLink size={14} aria-hidden="true" />
+              {p.certLabel ?? "Certificate"}
+            </a>
+          )}
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export const Projects = () => {
   const [active, setActive] = useState<Category>("All");
 
@@ -121,16 +390,16 @@ export const Projects = () => {
                 style={{
                   fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
                   fontWeight: 600,
-                  fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+                  fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
                   letterSpacing: "-0.03em",
                   lineHeight: 1.05,
-                  color: "#F2F0ED",
+                  color: "#E8EEF5",
                   marginBottom: "0.5rem",
                 }}
               >
                 Things I've built.
               </h2>
-              <p style={{ color: "#8B8A87", fontSize: "1rem" }}>Five that were worth finishing.</p>
+              <p style={{ color: "#8697AD", fontSize: "1rem" }}>Five worth showing. One of them you can go use right now.</p>
             </div>
 
             {/* Filter row */}
@@ -142,10 +411,10 @@ export const Projects = () => {
                   onClick={() => setActive(f)}
                   className="text-sm min-h-[44px] px-1 transition-colors duration-200 relative"
                   style={{
-                    color: active === f ? "#D4A24C" : "#8B8A87",
+                    color: active === f ? "#4DA3FF" : "#8697AD",
                     fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
                     letterSpacing: "0.05em",
-                    borderBottom: active === f ? "2px solid #D4A24C" : "2px solid transparent",
+                    borderBottom: active === f ? "2px solid #4DA3FF" : "2px solid transparent",
                   }}
                   aria-pressed={active === f}
                 >
@@ -159,151 +428,15 @@ export const Projects = () => {
         {/* Project list */}
         {filtered.length === 0 ? (
           <Reveal>
-            <p style={{ color: "#8B8A87", fontSize: "1rem", padding: "3rem 0" }}>
+            <p style={{ color: "#8697AD", fontSize: "1rem", padding: "3rem 0" }}>
               Nothing under that one yet. Try another.
             </p>
           </Reveal>
         ) : (
-          <div style={{ borderTop: "1px solid rgba(242,240,237,0.10)" }}>
+          <div>
             {filtered.map((p, i) => (
               <Reveal key={p.title} delay={i * 60}>
-                <article
-                  style={{
-                    padding: "2.5rem 0",
-                    borderBottom: "1px solid rgba(242,240,237,0.10)",
-                  }}
-                >
-                  {/* Meta line */}
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
-                      fontSize: "11px",
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                      color: "#8B8A87",
-                      marginBottom: "0.625rem",
-                    }}
-                  >
-                    {p.period} · {p.categories.join(", ")}
-                  </p>
-
-                  {/* Title + live badge */}
-                  <div className="flex flex-wrap items-center gap-3 mb-3">
-                    <h3
-                      style={{
-                        fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
-                        fontWeight: 600,
-                        fontSize: "1.25rem",
-                        letterSpacing: "-0.02em",
-                        color: "#F2F0ED",
-                      }}
-                    >
-                      {p.title}
-                    </h3>
-                    {p.liveUrl && p.liveDomain && (
-                      <a
-                        href={p.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="live-badge"
-                        aria-label={`${p.title} — live at ${p.liveDomain}`}
-                      >
-                        <span className="live-dot" aria-hidden="true" />
-                        LIVE
-                      </a>
-                    )}
-                  </div>
-
-                  {/* Description */}
-                  <p
-                    style={{
-                      fontSize: "0.9375rem",
-                      lineHeight: 1.65,
-                      color: "#8B8A87",
-                      maxWidth: "68ch",
-                      marginBottom: "1rem",
-                    }}
-                  >
-                    {p.description}
-                  </p>
-
-                  {/* Metrics */}
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
-                      fontSize: "12px",
-                      letterSpacing: "0.05em",
-                      marginBottom: "0.5rem",
-                    }}
-                  >
-                    {p.metrics.map((m, mi) => (
-                      <span key={mi}>
-                        {mi > 0 && <span style={{ color: "#8B8A87", margin: "0 0.5em" }}>·</span>}
-                        <span style={{ color: "#F2F0ED" }}>{m.value}</span>
-                        {m.label && <span style={{ color: "#8B8A87" }}> {m.label}</span>}
-                      </span>
-                    ))}
-                  </p>
-
-                  {/* Tech stack */}
-                  <p
-                    style={{
-                      fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
-                      fontSize: "12px",
-                      letterSpacing: "0.04em",
-                      color: "#8B8A87",
-                      marginBottom: "1.25rem",
-                    }}
-                  >
-                    {p.tech.join(" · ")}
-                  </p>
-
-                  {/* Links */}
-                  <div className="flex flex-wrap gap-5">
-                    {p.codeUrl && (
-                      <a
-                        href={p.codeUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
-                        style={{ color: "#D4A24C" }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
-                      >
-                        <Github size={14} aria-hidden="true" />
-                        Code
-                      </a>
-                    )}
-                    {p.liveUrl && (
-                      <a
-                        href={p.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
-                        style={{ color: "#D4A24C" }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
-                      >
-                        <ExternalLink size={14} aria-hidden="true" />
-                        Live
-                      </a>
-                    )}
-                    {p.certUrl && (
-                      <a
-                        href={p.certUrl}
-                        target={p.certUrl.startsWith("http") ? "_blank" : undefined}
-                        rel={p.certUrl.startsWith("http") ? "noopener noreferrer" : undefined}
-                        className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
-                        style={{ color: "#D4A24C" }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
-                      >
-                        <ExternalLink size={14} aria-hidden="true" />
-                        {p.certLabel ?? "Certificate"}
-                      </a>
-                    )}
-                  </div>
-                </article>
+                <ProjectCard p={p} index={i} />
               </Reveal>
             ))}
           </div>

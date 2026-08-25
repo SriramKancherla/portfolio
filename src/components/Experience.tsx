@@ -8,7 +8,7 @@ const experiences = [
     meta: "JUL 2026 — AUG 2026 · REMOTE · 8 WEEKS",
     role: "Machine Learning Engineering Intern",
     company: "FlyRank AI (FlyRank Corp.)",
-    body: "Got into FlyRank AI's ML Engineering internship program — eight weeks, July 1 to August 26, of real ML engineering. Experimentation, workflows, and pipelines built to actually run, not to sit in a notebook.",
+    body: "Eight weeks on FlyRank AI's ML Engineering internship, July through August. Real ML engineering the whole way — experimentation, workflow design, and pipelines built to run in production rather than sit in a notebook.",
     tags: ["Machine Learning", "ML Engineering", "FlyRank AI"],
     links: [] as { label: string; href: string }[],
   },
@@ -36,17 +36,17 @@ export const Experience = () => {
             style={{
               fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
               fontWeight: 600,
-              fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+              fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
               letterSpacing: "-0.03em",
               lineHeight: 1.05,
-              color: "#F2F0ED",
+              color: "#E8EEF5",
               marginBottom: "0.75rem",
             }}
           >
             Where I've shown up.
           </h2>
-          <p style={{ color: "#8B8A87", fontSize: "1rem", marginBottom: "3.5rem" }}>
-            Two so far. Both taught me more than the syllabus did.
+          <p style={{ color: "#8697AD", fontSize: "1rem", marginBottom: "3.5rem" }}>
+            Two so far — a June in Singapore and a remote summer. Both beat the syllabus.
           </p>
         </Reveal>
 
@@ -61,7 +61,7 @@ export const Experience = () => {
               top: "24px",
               bottom: "24px",
               width: "1px",
-              background: "rgba(242,240,237,0.10)",
+              background: "rgba(232,238,245,0.10)",
             }}
           />
 
@@ -78,8 +78,8 @@ export const Experience = () => {
                       width: "23px",
                       height: "23px",
                       borderRadius: "9999px",
-                      border: "1px solid rgba(212,162,76,0.45)",
-                      background: "#0A0A0B",
+                      border: "1px solid rgba(77,163,255,0.45)",
+                      background: "#08111C",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -90,7 +90,7 @@ export const Experience = () => {
                         width: "7px",
                         height: "7px",
                         borderRadius: "9999px",
-                        background: "#D4A24C",
+                        background: "#4DA3FF",
                         opacity: 0.7,
                         display: "block",
                       }}
@@ -98,7 +98,7 @@ export const Experience = () => {
                   </div>
 
                   {/* Card */}
-                  <article className="card-bordered p-6 flex-1">
+                  <article className="card-bordered p-8 flex-1">
                     {/* Meta */}
                     <p
                       style={{
@@ -106,7 +106,7 @@ export const Experience = () => {
                         fontSize: "11px",
                         letterSpacing: "0.08em",
                         textTransform: "uppercase",
-                        color: "#D4A24C",
+                        color: "#4DA3FF",
                         marginBottom: "0.5rem",
                       }}
                     >
@@ -120,7 +120,7 @@ export const Experience = () => {
                         fontWeight: 600,
                         fontSize: "1.125rem",
                         letterSpacing: "-0.02em",
-                        color: "#F2F0ED",
+                        color: "#E8EEF5",
                         marginBottom: "0.25rem",
                       }}
                     >
@@ -130,7 +130,7 @@ export const Experience = () => {
                     {/* Company */}
                     <p
                       style={{
-                        color: "#D4A24C",
+                        color: "#4DA3FF",
                         fontSize: "0.9rem",
                         fontWeight: 500,
                         marginBottom: "0.875rem",
@@ -140,7 +140,7 @@ export const Experience = () => {
                     </p>
 
                     {/* Body */}
-                    <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "#8B8A87", marginBottom: "1rem" }}>
+                    <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "#8697AD", marginBottom: "1rem" }}>
                       {exp.body}
                     </p>
 
@@ -154,9 +154,9 @@ export const Experience = () => {
                             fontSize: "11px",
                             letterSpacing: "0.05em",
                             padding: "3px 10px",
-                            border: "1px solid rgba(242,240,237,0.10)",
+                            border: "1px solid rgba(232,238,245,0.10)",
                             borderRadius: "4px",
-                            color: "#8B8A87",
+                            color: "#8697AD",
                           }}
                         >
                           {tag}
@@ -169,7 +169,7 @@ export const Experience = () => {
                       <div
                         style={{
                           paddingTop: "0.875rem",
-                          borderTop: "1px solid rgba(242,240,237,0.08)",
+                          borderTop: "1px solid rgba(232,238,245,0.08)",
                         }}
                       >
                         {exp.links.map((link) => (
@@ -179,7 +179,7 @@ export const Experience = () => {
                             target="_blank"
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
-                            style={{ color: "#D4A24C" }}
+                            style={{ color: "#4DA3FF" }}
                             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
                             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
                           >

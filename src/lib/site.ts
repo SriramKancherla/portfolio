@@ -6,8 +6,8 @@ export const GITHUB_URL = "https://github.com/sriramkancherla";
 export const NUS_CREDENTIALS_URL = "https://credentials.nus.edu.sg/profile/sriramkancherla155324/wallet";
 export const LINKEDIN_CERTS_URL = "https://www.linkedin.com/in/sriram-kancherla-80a7b028a/details/certifications/";
 
-/** Current role — keep hero, footer, meta, and OG image in sync. */
-export const ROLE_LINE = "ML Intern @ FlyRank AI";
+/** Footer role line */
+export const FOOTER_ROLE_LINE = "Final year @ VIT Vellore · ex-FlyRank AI · ex-NUS";
 
 /** Role titles shown in hero. */
 export const ROLES_LINE = "ML Engineer · Data Analyst";

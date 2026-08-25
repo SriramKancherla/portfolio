@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Github, Linkedin, Mail } from "lucide-react";
 import { StrawHat } from "./StrawHat";
-import { EMAIL, GITHUB_URL, LINKEDIN_URL, ROLE_LINE } from "@/lib/site";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL, FOOTER_ROLE_LINE } from "@/lib/site";
 
 export const Footer = () => {
   const [year, setYear] = useState(2026);
@@ -16,7 +16,7 @@ export const Footer = () => {
     <footer
       className="relative z-10"
       style={{
-        borderTop: "1px solid rgba(242,240,237,0.10)",
+        borderTop: "1px solid rgba(232,238,245,0.10)",
         paddingTop: "2.5rem",
         paddingBottom: "max(2.5rem, env(safe-area-inset-bottom))",
       }}
@@ -32,7 +32,7 @@ export const Footer = () => {
                 fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
                 fontWeight: 600,
                 fontSize: "1rem",
-                color: "#F2F0ED",
+                color: "#E8EEF5",
               }}
             >
               Sriram Kancherla
@@ -49,10 +49,10 @@ export const Footer = () => {
                 fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
                 fontSize: "11px",
                 letterSpacing: "0.06em",
-                color: "#8B8A87",
+                color: "#8697AD",
               }}
             >
-              {ROLE_LINE} · VIT Vellore
+              {FOOTER_ROLE_LINE}
             </p>
           </div>
 
@@ -64,9 +64,9 @@ export const Footer = () => {
               rel="noopener noreferrer"
               aria-label="GitHub"
               className="transition-colors duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center"
-              style={{ color: "#8B8A87" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#D4A24C"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8B8A87"; }}
+              style={{ color: "#8697AD" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#4DA3FF"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8697AD"; }}
             >
               <Github size={18} aria-hidden="true" />
             </a>
@@ -76,9 +76,9 @@ export const Footer = () => {
               rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="transition-colors duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center"
-              style={{ color: "#8B8A87" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#D4A24C"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8B8A87"; }}
+              style={{ color: "#8697AD" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#4DA3FF"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8697AD"; }}
             >
               <Linkedin size={18} aria-hidden="true" />
             </a>
@@ -86,9 +86,9 @@ export const Footer = () => {
               href={`mailto:${EMAIL}`}
               aria-label="Email"
               className="transition-colors duration-200 min-h-[44px] min-w-[44px] flex items-center justify-center"
-              style={{ color: "#8B8A87" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#D4A24C"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8B8A87"; }}
+              style={{ color: "#8697AD" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#4DA3FF"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8697AD"; }}
             >
               <Mail size={18} aria-hidden="true" />
             </a>
@@ -100,7 +100,7 @@ export const Footer = () => {
               fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
               fontSize: "11px",
               letterSpacing: "0.05em",
-              color: "#8B8A87",
+              color: "#8697AD",
             }}
           >
             © {year} Sriram Kancherla

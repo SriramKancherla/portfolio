@@ -123,7 +123,7 @@ export const NameIntro = ({ onComplete }: NameIntroProps) => {
             fontSize: "clamp(2rem, 7vw, 5rem)",
             letterSpacing: "-0.03em",
             lineHeight: 1.05,
-            color: "#F2F0ED",
+            color: "#E8EEF5",
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
@@ -140,7 +140,7 @@ export const NameIntro = ({ onComplete }: NameIntroProps) => {
                 key={i}
                 style={{
                   display: "inline-block",
-                  color: isKancherla && !isSpace ? "#D4A24C" : "#F2F0ED",
+                  color: isKancherla && !isSpace ? "#4DA3FF" : "#E8EEF5",
                   opacity: letterVisible[i] ? 1 : 0,
                   transform: letterVisible[i] ? "translateY(0)" : "translateY(20px)",
                   transition: `opacity 400ms cubic-bezier(0.16, 1, 0.3, 1), transform 400ms cubic-bezier(0.16, 1, 0.3, 1)`,

@@ -4,7 +4,7 @@ import { SectionEyebrow } from "./SectionEyebrow";
 const cards = [
   {
     kicker: "EDUCATION",
-    body: "B.Tech in Computer Science & Engineering, VIT Vellore — Aug 2023 to Aug 2027. Coursework in DSA, OOP, NLP, and AI/ML. CGPA 7.29/10.",
+    body: "B.Tech in Computer Science & Engineering, VIT Vellore — Aug 2023 to Aug 2027, currently final year. Coursework in DSA, OOP, NLP, and AI/ML. CGPA 7.29/10.",
   },
   {
     kicker: "FOCUS",
@@ -36,24 +36,24 @@ export const About = () => {
                 style={{
                   fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
                   fontWeight: 600,
-                  fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+                  fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
                   letterSpacing: "-0.03em",
                   lineHeight: 1.05,
-                  color: "#F2F0ED",
+                  color: "#E8EEF5",
                   marginBottom: "1.25rem",
                 }}
               >
-                Short version.
+                The short version.
               </h2>
               <p
                 style={{
                   maxWidth: "68ch",
                   lineHeight: 1.65,
-                  color: "#8B8A87",
+                  color: "#8697AD",
                   fontSize: "1rem",
                 }}
               >
-                I'm a CS undergrad at VIT Vellore. I like the unglamorous half of machine learning — the pipelines, the feature engineering, the evaluation, the part where the thing actually has to run for someone other than me. Most of my work has landed in finance, healthcare, and cybersecurity, which was not really the plan.
+                CS at VIT Vellore, now in my final year. I like the unglamorous half of machine learning — the pipelines, the feature engineering, the evaluation, the part where the model has to work for someone who isn't me. Most of what I've built has landed in finance, healthcare, and security, which wasn't the plan so much as what kept turning out to be interesting.
               </p>
             </div>
           </Reveal>
@@ -63,7 +63,7 @@ export const About = () => {
             {cards?.map((card, i) => (
               <Reveal key={card?.kicker} delay={i * 60}>
                 <article
-                  className="card-bordered p-6 h-full"
+                  className="card-bordered p-8 h-full"
                   style={{ minHeight: "140px" }}
                 >
                   <p
@@ -72,13 +72,13 @@ export const About = () => {
                       fontSize: "11px",
                       letterSpacing: "0.08em",
                       textTransform: "uppercase",
-                      color: "#D4A24C",
+                      color: "#4DA3FF",
                       marginBottom: "0.75rem",
                     }}
                   >
                     {card?.kicker}
                   </p>
-                  <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "#8B8A87" }}>
+                  <p style={{ fontSize: "0.875rem", lineHeight: 1.65, color: "#8697AD" }}>
                     {card?.body}
                   </p>
                 </article>

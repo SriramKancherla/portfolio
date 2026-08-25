@@ -67,6 +67,66 @@ const buildSkillPool = (): SkillEntry[] => {
 
 const skillPool = buildSkillPool();
 
+// Split pool into two rows for the river
+const row1 = skillPool.filter((_, i) => i % 2 === 0);
+const row2 = skillPool.filter((_, i) => i % 2 === 1);
+
+function SkillTag({
+  skill,
+  activeCategory,
+}: {
+  skill: SkillEntry;
+  activeCategory: CategoryId | null;
+}) {
+  const isHighlighted = activeCategory === null || skill.categories.includes(activeCategory);
+  const isActive = activeCategory !== null && skill.categories.includes(activeCategory);
+
+  return (
+    <span
+      style={{
+        fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+        fontSize: "12px",
+        letterSpacing: "0.04em",
+        padding: "5px 12px",
+        borderRadius: "6px",
+        border: isActive ? "1px solid #4DA3FF" : "1px solid rgba(232,238,245,0.10)",
+        color: isHighlighted ? "#E8EEF5" : "rgba(134,151,173,0.30)",
+        opacity: isHighlighted ? 1 : 0.3,
+        transform: isActive ? "translateY(-1px)" : "none",
+        transition: "all 200ms ease",
+        cursor: "default",
+        whiteSpace: "nowrap",
+        flexShrink: 0,
+      }}
+    >
+      {skill.name}
+    </span>
+  );
+}
+
+function SkillRiverRow({
+  skills,
+  direction,
+  activeCategory,
+}: {
+  skills: SkillEntry[];
+  direction: "fwd" | "rev";
+  activeCategory: CategoryId | null;
+}) {
+  // Duplicate for seamless loop
+  const doubled = [...skills, ...skills];
+
+  return (
+    <div className="skill-river-wrap mb-2">
+      <div className={`skill-river-row skill-river-row--${direction}`}>
+        {doubled.map((skill, i) => (
+          <SkillTag key={`${skill.name}-${i}`} skill={skill} activeCategory={activeCategory} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export const Skills = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryId | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -84,17 +144,17 @@ export const Skills = () => {
             style={{
               fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
               fontWeight: 600,
-              fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+              fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
               letterSpacing: "-0.03em",
               lineHeight: 1.05,
-              color: "#F2F0ED",
+              color: "#E8EEF5",
               marginBottom: "0.5rem",
             }}
           >
             The stack.
           </h2>
-          <p style={{ color: "#8B8A87", fontSize: "1rem", marginBottom: "3rem" }}>
-            Hover a category. Everything else gets out of the way.
+          <p style={{ color: "#8697AD", fontSize: "1rem", marginBottom: "3rem" }}>
+            Hover a category. Everything that doesn't belong gets out of the way.
           </p>
         </Reveal>
 
@@ -109,11 +169,12 @@ export const Skills = () => {
                   <button
                     key={cat.id}
                     type="button"
-                    className="text-left p-4 rounded-xl transition-all duration-200 min-h-[44px]"
+                    className="text-left p-4 transition-all duration-200 min-h-[44px]"
                     style={{
-                      border: isActive
-                        ? "1px solid #D4A24C" :"1px solid rgba(242,240,237,0.10)",
-                      background: isActive ? "rgba(212,162,76,0.08)" : "transparent",
+                      border: isActive ? "1px solid #4DA3FF" : "1px solid rgba(232,238,245,0.10)",
+                      background: isActive ? "rgba(77,163,255,0.08)" : "#0F1B2A",
+                      boxShadow: "inset 0 1px 0 rgba(232,238,245,0.07)",
+                      borderRadius: "12px",
                       cursor: "pointer",
                     }}
                     onMouseEnter={() => setActiveCategory(cat.id)}
@@ -124,7 +185,7 @@ export const Skills = () => {
                   >
                     <p
                       style={{
-                        color: isActive ? "#F2F0ED" : "#8B8A87",
+                        color: isActive ? "#E8EEF5" : "#8697AD",
                         fontSize: "0.9rem",
                         fontWeight: 500,
                         transition: "color 200ms ease",
@@ -138,7 +199,7 @@ export const Skills = () => {
                         fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
                         fontSize: "11px",
                         letterSpacing: "0.06em",
-                        color: isActive ? "#D4A24C" : "rgba(139,138,135,0.6)",
+                        color: isActive ? "#4DA3FF" : "rgba(134,151,173,0.6)",
                         transition: "color 200ms ease",
                       }}
                     >
@@ -149,16 +210,26 @@ export const Skills = () => {
               })}
             </div>
 
-            {/* Right: skill tags panel */}
+            {/* Right: skill tag river */}
             <div
-              className="card-bordered p-6"
-              style={{ minHeight: "320px" }}
+              style={{
+                border: "1px solid rgba(232,238,245,0.10)",
+                borderRadius: "20px",
+                background: "#0F1B2A",
+                boxShadow: "inset 0 1px 0 rgba(232,238,245,0.07)",
+                padding: "1.5rem",
+                minHeight: "200px",
+                overflow: "hidden",
+              }}
             >
-              <div className="flex flex-wrap gap-2">
-                {mounted && skillPool.map((skill) => {
-                  const isHighlighted = activeCategory === null || skill.categories.includes(activeCategory);
-                  const isActive = activeCategory !== null && skill.categories.includes(activeCategory);
-                  return (
+              {mounted ? (
+                <>
+                  <SkillRiverRow skills={row1} direction="fwd" activeCategory={activeCategory} />
+                  <SkillRiverRow skills={row2} direction="rev" activeCategory={activeCategory} />
+                </>
+              ) : (
+                <div className="flex flex-wrap gap-2">
+                  {skillPool.map((skill) => (
                     <span
                       key={skill.name}
                       style={{
@@ -167,37 +238,16 @@ export const Skills = () => {
                         letterSpacing: "0.04em",
                         padding: "5px 12px",
                         borderRadius: "6px",
-                        border: isActive
-                          ? "1px solid #D4A24C" :"1px solid rgba(242,240,237,0.10)",
-                        color: isHighlighted ? "#F2F0ED" : "rgba(139,138,135,0.30)",
-                        opacity: isHighlighted ? 1 : 0.3,
-                        transform: isActive ? "translateY(-1px)" : "none",
-                        transition: "all 200ms ease",
+                        border: "1px solid rgba(232,238,245,0.10)",
+                        color: "#E8EEF5",
                         cursor: "default",
                       }}
                     >
                       {skill.name}
                     </span>
-                  );
-                })}
-                {!mounted && skillPool.map((skill) => (
-                  <span
-                    key={skill.name}
-                    style={{
-                      fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
-                      fontSize: "12px",
-                      letterSpacing: "0.04em",
-                      padding: "5px 12px",
-                      borderRadius: "6px",
-                      border: "1px solid rgba(242,240,237,0.10)",
-                      color: "#F2F0ED",
-                      cursor: "default",
-                    }}
-                  >
-                    {skill.name}
-                  </span>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </Reveal>

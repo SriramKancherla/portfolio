@@ -13,10 +13,10 @@ const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 const inputStyle: React.CSSProperties = {
   width: "100%",
   background: "transparent",
-  border: "1px solid rgba(242,240,237,0.10)",
-  borderRadius: "8px",
+  border: "1px solid rgba(232,238,245,0.10)",
+  borderRadius: "10px",
   padding: "10px 14px",
-  color: "#F2F0ED",
+  color: "#E8EEF5",
   fontSize: "0.9375rem",
   outline: "none",
   transition: "border-color 200ms ease",
@@ -30,7 +30,7 @@ export const Contact = () => {
 
   const getFocusStyle = (fieldName: string): React.CSSProperties => ({
     ...inputStyle,
-    borderColor: focusedField === fieldName ? "#D4A24C" : "rgba(242,240,237,0.10)",
+    borderColor: focusedField === fieldName ? "#4DA3FF" : "rgba(232,238,245,0.10)",
   });
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -66,7 +66,6 @@ export const Contact = () => {
       const result = await res.json().catch(() => ({} as { success?: boolean; message?: string }));
 
       if (!res.ok || !result.success) {
-        // Fallback to mailto if not configured
         if (res.status === 503) {
           window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject || "Portfolio contact")}&body=${encodeURIComponent(message)}`;
           return;
@@ -98,10 +97,10 @@ export const Contact = () => {
                 style={{
                   fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
                   fontWeight: 600,
-                  fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+                  fontSize: "clamp(2.25rem, 5.5vw, 4rem)",
                   letterSpacing: "-0.03em",
                   lineHeight: 1.05,
-                  color: "#F2F0ED",
+                  color: "#E8EEF5",
                   marginBottom: "1.25rem",
                 }}
               >
@@ -111,12 +110,12 @@ export const Contact = () => {
                 style={{
                   maxWidth: "52ch",
                   lineHeight: 1.65,
-                  color: "#8B8A87",
+                  color: "#8697AD",
                   fontSize: "1rem",
                   marginBottom: "2rem",
                 }}
               >
-                Open to internships, full-time roles, research collaborations, or a project that just sounds fun. Based in Vellore, and I reply faster than you'd expect.
+                Open to full-time roles, research collaborations, or a project that just sounds fun. Based in Vellore, and I reply faster than you'd expect.
               </p>
 
               {/* Direct links */}
@@ -132,10 +131,10 @@ export const Contact = () => {
                     target={link.href.startsWith("mailto") ? undefined : "_blank"}
                     rel={link.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
                     className="inline-flex items-center gap-3 text-sm min-h-[44px] transition-colors duration-200"
-                    style={{ color: "#F2F0ED" }}
+                    style={{ color: "#E8EEF5" }}
                     aria-label={link.ariaLabel}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#D4A24C"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#F2F0ED"; }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#4DA3FF"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#E8EEF5"; }}
                   >
                     <link.icon size={16} aria-hidden="true" style={{ flexShrink: 0 }} />
                     <span>{link.label}</span>
@@ -167,7 +166,7 @@ export const Contact = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    style={{ display: "block", fontSize: "0.8125rem", color: "#8B8A87", marginBottom: "6px" }}
+                    style={{ display: "block", fontSize: "0.8125rem", color: "#8697AD", marginBottom: "6px" }}
                   >
                     Name
                   </label>
@@ -186,9 +185,9 @@ export const Contact = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    style={{ display: "block", fontSize: "0.8125rem", color: "#8B8A87", marginBottom: "6px" }}
+                    style={{ display: "block", fontSize: "0.8125rem", color: "#8697AD", marginBottom: "6px" }}
                   >
-                    Email <span style={{ color: "#D4A24C" }}>*</span>
+                    Email <span style={{ color: "#4DA3FF" }}>*</span>
                   </label>
                   <input
                     id="email"
@@ -203,7 +202,7 @@ export const Contact = () => {
                     onChange={() => emailError && setEmailError("")}
                     style={{
                       ...getFocusStyle("email"),
-                      borderColor: emailError ? "#ef4444" : focusedField === "email" ? "#D4A24C" : "rgba(242,240,237,0.10)",
+                      borderColor: emailError ? "#ef4444" : focusedField === "email" ? "#4DA3FF" : "rgba(232,238,245,0.10)",
                     }}
                     onFocus={() => setFocusedField("email")}
                     onBlur={() => setFocusedField(null)}
@@ -219,7 +218,7 @@ export const Contact = () => {
               <div>
                 <label
                   htmlFor="subject"
-                  style={{ display: "block", fontSize: "0.8125rem", color: "#8B8A87", marginBottom: "6px" }}
+                  style={{ display: "block", fontSize: "0.8125rem", color: "#8697AD", marginBottom: "6px" }}
                 >
                   Subject
                 </label>
@@ -238,7 +237,7 @@ export const Contact = () => {
               <div>
                 <label
                   htmlFor="message"
-                  style={{ display: "block", fontSize: "0.8125rem", color: "#8B8A87", marginBottom: "6px" }}
+                  style={{ display: "block", fontSize: "0.8125rem", color: "#8697AD", marginBottom: "6px" }}
                 >
                   Message
                 </label>
@@ -252,7 +251,7 @@ export const Contact = () => {
                   style={{
                     ...getFocusStyle("message"),
                     resize: "none",
-                    borderColor: focusedField === "message" ? "#D4A24C" : "rgba(242,240,237,0.10)",
+                    borderColor: focusedField === "message" ? "#4DA3FF" : "rgba(232,238,245,0.10)",
                   }}
                   onFocus={() => setFocusedField("message")}
                   onBlur={() => setFocusedField(null)}
@@ -264,10 +263,10 @@ export const Contact = () => {
                 disabled={sending}
                 className="w-full inline-flex items-center justify-center gap-2 py-3 text-sm font-medium min-h-[44px] transition-all duration-200"
                 style={{
-                  background: sending ? "rgba(212,162,76,0.15)" : "rgba(212,162,76,0.10)",
-                  border: "1px solid #D4A24C",
+                  background: sending ? "rgba(77,163,255,0.15)" : "rgba(77,163,255,0.10)",
+                  border: "1px solid #4DA3FF",
                   borderRadius: "8px",
-                  color: "#D4A24C",
+                  color: "#4DA3FF",
                   cursor: sending ? "not-allowed" : "pointer",
                   opacity: sending ? 0.7 : 1,
                 }}
@@ -278,8 +277,8 @@ export const Contact = () => {
                       style={{
                         width: "14px",
                         height: "14px",
-                        border: "2px solid rgba(212,162,76,0.3)",
-                        borderTopColor: "#D4A24C",
+                        border: "2px solid rgba(77,163,255,0.3)",
+                        borderTopColor: "#4DA3FF",
                         borderRadius: "9999px",
                         animation: "spin 0.7s linear infinite",
                         display: "inline-block",

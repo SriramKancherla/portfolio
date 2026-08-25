@@ -22,6 +22,8 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
   const [activeSection, setActiveSection] = useState<string>("");
   const [mounted, setMounted] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const navListRef = useRef<HTMLUListElement>(null);
+  const indicatorRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -70,6 +72,21 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
     return () => observerRef.current?.disconnect();
   }, [visible]);
 
+  // Sliding nav indicator
+  useEffect(() => {
+    if (!navListRef.current || !indicatorRef.current || !mounted) return;
+    const activeEl = navListRef.current.querySelector(`[data-section="${activeSection}"]`) as HTMLElement | null;
+    if (!activeEl) {
+      indicatorRef.current.style.opacity = "0";
+      return;
+    }
+    const listRect = navListRef.current.getBoundingClientRect();
+    const elRect = activeEl.getBoundingClientRect();
+    indicatorRef.current.style.opacity = "1";
+    indicatorRef.current.style.width = `${elRect.width}px`;
+    indicatorRef.current.style.transform = `translateX(${elRect.left - listRect.left}px)`;
+  }, [activeSection, mounted]);
+
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top)]"
@@ -83,9 +100,9 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
       <div
         className="transition-all duration-400"
         style={{
-          backdropFilter: scrolled ? "blur(12px)" : "none",
-          backgroundColor: scrolled ? "rgba(10,10,11,0.72)" : "transparent",
-          borderBottom: scrolled ? "1px solid rgba(242,240,237,0.10)" : "1px solid transparent",
+          backdropFilter: scrolled ? "blur(14px)" : "none",
+          backgroundColor: scrolled ? "rgba(8,17,28,0.72)" : "transparent",
+          borderBottom: scrolled ? "1px solid rgba(232,238,245,0.10)" : "1px solid transparent",
           transition: "backdrop-filter 400ms ease, background-color 400ms ease, border-color 400ms ease",
         }}
       >
@@ -97,14 +114,14 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
             {/* Logo */}
             <a
               href="#hero"
-              className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#D4A24C] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0B] rounded-sm"
+              className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#4DA3FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#08111C] rounded-sm"
               aria-label="Sriram Kancherla — home"
             >
               <span
                 className="grid h-8 w-8 place-items-center text-xs font-semibold"
                 style={{
-                  border: "1px solid #D4A24C",
-                  color: "#D4A24C",
+                  border: "1px solid #4DA3FF",
+                  color: "#4DA3FF",
                   fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
                   letterSpacing: "0.05em",
                   borderRadius: "4px",
@@ -114,29 +131,48 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
               </span>
               <span
                 className="hidden sm:inline text-sm font-medium"
-                style={{ color: "#F2F0ED", fontFamily: "var(--font-display), 'Inter Tight', sans-serif" }}
+                style={{ color: "#E8EEF5", fontFamily: "var(--font-display), 'Inter Tight', sans-serif" }}
               >
                 Sriram Kancherla
               </span>
             </a>
 
-            {/* Desktop nav links */}
-            <ul className="hidden md:flex items-center gap-7" role="list">
-              {links.map((l) => {
-                const sectionId = l.href.replace("#", "");
-                const isActive = activeSection === sectionId;
-                return (
-                  <li key={l.href}>
-                    <a
-                      href={l.href}
-                      className={`nav-link${isActive ? " active" : ""}`}
-                    >
-                      {l.label}
-                    </a>
-                  </li>
-                );
-              })}
-            </ul>
+            {/* Desktop nav links with sliding indicator */}
+            <div className="hidden md:block relative">
+              <ul className="flex items-center gap-7" role="list" ref={navListRef}>
+                {links.map((l) => {
+                  const sectionId = l.href.replace("#", "");
+                  const isActive = activeSection === sectionId;
+                  return (
+                    <li key={l.href}>
+                      <a
+                        href={l.href}
+                        className={`nav-link${isActive ? " active" : ""}`}
+                        data-section={sectionId}
+                        style={{ paddingBottom: "4px" }}
+                      >
+                        {l.label}
+                      </a>
+                    </li>
+                  );
+                })}
+              </ul>
+              {/* Sliding indicator */}
+              <div
+                ref={indicatorRef}
+                style={{
+                  position: "absolute",
+                  bottom: "-2px",
+                  left: 0,
+                  height: "1px",
+                  background: "#4DA3FF",
+                  opacity: 0,
+                  transition: "transform 300ms cubic-bezier(0.16, 1, 0.3, 1), width 300ms cubic-bezier(0.16, 1, 0.3, 1), opacity 200ms ease",
+                  pointerEvents: "none",
+                }}
+                aria-hidden="true"
+              />
+            </div>
 
             {/* Résumé button */}
             <div className="hidden md:block">
@@ -144,13 +180,13 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
                 href={RESUME_PAGE_PATH}
                 className="text-sm px-4 py-2 rounded-sm transition-colors duration-200"
                 style={{
-                  border: "1px solid #D4A24C",
-                  color: "#D4A24C",
+                  border: "1px solid #4DA3FF",
+                  color: "#4DA3FF",
                   fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
                   letterSpacing: "0.05em",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(212,162,76,0.10)";
+                  (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(77,163,255,0.10)";
                 }}
                 onMouseLeave={(e) => {
                   (e.currentTarget as HTMLElement).style.backgroundColor = "transparent";
@@ -166,7 +202,7 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
               onClick={() => setOpen((o) => !o)}
               aria-label={open ? "Close menu" : "Open menu"}
               aria-expanded={open}
-              style={{ color: "#F2F0ED" }}
+              style={{ color: "#E8EEF5" }}
             >
               {open ? <X size={20} /> : <Menu size={20} />}
             </button>
@@ -178,7 +214,7 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
       {open && (
         <div
           className="md:hidden fixed inset-0 top-[57px] z-40"
-          style={{ backgroundColor: "#0A0A0B", borderTop: "1px solid rgba(242,240,237,0.10)" }}
+          style={{ backgroundColor: "#08111C", borderTop: "1px solid rgba(232,238,245,0.10)" }}
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"
@@ -192,11 +228,11 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
                     onClick={() => setOpen(false)}
                     className="block py-4 text-base min-h-[44px] flex items-center transition-colors duration-200"
                     style={{
-                      color: "#8B8A87",
-                      borderBottom: "1px solid rgba(242,240,237,0.06)",
+                      color: "#8697AD",
+                      borderBottom: "1px solid rgba(232,238,245,0.06)",
                     }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#F2F0ED"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8B8A87"; }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#E8EEF5"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8697AD"; }}
                   >
                     {l.label}
                   </a>
@@ -208,8 +244,8 @@ export const Navbar = ({ visible = true }: { visible?: boolean }) => {
                   onClick={() => setOpen(false)}
                   className="inline-flex items-center px-5 py-3 text-sm min-h-[44px]"
                   style={{
-                    border: "1px solid #D4A24C",
-                    color: "#D4A24C",
+                    border: "1px solid #4DA3FF",
+                    color: "#4DA3FF",
                     fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
                     letterSpacing: "0.05em",
                     borderRadius: "4px",
