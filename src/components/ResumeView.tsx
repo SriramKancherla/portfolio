@@ -1,96 +1,179 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowLeft, Download, ExternalLink, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowLeft, Download } from "lucide-react";
 import { RESUME_PDF_URL } from "@/lib/site";
 
 const RESUME_DOWNLOAD_NAME = "Sriram-Kancherla-Resume.pdf";
-const PDF_EMBED_SRC = `${RESUME_PDF_URL}#view=FitH&toolbar=1&navpanes=0`;
 
 export function ResumeView() {
   return (
-    <div className="relative min-h-[100dvh] bg-background text-foreground overflow-x-hidden flex flex-col">
-      <div className="relative z-10 flex flex-col flex-1 min-h-0">
-        <header className="shrink-0 container px-4 sm:px-6 pt-[max(0.75rem,env(safe-area-inset-top))] pb-3 sm:pb-4">
-          <div className="max-w-6xl mx-auto flex flex-col gap-3">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <Button asChild variant="ghost" size="sm" className="w-fit hover:bg-card/60 -ml-2 sm:ml-0">
-                <Link href="/">
-                  <ArrowLeft size={16} className="mr-2" />
-                  Back to Portfolio
-                </Link>
-              </Button>
+    <div
+      style={{
+        minHeight: "100dvh",
+        backgroundColor: "#0A0A0B",
+        color: "#F2F0ED",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
+      {/* Header */}
+      <header
+        style={{
+          borderBottom: "1px solid rgba(242,240,237,0.10)",
+          padding: "1rem clamp(20px, 5vw, 64px)",
+          flexShrink: 0,
+        }}
+      >
+        <div style={{ maxWidth: "1120px", margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "1rem" }}>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm min-h-[44px] transition-colors duration-200"
+            style={{ color: "#8B8A87" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#F2F0ED"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#8B8A87"; }}
+          >
+            <ArrowLeft size={15} aria-hidden="true" />
+            Back
+          </Link>
 
-              <div className="flex items-center gap-2 text-sm text-muted-foreground min-w-0 order-3 w-full sm:order-none sm:w-auto sm:flex-1 sm:justify-center">
-                <FileText size={16} className="text-primary shrink-0" />
-                <span className="font-display font-semibold text-foreground truncate">Sriram Kancherla</span>
-                <span className="shrink-0">· Resume</span>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                <Button asChild size="sm" variant="outline" className="border-border bg-card/40 hidden sm:inline-flex">
-                  <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink size={14} className="mr-1.5" />
-                    <span className="hidden sm:inline">Open</span>
-                    <span className="sm:hidden">Open PDF</span>
-                  </a>
-                </Button>
-                <Button asChild size="sm">
-                  <a href={RESUME_PDF_URL} download={RESUME_DOWNLOAD_NAME}>
-                    <Download size={14} className="mr-1.5" />
-                    <span className="hidden sm:inline">Download</span>
-                    <span className="sm:hidden">Save</span>
-                  </a>
-                </Button>
-              </div>
-            </div>
+          <div className="flex items-center gap-3">
+            <h1
+              style={{
+                fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
+                fontWeight: 600,
+                fontSize: "1.125rem",
+                letterSpacing: "-0.02em",
+                color: "#F2F0ED",
+              }}
+            >
+              Résumé
+            </h1>
+            <a
+              href={RESUME_PDF_URL}
+              download={RESUME_DOWNLOAD_NAME}
+              className="inline-flex items-center gap-2 px-4 py-2 text-sm min-h-[44px] transition-colors duration-200"
+              style={{
+                border: "1px solid #D4A24C",
+                color: "#D4A24C",
+                borderRadius: "6px",
+                fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                letterSpacing: "0.04em",
+              }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "rgba(212,162,76,0.10)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.backgroundColor = "transparent"; }}
+            >
+              <Download size={14} aria-hidden="true" />
+              Download PDF
+            </a>
           </div>
-        </header>
+        </div>
+      </header>
 
-        <main className="flex-1 flex flex-col min-h-0 container px-4 sm:px-6 pb-[max(1rem,env(safe-area-inset-bottom))]">
-          <div className="flex-1 flex flex-col min-h-0 w-full max-w-6xl mx-auto">
-            <div className="hidden md:flex flex-1 min-h-0 flex-col">
-              <div className="flex-1 min-h-0 rounded-lg overflow-hidden border border-border/80 bg-card/20">
-                <iframe
-                  src={PDF_EMBED_SRC}
-                  title="Sriram Kancherla Resume"
-                  className="w-full h-full min-h-[480px] border-0"
-                />
-              </div>
-            </div>
+      {/* PDF viewer — desktop */}
+      <main
+        style={{ flex: 1, display: "flex", flexDirection: "column", padding: "1.5rem clamp(20px, 5vw, 64px)", paddingBottom: "max(1.5rem, env(safe-area-inset-bottom))" }}
+      >
+        <div style={{ maxWidth: "1120px", margin: "0 auto", width: "100%", flex: 1, display: "flex", flexDirection: "column" }}>
 
-            <div className="flex md:hidden flex-1 flex-col justify-center gap-6 py-4 min-h-0">
-              <div className="rounded-lg border border-border/80 p-6 sm:p-8 text-center bg-card/20">
-                <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-xl bg-primary/10 border border-primary/20">
-                  <FileText size={32} className="text-primary" />
-                </div>
-                <h1 className="text-xl font-display font-bold mb-2">Sriram Kancherla</h1>
-                <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
-                  View the full resume in your browser&apos;s PDF reader for the best experience on mobile.
-                </p>
-                <div className="flex flex-col gap-3">
-                  <Button asChild size="lg" className="w-full">
-                    <a href={RESUME_PDF_URL} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink size={16} className="mr-2" />
-                      Open Resume
-                    </a>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="w-full border-border bg-card/40">
-                    <a href={RESUME_PDF_URL} download={RESUME_DOWNLOAD_NAME}>
-                      <Download size={16} className="mr-2" />
-                      Download PDF
-                    </a>
-                  </Button>
-                </div>
-              </div>
+          {/* Desktop: embedded PDF */}
+          <div
+            className="hidden md:flex"
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              border: "1px solid rgba(242,240,237,0.10)",
+              borderRadius: "12px",
+              overflow: "hidden",
+              minHeight: "75vh",
+            }}
+          >
+            <iframe
+              src={`${RESUME_PDF_URL}#view=FitH&toolbar=1&navpanes=0`}
+              title="Sriram Kancherla Résumé"
+              style={{ width: "100%", height: "100%", minHeight: "75vh", border: "none" }}
+            />
+          </div>
 
-              <p className="text-center text-xs text-muted-foreground px-2">
-                Tip: On iPhone, use <span className="text-foreground/80">Open Resume</span> to view full-screen with
-                pinch-to-zoom.
+          {/* Mobile: open button */}
+          <div
+            className="flex md:hidden"
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "1.5rem",
+              padding: "3rem 0",
+            }}
+          >
+            <div
+              style={{
+                border: "1px solid rgba(242,240,237,0.10)",
+                borderRadius: "12px",
+                padding: "2.5rem 2rem",
+                textAlign: "center",
+                maxWidth: "400px",
+                width: "100%",
+              }}
+            >
+              <p
+                style={{
+                  fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                  fontSize: "11px",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  color: "#D4A24C",
+                  marginBottom: "1rem",
+                }}
+              >
+                PDF
               </p>
+              <p
+                style={{
+                  color: "#8B8A87",
+                  fontSize: "0.9375rem",
+                  lineHeight: 1.65,
+                  marginBottom: "1.75rem",
+                }}
+              >
+                Inline PDF embedding is unreliable on mobile. Open it directly for the best experience.
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+                <a
+                  href={RESUME_PDF_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 py-3 text-sm min-h-[44px] w-full transition-colors duration-200"
+                  style={{
+                    background: "rgba(212,162,76,0.10)",
+                    border: "1px solid #D4A24C",
+                    borderRadius: "8px",
+                    color: "#D4A24C",
+                    fontWeight: 500,
+                  }}
+                >
+                  Open PDF
+                </a>
+                <a
+                  href={RESUME_PDF_URL}
+                  download={RESUME_DOWNLOAD_NAME}
+                  className="inline-flex items-center justify-center gap-2 py-3 text-sm min-h-[44px] w-full transition-colors duration-200"
+                  style={{
+                    border: "1px solid rgba(242,240,237,0.10)",
+                    borderRadius: "8px",
+                    color: "#8B8A87",
+                  }}
+                >
+                  <Download size={15} aria-hidden="true" />
+                  Download PDF
+                </a>
+              </div>
             </div>
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

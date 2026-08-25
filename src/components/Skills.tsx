@@ -1,320 +1,207 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {
-  ArrowRight,
-  BarChart3,
-  Boxes,
-  Cloud,
-  Container,
-  Database,
-  GitBranch,
-  Globe,
-  Layout,
-  Server,
-  Sheet,
-} from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
-import { FluidMarquee } from "./FluidMarquee";
 
-type CategoryId = "frontend" | "backend" | "devops" | "databases" | "cloud" | "other";
+type CategoryId = "ml-data" | "analytics" | "backend" | "databases" | "cloud" | "devops" | "frontend-other";
 
 type Category = {
   id: CategoryId;
-  icon: typeof Layout;
   label: string;
   skills: string[];
 };
 
-type StackItem = {
-  name: string;
-  categories: CategoryId[];
-  icon?: string;
-  IconFallback?: typeof Globe;
-};
-
 const categories: Category[] = [
   {
-    id: "frontend",
-    icon: Layout,
-    label: "Frontend",
-    skills: ["HTML", "CSS", "JavaScript", "React.js", "React Native"],
+    id: "ml-data",
+    label: "ML & Data",
+    skills: ["Python", "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "scikit-learn", "Pandas", "NumPy", "NLP", "EDA", "ETL", "Big Data", "Joblib"],
+  },
+  {
+    id: "analytics",
+    label: "Analytics",
+    skills: ["Data Analytics", "Data Acquisition", "Data Manipulation", "Data Modeling", "Tableau", "Excel", "SQL"],
   },
   {
     id: "backend",
-    icon: Server,
     label: "Backend",
-    skills: ["JavaScript", "Node.js", "Firebase", "Python", "FastAPI", "REST APIs", "Postman API"],
-  },
-  {
-    id: "devops",
-    icon: Container,
-    label: "DevOps",
-    skills: ["Docker", "Git", "GitHub", "CI/CD"],
+    skills: ["Python", "FastAPI", "Node.js", "JavaScript", "REST APIs", "Postman API", "Firebase"],
   },
   {
     id: "databases",
-    icon: Database,
     label: "Databases",
     skills: ["MySQL", "SQL", "FAISS"],
   },
   {
     id: "cloud",
-    icon: Cloud,
     label: "Cloud",
-    skills: ["Azure", "AWS", "OCI", "AWS Glue", "Amazon S3"],
+    skills: ["AWS", "Azure", "Oracle Cloud Infrastructure (OCI)", "AWS Glue", "Amazon S3"],
   },
   {
-    id: "other",
-    icon: Boxes,
-    label: "Other",
-    skills: [
-      "Python",
-      "MATLAB",
-      "C/C++",
-      "Tableau",
-      "Excel",
-      "TensorFlow",
-      "PyTorch",
-      "Java",
-      "scikit-learn",
-    ],
+    id: "devops",
+    label: "DevOps",
+    skills: ["Docker", "Git", "GitHub", "CI/CD"],
+  },
+  {
+    id: "frontend-other",
+    label: "Frontend & Other",
+    skills: ["HTML", "CSS", "JavaScript", "React.js", "React Native", "Java", "C", "C++", "MATLAB"],
   },
 ];
 
-const SKILL_ICONS = "https://raw.githubusercontent.com/tandpfun/skill-icons/main/icons";
-const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons";
-const SI = (slug: string) => `https://cdn.simpleicons.org/${slug}`;
+// Build deduplicated skill pool with category memberships
+type SkillEntry = { name: string; categories: CategoryId[] };
 
-const stackMeta: Record<string, Pick<StackItem, "icon" | "IconFallback">> = {
-  HTML: { icon: SI("html5") },
-  CSS: { icon: SI("css") },
-  "React.js": { icon: SI("react") },
-  "React Native": { icon: `${DEVICON}/reactnative/reactnative-original.svg` },
-  JavaScript: { icon: SI("javascript") },
-  "Node.js": { icon: SI("nodedotjs") },
-  Firebase: { icon: SI("firebase") },
-  Python: { icon: SI("python") },
-  FastAPI: { icon: SI("fastapi") },
-  "REST APIs": { IconFallback: Globe },
-  "Postman API": { icon: SI("postman") },
-  Docker: { icon: SI("docker") },
-  Git: { icon: SI("git") },
-  GitHub: { icon: SI("github") },
-  "CI/CD": { IconFallback: GitBranch },
-  MySQL: { icon: SI("mysql") },
-  SQL: { icon: SI("postgresql") },
-  FAISS: { IconFallback: Database },
-  Azure: { icon: `${SKILL_ICONS}/Azure-Dark.svg` },
-  AWS: { icon: `${SKILL_ICONS}/AWS-Dark.svg` },
-  OCI: { icon: `${DEVICON}/oracle/oracle-original.svg` },
-  "AWS Glue": { icon: `${SKILL_ICONS}/AWS-Dark.svg` },
-  "Amazon S3": { icon: `${SKILL_ICONS}/AWS-Dark.svg` },
-  MATLAB: { icon: `${DEVICON}/matlab/matlab-original.svg` },
-  "C/C++": { icon: SI("cplusplus") },
-  Tableau: { IconFallback: BarChart3 },
-  Excel: { IconFallback: Sheet },
-  TensorFlow: { icon: SI("tensorflow") },
-  PyTorch: { icon: SI("pytorch") },
-  Java: { icon: SI("openjdk") },
-  "scikit-learn": { icon: SI("scikitlearn") },
-};
-
-const workStack = (() => {
-  const seen = new Set<string>();
-  const items: StackItem[] = [];
-
+const buildSkillPool = (): SkillEntry[] => {
+  const map = new Map<string, CategoryId[]>();
   for (const cat of categories) {
     for (const skill of cat.skills) {
-      const existing = items.find((item) => item.name === skill);
-      if (existing) {
-        if (!existing.categories.includes(cat.id)) {
-          existing.categories.push(cat.id);
-        }
-      } else if (!seen.has(skill)) {
-        seen.add(skill);
-        items.push({
-          name: skill,
-          categories: [cat.id],
-          ...stackMeta[skill],
-        });
-      }
+      if (!map.has(skill)) map.set(skill, []);
+      const cats = map.get(skill)!;
+      if (!cats.includes(cat.id)) cats.push(cat.id);
     }
   }
+  return Array.from(map.entries()).map(([name, cats]) => ({ name, categories: cats }));
+};
 
-  return items;
-})();
-
-function shuffleStack<T>(items: T[]): T[] {
-  const shuffled = [...items];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
-
-function StackBadge({
-  item,
-  highlighted,
-  active,
-}: {
-  item: StackItem;
-  highlighted: boolean;
-  active: boolean;
-}) {
-  const [iconFailed, setIconFailed] = useState(false);
-  const Fallback = item.IconFallback ?? Boxes;
-  const showFallback = !item.icon || iconFailed;
-
-  return (
-    <span
-      className={`inline-flex items-center gap-2 mono text-xs px-3 py-2 rounded-xl border transition-all duration-300 cursor-default ${
-        highlighted
-          ? active
-            ? "border-primary/50 bg-primary/15 text-foreground scale-105 shadow-[0_0_20px_-8px_hsl(var(--primary)/0.6)]"
-            : "border-border bg-secondary/50 text-foreground/90" :"border-border/40 bg-secondary/20 text-muted-foreground/40 scale-[0.97] blur-[0.3px]"
-      }`}
-    >
-      {showFallback ? (
-        <Fallback
-          size={14}
-          className={`shrink-0 transition-opacity duration-300 ${
-            highlighted ? "text-primary opacity-100" : "opacity-40"
-          }`}
-        />
-      ) : (
-        <img
-          src={item.icon}
-          alt=""
-          aria-hidden="true"
-          className={`h-4 w-4 shrink-0 object-contain transition-opacity duration-300 ${
-            highlighted ? "opacity-100" : "opacity-40"
-          }`}
-          loading="lazy"
-          onError={() => setIconFailed(true)}
-        />
-      )}
-      <span>{item.name}</span>
-    </span>
-  );
-}
+const skillPool = buildSkillPool();
 
 export const Skills = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryId | null>(null);
-  // Start with stable (unshuffled) order to match SSR; shuffle after mount on client only
-  const [shuffledStack, setShuffledStack] = useState<StackItem[]>(workStack);
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setShuffledStack(shuffleStack(workStack));
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
   return (
-    <section id="skills" className="section-fluid fluid-section relative">
-      <div className="container relative z-[1]">
+    <section id="skills" aria-labelledby="skills-heading">
+      <div className="hairline" />
+      <div className="section-container section-spacing">
         <Reveal>
-          <div className="mb-14 max-w-3xl">
-            <SectionEyebrow index="04">Skills</SectionEyebrow>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Skills & technologies.</h2>
-            <p className="text-lg text-muted-foreground">
-              Hover a skill area to see the tools and technologies I use in that domain.
-            </p>
-          </div>
+          <SectionEyebrow index="04">SKILLS</SectionEyebrow>
+          <h2
+            id="skills-heading"
+            style={{
+              fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
+              fontWeight: 600,
+              fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+              letterSpacing: "-0.03em",
+              lineHeight: 1.05,
+              color: "#F2F0ED",
+              marginBottom: "0.5rem",
+            }}
+          >
+            The stack.
+          </h2>
+          <p style={{ color: "#8B8A87", fontSize: "1rem", marginBottom: "3rem" }}>
+            Hover a category. Everything else gets out of the way.
+          </p>
         </Reveal>
 
-        <Reveal delay={80}>
-          <div className="grid lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1.4fr)] gap-8 lg:gap-6 items-start">
-            <div className="glass rounded-3xl p-6 md:p-8">
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-6">
-                Skills
-              </h3>
-              <ul className="space-y-2" role="list">
-                {categories.map((cat) => {
-                  const isActive = activeCategory === cat.id;
-                  const Icon = cat.icon;
-
-                  return (
-                    <li key={cat.id}>
-                      <button
-                        type="button"
-                        className={`group flex w-full items-center gap-4 rounded-2xl border px-4 py-3.5 text-left transition-all duration-300 ${
-                          isActive
-                            ? "border-primary/50 bg-primary/10 shadow-[0_0_24px_-6px_hsl(var(--primary)/0.45)]"
-                            : "border-border/60 bg-card/30 hover:border-primary/30 hover:bg-card/50"
-                        }`}
-                        onMouseEnter={() => setActiveCategory(cat.id)}
-                        onMouseLeave={() => setActiveCategory(null)}
-                        onFocus={() => setActiveCategory(cat.id)}
-                        onBlur={() => setActiveCategory(null)}
-                      >
-                        <span
-                          className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border transition-all duration-300 ${
-                            isActive
-                              ? "border-primary/40 bg-primary/15" :"border-border bg-secondary/40 group-hover:border-primary/30"
-                          }`}
-                        >
-                          <Icon size={18} className={isActive ? "text-primary" : "text-muted-foreground"} />
-                        </span>
-                        <span className="flex-1">
-                          <span className={`block font-semibold ${isActive ? "text-gradient" : "text-foreground"}`}>
-                            {cat.label}
-                          </span>
-                          <span className="mono text-[11px] text-muted-foreground">
-                            {cat.skills.length} tools
-                          </span>
-                        </span>
-                        <ArrowRight
-                          size={16}
-                          className={`shrink-0 transition-all duration-300 ${
-                            isActive ? "translate-x-0.5 text-primary opacity-100" : "text-muted-foreground opacity-0 group-hover:opacity-60"
-                          }`}
-                        />
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
+        <Reveal delay={60}>
+          <div className="grid lg:grid-cols-[280px_1fr] gap-8 items-start">
+            {/* Left: category list */}
+            <div className="flex flex-col gap-2">
+              {categories.map((cat) => {
+                const isActive = activeCategory === cat.id;
+                const count = cat.skills.length;
+                return (
+                  <button
+                    key={cat.id}
+                    type="button"
+                    className="text-left p-4 rounded-xl transition-all duration-200 min-h-[44px]"
+                    style={{
+                      border: isActive
+                        ? "1px solid #D4A24C" :"1px solid rgba(242,240,237,0.10)",
+                      background: isActive ? "rgba(212,162,76,0.08)" : "transparent",
+                      cursor: "pointer",
+                    }}
+                    onMouseEnter={() => setActiveCategory(cat.id)}
+                    onMouseLeave={() => setActiveCategory(null)}
+                    onFocus={() => setActiveCategory(cat.id)}
+                    onBlur={() => setActiveCategory(null)}
+                    aria-pressed={isActive}
+                  >
+                    <p
+                      style={{
+                        color: isActive ? "#F2F0ED" : "#8B8A87",
+                        fontSize: "0.9rem",
+                        fontWeight: 500,
+                        transition: "color 200ms ease",
+                        marginBottom: "2px",
+                      }}
+                    >
+                      {cat.label}
+                    </p>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                        fontSize: "11px",
+                        letterSpacing: "0.06em",
+                        color: isActive ? "#D4A24C" : "rgba(139,138,135,0.6)",
+                        transition: "color 200ms ease",
+                      }}
+                    >
+                      {count} {count === 1 ? "tool" : "tools"}
+                    </p>
+                  </button>
+                );
+              })}
             </div>
 
-            <div className="hidden lg:flex items-center justify-center self-center pt-10" aria-hidden="true">
-              <ArrowRight
-                size={22}
-                className={`text-primary transition-all duration-300 ${
-                  activeCategory ? "opacity-100 translate-x-1" : "opacity-25"
-                }`}
-              />
-            </div>
-
-            <div className="glass rounded-3xl p-6 md:p-8 min-h-[320px]">
-              <h3 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground mb-6">
-                Work Stack
-              </h3>
-              <div className="flex flex-wrap gap-2.5">
-                {shuffledStack.map((item) => {
-                  const isHighlighted =
-                    activeCategory === null || item.categories.includes(activeCategory);
-
+            {/* Right: skill tags panel */}
+            <div
+              className="card-bordered p-6"
+              style={{ minHeight: "320px" }}
+            >
+              <div className="flex flex-wrap gap-2">
+                {mounted && skillPool.map((skill) => {
+                  const isHighlighted = activeCategory === null || skill.categories.includes(activeCategory);
+                  const isActive = activeCategory !== null && skill.categories.includes(activeCategory);
                   return (
-                    <StackBadge
-                      key={item.name}
-                      item={item}
-                      highlighted={isHighlighted}
-                      active={activeCategory !== null}
-                    />
+                    <span
+                      key={skill.name}
+                      style={{
+                        fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                        fontSize: "12px",
+                        letterSpacing: "0.04em",
+                        padding: "5px 12px",
+                        borderRadius: "6px",
+                        border: isActive
+                          ? "1px solid #D4A24C" :"1px solid rgba(242,240,237,0.10)",
+                        color: isHighlighted ? "#F2F0ED" : "rgba(139,138,135,0.30)",
+                        opacity: isHighlighted ? 1 : 0.3,
+                        transform: isActive ? "translateY(-1px)" : "none",
+                        transition: "all 200ms ease",
+                        cursor: "default",
+                      }}
+                    >
+                      {skill.name}
+                    </span>
                   );
                 })}
+                {!mounted && skillPool.map((skill) => (
+                  <span
+                    key={skill.name}
+                    style={{
+                      fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                      fontSize: "12px",
+                      letterSpacing: "0.04em",
+                      padding: "5px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid rgba(242,240,237,0.10)",
+                      color: "#F2F0ED",
+                      cursor: "default",
+                    }}
+                  >
+                    {skill.name}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
         </Reveal>
       </div>
-
-      <FluidMarquee
-        className="relative z-10 mt-10"
-        items={["Python", "React", "FastAPI", "Docker", "MySQL", "TensorFlow", "Git", "Node.js", "FAISS", "CI/CD"]}
-        speed="slow"
-      />
     </section>
   );
 };

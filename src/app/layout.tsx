@@ -1,21 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import { Providers } from "@/components/Providers";
-import { ROLE_LINE } from "@/lib/site";
+import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/site";
 import "./globals.css";
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-display",
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -26,16 +19,14 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://sriramkancherla.pages.dev").replace(
-  /\/$/,
-  "",
-);
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://portfolio7967.builtwithrocket.new").replace(/\/$/, "");
 
-const description = `${ROLE_LINE} — Portfolio of Sriram Kancherla, CS undergrad at VIT Vellore. ML, data analytics, and full-stack AI projects.`;
+const description =
+  "I build machine learning systems that have to survive contact with production — mostly in finance, healthcare, and security. A couple of them are live right now.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Sriram Kancherla :D",
+  title: "Sriram Kancherla — ML Engineer & Data Analyst",
   description,
   icons: {
     icon: "/favicon.svg",
@@ -45,8 +36,8 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: `Sriram Kancherla — ${ROLE_LINE}`,
-    description: `${ROLE_LINE} — Portfolio of Sriram Kancherla, CS undergrad at VIT Vellore.`,
+    title: "Sriram Kancherla — ML Engineer & Data Analyst",
+    description,
     type: "website",
     siteName: "Sriram Kancherla",
     locale: "en_IN",
@@ -56,15 +47,15 @@ export const metadata: Metadata = {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: `Sriram Kancherla — ${ROLE_LINE}`,
+        alt: "Sriram Kancherla — ML Engineer & Data Analyst",
         type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `Sriram Kancherla — ${ROLE_LINE}`,
-    description: `${ROLE_LINE} — Portfolio of Sriram Kancherla, CS undergrad at VIT Vellore.`,
+    title: "Sriram Kancherla — ML Engineer & Data Analyst",
+    description,
     images: ["/og-image.png"],
   },
 };
@@ -79,26 +70,37 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Sriram Kancherla",
-  jobTitle: "ML Intern",
+  jobTitle: "ML Engineer & Data Analyst",
   worksFor: {
     "@type": "Organization",
     name: "FlyRank AI",
   },
-  url: "https://www.linkedin.com/in/sriram-kancherla-80a7b028a/",
-  alumniOf: "Vellore Institute of Technology",
-  knowsAbout: ["Machine Learning", "Data Analytics", "Computer Vision", "Full-Stack AI", "Python"],
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "Vellore Institute of Technology",
+  },
+  url: siteUrl,
+  sameAs: [GITHUB_URL, LINKEDIN_URL, `mailto:${EMAIL}`],
+  knowsAbout: ["Machine Learning", "Data Analytics", "Computer Vision", "NLP", "Full-Stack AI", "Python", "FastAPI", "Docker"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}>
-      <body className="bg-background text-foreground font-sans antialiased">
+    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} style={{ backgroundColor: "#0A0A0B" }}>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body style={{ backgroundColor: "#0A0A0B", color: "#F2F0ED" }}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
         <Providers>{children}</Providers>
-      
         <Script src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fportfolio7967back.builtwithrocket.new&_be=https%3A%2F%2Fappanalytics.rocket.new&_v=0.1.20" strategy="afterInteractive" />
         <Script src="https://static.rocket.new/rocket-shot.js?v=0.0.2" strategy="lazyOnload" />
       </body>

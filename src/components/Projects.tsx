@@ -6,97 +6,97 @@ import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
 import { NUS_CREDENTIALS_URL } from "@/lib/site";
 
-type Category = "All" | "ML" | "Analytics" | "AI" | "Full-Stack";
+type Category = "All" | "ML" | "AI" | "Analytics" | "Full-Stack";
 
 type Project = {
   title: string;
   period: string;
-  category: Category[];
+  categories: Exclude<Category, "All">[];
   description: string;
+  metrics: { value: string; label: string }[];
   tech: string[];
-  metrics: { label: string; value: string }[];
   codeUrl?: string;
   liveUrl?: string;
-  highlightLive?: boolean;
-  detailsUrl?: string;
-  detailsLabel?: string;
+  liveDomain?: string;
+  certUrl?: string;
+  certLabel?: string;
 };
 
 const projects: Project[] = [
   {
     title: "Image Based Wafer Map Pattern Intelligence",
     period: "Feb 2026 — Present",
-    category: ["ML", "AI"] as Category[],
+    categories: ["ML", "AI"],
     description:
-      "End-to-end computer vision pipeline classifying silicon semiconductor wafer defect patterns using a CNN. Handles variable wafer sizes, legacy dataset formats, and evaluates performance with confusion matrices — tackling real ML engineering challenges in semiconductor yield analysis.",
-    tech: ["Python", "PyTorch", "OpenCV", "NumPy", "Pandas", "scikit-learn"],
+      "A CNN that looks at silicon wafer maps and tells you what went wrong on the fab floor. The hard part isn't the model — it's wafers arriving at wildly different sizes and a dataset format from another decade. Evaluated properly with confusion matrices, not vibes.",
     metrics: [
-      { label: "Defect Classes", value: "8+" },
-      { label: "Train/Test Split", value: "80/20" },
-      { label: "Domain", value: "Semiconductor" },
+      { value: "8+", label: "Defect Classes" },
+      { value: "80/20", label: "Train/Test Split" },
+      { value: "Semiconductor", label: "Domain" },
     ],
+    tech: ["Python", "PyTorch", "OpenCV", "NumPy", "Pandas", "scikit-learn"],
     codeUrl: "https://github.com/SriramKancherla/Image-based-Wafer-Map-Pattern-intelligence",
   },
   {
-    title: "Ainvestify — Stock Insights",
+    title: "AInvestify — AI Stock Screener",
     period: "Dec 2025 — Present",
-    category: ["ML", "Full-Stack", "Analytics"] as Category[],
+    categories: ["ML", "Full-Stack", "Analytics"],
     description:
-      "Full-stack stock analysis platform with ML-driven fundamentals scoring, news sentiment, and interactive charts. Live on Render — try the website for stock insights, comparisons, and an AI chatbot backed by production FastAPI endpoints.",
-    tech: ["Python", "FastAPI", "XGBoost", "TensorFlow", "Docker", "REST APIs"],
+      "An AI stock screener that reads the fundamentals and the news at the same time, then calls a stock strong or weak. A Random Forest classifier rates the fundamentals good or bad, an XGBoost regressor turns that into a 0–1 strength score, and VADER handles sentiment across whatever the news is saying that day. Data comes in through yFinance and Google News RSS, models ship out via joblib. It's deployed — go break it.",
     metrics: [
-      { label: "ML Models", value: "4+" },
-      { label: "API Endpoints", value: "5" },
-      { label: "Deployed", value: "Render" },
+      { value: "4+", label: "ML Models" },
+      { value: "5", label: "API Endpoints" },
+      { value: "Deployed on Render", label: "" },
     ],
+    tech: ["Python", "FastAPI", "XGBoost", "Random Forest", "VADER NLP", "yFinance", "REST APIs", "Docker"],
     codeUrl: "https://github.com/SriramKancherla/AInvestify",
     liveUrl: "https://ainvestify.onrender.com",
-    highlightLive: true,
+    liveDomain: "ainvestify.onrender.com",
   },
   {
-    title: "Shiksha Sahayak",
-    period: "Feb 2026",
-    category: ["AI", "Full-Stack"] as Category[],
+    title: "Shiksha Sahayak — Offline-First Education Management Console",
+    period: "Sep 2025 — Nov 2025",
+    categories: ["AI", "Full-Stack"],
     description:
-      "Full-stack learning platform running entirely on local infrastructure with a locally hosted LLM. Teachers upload study material to auto-generate worksheets and assessments; students interact with a context-aware AI tutor powered by FAISS semantic search and embeddings.",
-    tech: ["FastAPI", "Streamlit", "MySQL", "FAISS", "JWT", "Firebase"],
+      "An education management platform built for schools where the internet isn't a given. Everything runs locally, including the LLM. Teachers upload material and get worksheets and assessments back; students get a tutor that has actually read the material, thanks to FAISS semantic search. MySQL locally, Firebase for backup, JWT holding the doors.",
     metrics: [
-      { label: "Auth", value: "JWT" },
-      { label: "Search", value: "FAISS" },
-      { label: "Privacy", value: "Local LLM" },
+      { value: "JWT Auth", label: "" },
+      { value: "FAISS Search", label: "" },
+      { value: "Local LLM Privacy", label: "" },
     ],
+    tech: ["FastAPI", "Streamlit", "MySQL", "FAISS", "JWT", "Firebase"],
     codeUrl: "https://github.com/SriramKancherla/Shiksha-Sahayak",
   },
   {
     title: "Healthcare Analytics — IITK D&G Capstone",
     period: "Sep 2025 — Nov 2025",
-    category: ["ML", "Analytics"] as Category[],
+    categories: ["ML", "Analytics"],
     description:
-      "Healthcare analytics project predicting 30-day hospital readmission risk using patient demographics, medical history, admission details, procedures, and discharge outcomes — helping hospitals identify high-risk patients and reduce avoidable costs.",
-    tech: ["Machine Learning", "Data Analytics", "Python", "scikit-learn"],
+      "Predicts whether a patient is coming back within 30 days, using demographics, medical history, admission details, procedures, and discharge outcomes. The point is catching the high-risk cases before the readmission — and the cost — happens. Capstone for the IIT Kanpur E&ICT program.",
     metrics: [
-      { label: "Risk Window", value: "30 days" },
-      { label: "Data Sources", value: "6+" },
-      { label: "Partner", value: "IITK D&G" },
+      { value: "30-day", label: "Risk Window" },
+      { value: "6+", label: "Data Sources" },
+      { value: "IITK D&G", label: "Partner" },
     ],
+    tech: ["Python", "scikit-learn", "Machine Learning", "Data Analytics"],
     codeUrl: "https://github.com/SriramKancherla/Healthcare-Management---IITK-D-G-Capstone-Project",
-    detailsUrl: "/documents/iitk-dg-professional-certificate.pdf",
-    detailsLabel: "Certificate",
+    certUrl: "/documents/iitk-dg-professional-certificate.pdf",
+    certLabel: "Certificate",
   },
   {
     title: "Insider Threat Detection",
     period: "Aug 2025 — Oct 2025",
-    category: ["ML", "AI"] as Category[],
+    categories: ["ML", "AI"],
     description:
-      "User Behavior Analytics (UBA) system using the CERT Insider Threat dataset. Fused logon, email, HTTP, file, and USB logs into a unified dataset, engineered behavioral features, and built a hybrid anomaly pipeline with Autoencoders, Isolation Forest, and LightGBM.",
-    tech: ["Python", "LightGBM", "Autoencoders", "Isolation Forest", "UBA"],
+      "User Behavior Analytics on the CERT Insider Threat dataset. Fused five log sources — logon, email, HTTP, file, and USB — into one view, then engineered features for the things people do when they're up to something: late-night USB usage, off-hours logins, non-HTTPS browsing, suspicious email attachments. Autoencoders, Isolation Forest, and LightGBM stacked into one hybrid anomaly pipeline.",
     metrics: [
-      { label: "Log Sources", value: "5" },
-      { label: "Models", value: "3" },
-      { label: "Features", value: "120+" },
+      { value: "5", label: "Log Sources" },
+      { value: "3", label: "Models" },
+      { value: "120+", label: "Features" },
     ],
-    detailsUrl: NUS_CREDENTIALS_URL,
-    detailsLabel: "NUS Certificate",
+    tech: ["Python", "LightGBM", "Autoencoders", "Isolation Forest", "UBA"],
+    certUrl: NUS_CREDENTIALS_URL,
+    certLabel: "NUS Certificate",
   },
 ];
 
@@ -104,27 +104,50 @@ const filters: Category[] = ["All", "ML", "AI", "Analytics", "Full-Stack"];
 
 export const Projects = () => {
   const [active, setActive] = useState<Category>("All");
-  const filtered = active === "All" ? projects : projects.filter((p) => p.category.includes(active));
+
+  const filtered =
+    active === "All" ? projects : projects.filter((p) => p.categories.includes(active as Exclude<Category, "All">));
 
   return (
-    <section id="projects" className="section-fluid fluid-section relative">
-      <div className="container max-w-4xl relative z-[1]">
+    <section id="projects" aria-labelledby="projects-heading">
+      <div className="hairline" />
+      <div className="section-container section-spacing">
         <Reveal>
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-10">
             <div>
-              <SectionEyebrow index="03">Projects</SectionEyebrow>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Things I've built.</h2>
+              <SectionEyebrow index="03">PROJECTS</SectionEyebrow>
+              <h2
+                id="projects-heading"
+                style={{
+                  fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
+                  fontWeight: 600,
+                  fontSize: "clamp(2rem, 4.5vw, 3.25rem)",
+                  letterSpacing: "-0.03em",
+                  lineHeight: 1.05,
+                  color: "#F2F0ED",
+                  marginBottom: "0.5rem",
+                }}
+              >
+                Things I've built.
+              </h2>
+              <p style={{ color: "#8B8A87", fontSize: "1rem" }}>Five that were worth finishing.</p>
             </div>
-            <div className="flex flex-wrap gap-4">
+
+            {/* Filter row */}
+            <div className="flex flex-wrap gap-5" role="group" aria-label="Filter projects by category">
               {filters.map((f) => (
                 <button
                   key={f}
                   type="button"
                   onClick={() => setActive(f)}
-                  className={`text-sm transition-colors ${
-                    active === f
-                      ? "text-primary font-medium" :"text-muted-foreground hover:text-foreground"
-                  }`}
+                  className="text-sm min-h-[44px] px-1 transition-colors duration-200 relative"
+                  style={{
+                    color: active === f ? "#D4A24C" : "#8B8A87",
+                    fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                    letterSpacing: "0.05em",
+                    borderBottom: active === f ? "2px solid #D4A24C" : "2px solid transparent",
+                  }}
+                  aria-pressed={active === f}
                 >
                   {f}
                 </button>
@@ -133,71 +156,158 @@ export const Projects = () => {
           </div>
         </Reveal>
 
-        <div className="divide-y divide-border/70 border-t border-border/70">
-          {filtered.map((p, i) => (
-            <Reveal key={p.title} delay={i * 70}>
-              <article className="py-8 md:py-10">
-                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mono text-xs text-muted-foreground mb-2">
-                  <span>{p.period}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{p.category.join(", ")}</span>
-                </div>
-                <h3 className="text-xl md:text-2xl font-semibold text-foreground mb-3">{p.title}</h3>
-                {p.highlightLive && p.liveUrl && (
-                  <a
-                    href={p.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline mb-3"
+        {/* Project list */}
+        {filtered.length === 0 ? (
+          <Reveal>
+            <p style={{ color: "#8B8A87", fontSize: "1rem", padding: "3rem 0" }}>
+              Nothing under that one yet. Try another.
+            </p>
+          </Reveal>
+        ) : (
+          <div style={{ borderTop: "1px solid rgba(242,240,237,0.10)" }}>
+            {filtered.map((p, i) => (
+              <Reveal key={p.title} delay={i * 60}>
+                <article
+                  style={{
+                    padding: "2.5rem 0",
+                    borderBottom: "1px solid rgba(242,240,237,0.10)",
+                  }}
+                >
+                  {/* Meta line */}
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                      fontSize: "11px",
+                      letterSpacing: "0.08em",
+                      textTransform: "uppercase",
+                      color: "#8B8A87",
+                      marginBottom: "0.625rem",
+                    }}
                   >
-                    <ExternalLink size={14} />
-                    ainvestify.onrender.com
-                  </a>
-                )}
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4 max-w-3xl">{p.description}</p>
-                <p className="text-sm text-muted-foreground mb-2">
-                  {p.metrics.map((m) => `${m.value} ${m.label}`).join(" · ")}
-                </p>
-                <p className="text-sm text-muted-foreground mb-5">{p.tech.join(" · ")}</p>
-                <div className="flex flex-wrap gap-4 text-sm">
-                  {p.liveUrl && (
-                    <a
-                      href={p.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline inline-flex items-center gap-1"
+                    {p.period} · {p.categories.join(", ")}
+                  </p>
+
+                  {/* Title + live badge */}
+                  <div className="flex flex-wrap items-center gap-3 mb-3">
+                    <h3
+                      style={{
+                        fontFamily: "var(--font-display), 'Inter Tight', sans-serif",
+                        fontWeight: 600,
+                        fontSize: "1.25rem",
+                        letterSpacing: "-0.02em",
+                        color: "#F2F0ED",
+                      }}
                     >
-                      <ExternalLink size={14} />
-                      {p.highlightLive ? "Visit website" : "Live"}
-                    </a>
-                  )}
-                  {p.codeUrl && (
-                    <a
-                      href={p.codeUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary hover:underline inline-flex items-center gap-1"
-                    >
-                      <Github size={14} />
-                      Code
-                    </a>
-                  )}
-                  {p.detailsUrl && (
-                    <a
-                      href={p.detailsUrl}
-                      target={p.detailsUrl.startsWith("http") ? "_blank" : undefined}
-                      rel={p.detailsUrl.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="text-primary hover:underline inline-flex items-center gap-1"
-                    >
-                      <ExternalLink size={14} />
-                      {p.detailsLabel ?? "Details"}
-                    </a>
-                  )}
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+                      {p.title}
+                    </h3>
+                    {p.liveUrl && p.liveDomain && (
+                      <a
+                        href={p.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="live-badge"
+                        aria-label={`${p.title} — live at ${p.liveDomain}`}
+                      >
+                        <span className="live-dot" aria-hidden="true" />
+                        LIVE
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Description */}
+                  <p
+                    style={{
+                      fontSize: "0.9375rem",
+                      lineHeight: 1.65,
+                      color: "#8B8A87",
+                      maxWidth: "68ch",
+                      marginBottom: "1rem",
+                    }}
+                  >
+                    {p.description}
+                  </p>
+
+                  {/* Metrics */}
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                      fontSize: "12px",
+                      letterSpacing: "0.05em",
+                      marginBottom: "0.5rem",
+                    }}
+                  >
+                    {p.metrics.map((m, mi) => (
+                      <span key={mi}>
+                        {mi > 0 && <span style={{ color: "#8B8A87", margin: "0 0.5em" }}>·</span>}
+                        <span style={{ color: "#F2F0ED" }}>{m.value}</span>
+                        {m.label && <span style={{ color: "#8B8A87" }}> {m.label}</span>}
+                      </span>
+                    ))}
+                  </p>
+
+                  {/* Tech stack */}
+                  <p
+                    style={{
+                      fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
+                      fontSize: "12px",
+                      letterSpacing: "0.04em",
+                      color: "#8B8A87",
+                      marginBottom: "1.25rem",
+                    }}
+                  >
+                    {p.tech.join(" · ")}
+                  </p>
+
+                  {/* Links */}
+                  <div className="flex flex-wrap gap-5">
+                    {p.codeUrl && (
+                      <a
+                        href={p.codeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
+                        style={{ color: "#D4A24C" }}
+                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+                      >
+                        <Github size={14} aria-hidden="true" />
+                        Code
+                      </a>
+                    )}
+                    {p.liveUrl && (
+                      <a
+                        href={p.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
+                        style={{ color: "#D4A24C" }}
+                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+                      >
+                        <ExternalLink size={14} aria-hidden="true" />
+                        Live
+                      </a>
+                    )}
+                    {p.certUrl && (
+                      <a
+                        href={p.certUrl}
+                        target={p.certUrl.startsWith("http") ? "_blank" : undefined}
+                        rel={p.certUrl.startsWith("http") ? "noopener noreferrer" : undefined}
+                        className="inline-flex items-center gap-1.5 text-sm transition-colors duration-200"
+                        style={{ color: "#D4A24C" }}
+                        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+                        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+                      >
+                        <ExternalLink size={14} aria-hidden="true" />
+                        {p.certLabel ?? "Certificate"}
+                      </a>
+                    )}
+                  </div>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
