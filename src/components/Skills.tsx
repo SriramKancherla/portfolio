@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   BarChart3,
@@ -203,7 +203,12 @@ function StackBadge({
 
 export const Skills = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryId | null>(null);
-  const shuffledStack = useMemo(() => shuffleStack(workStack), []);
+  // Start with stable (unshuffled) order to match SSR; shuffle after mount on client only
+  const [shuffledStack, setShuffledStack] = useState<StackItem[]>(workStack);
+
+  useEffect(() => {
+    setShuffledStack(shuffleStack(workStack));
+  }, []);
 
   return (
     <section id="skills" className="section-fluid fluid-section relative">
