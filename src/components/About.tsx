@@ -41,13 +41,13 @@ export const About = () => {
           </Reveal>
 
           <div className="grid sm:grid-cols-2 gap-4">
-            {highlights.map((item, i) => (
-              <Reveal key={item.title} delay={i * 70}>
+            {highlights?.map((item, i) => (
+              <Reveal key={item?.title} delay={i * 70}>
                 <article className="glass rounded-2xl p-5 md:p-6 h-full hover-lift">
                   <h3 className="text-sm font-semibold text-primary mono uppercase tracking-widest mb-3">
-                    {item.title}
+                    {item?.title}
                   </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{item.body}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{item?.body}</p>
                 </article>
               </Reveal>
             ))}

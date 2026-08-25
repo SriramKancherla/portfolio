@@ -123,8 +123,7 @@ export const Projects = () => {
                   onClick={() => setActive(f)}
                   className={`text-sm transition-colors ${
                     active === f
-                      ? "text-primary font-medium"
-                      : "text-muted-foreground hover:text-foreground"
+                      ? "text-primary font-medium" :"text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {f}

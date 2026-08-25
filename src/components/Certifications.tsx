@@ -72,17 +72,17 @@ export const Certifications = () => {
         </Reveal>
 
         <ul className="divide-y divide-border/70 border-t border-border/70">
-          {items.map((it, i) => (
-            <Reveal key={it.title} delay={i * 40}>
+          {items?.map((it, i) => (
+            <Reveal key={it?.title} delay={i * 40}>
               <li className="py-5 md:py-6 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                 <div className="min-w-0">
-                  <h3 className="font-medium text-foreground leading-snug">{it.title}</h3>
-                  <p className="text-sm text-muted-foreground mt-1">{it.issuer}</p>
+                  <h3 className="font-medium text-foreground leading-snug">{it?.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">{it?.issuer}</p>
                 </div>
                 <div className="flex items-center gap-4 shrink-0 sm:text-right">
-                  <span className="mono text-xs text-muted-foreground">{it.date}</span>
+                  <span className="mono text-xs text-muted-foreground">{it?.date}</span>
                   <a
-                    href={it.url}
+                    href={it?.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1 text-sm text-primary hover:underline"

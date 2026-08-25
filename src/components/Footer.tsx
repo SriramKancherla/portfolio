@@ -11,7 +11,7 @@ export const Footer = () => {
             <div className="font-display font-semibold inline-flex items-center gap-2">
               Sriram Kancherla
               <span className="footer-hat" title="One Piece is real">
-                <StrawHat landed className="w-5 h-4" />
+                <StrawHat landed style={{}} className="w-5 h-4" />
               </span>
             </div>
             <div className="text-xs text-muted-foreground mono">{ROLE_LINE} · VIT Vellore</div>
@@ -29,7 +29,7 @@ export const Footer = () => {
             </a>
           </div>
 
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Sriram Kancherla. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© {new Date()?.getFullYear()} Sriram Kancherla. All rights reserved.</p>
         </div>
       </div>
     </footer>

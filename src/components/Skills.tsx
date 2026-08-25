@@ -174,8 +174,7 @@ function StackBadge({
         highlighted
           ? active
             ? "border-primary/50 bg-primary/15 text-foreground scale-105 shadow-[0_0_20px_-8px_hsl(var(--primary)/0.6)]"
-            : "border-border bg-secondary/50 text-foreground/90"
-          : "border-border/40 bg-secondary/20 text-muted-foreground/40 scale-[0.97] blur-[0.3px]"
+            : "border-border bg-secondary/50 text-foreground/90" :"border-border/40 bg-secondary/20 text-muted-foreground/40 scale-[0.97] blur-[0.3px]"
       }`}
     >
       {showFallback ? (
@@ -247,8 +246,7 @@ export const Skills = () => {
                         <span
                           className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border transition-all duration-300 ${
                             isActive
-                              ? "border-primary/40 bg-primary/15"
-                              : "border-border bg-secondary/40 group-hover:border-primary/30"
+                              ? "border-primary/40 bg-primary/15" :"border-border bg-secondary/40 group-hover:border-primary/30"
                           }`}
                         >
                           <Icon size={18} className={isActive ? "text-primary" : "text-muted-foreground"} />
