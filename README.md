@@ -1,122 +1,72 @@
-# Sriram Kancherla — Portfolio
+# Portfolio — Sriram Kancherla
 
-Minimalist cinematic portfolio for **Sriram Kancherla** — ML Intern @ FlyRank AI and CS undergrad at VIT Vellore.
+Personal portfolio site. The repo is split into three parts, each with a single
+job.
 
-**Live site:** [sriramkancherla.pages.dev](https://sriramkancherla.pages.dev)
+```
+Portfolio/
+├── frontend/     Next.js app — everything the browser sees
+├── backend/      Cloudflare Worker — server code, deployed separately
+└── data/         Résumé, certificates, images, design source
+```
 
-> GitHub Pages stub: [sriramkancherla.github.io/portfolio/](https://sriramkancherla.github.io/portfolio/) redirects to Cloudflare.
-
----
-
-## Tech stack
-
-| Layer | Choice |
-|-------|--------|
-| Framework | **Next.js** (App Router) + **TypeScript** |
-| Styling | **Tailwind CSS 3** + CSS custom properties |
-| UI | **shadcn/ui** (Radix) |
-| Fonts | **next/font** — Space Grotesk, Inter, JetBrains Mono |
-| Host | **Cloudflare Workers** via [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare) |
-| Contact | Next.js Route Handler → Web3Forms (secret server-side) |
-
----
-
-## Signature interactions
-
-- **SK curtain intro** (`NameIntro.tsx`) — full-screen preloader: letters fade in, conic glow sweeps once, panel lifts to reveal the hero. Once per session; respects `prefers-reduced-motion`; safety timeout.
-- **Kolam band** — single `PatternDivider` after the hero (not tiled on every section).
-- **Straw hat** — tiny footer easter egg (not the opening moment).
-- **Scroll reveals** (`Reveal.tsx`) — staggered fade/slide-in.
-- **Skills marquee** — one ticker in Skills.
-
-Ambient backdrop is **film grain only** — no stacked aurora/blob/node canvases.
-
----
-
-## Routes
-
-| Path | Purpose |
-|------|---------|
-| `/` | Home (hero + sections) |
-| `/resume` | Embedded PDF viewer |
-| `/api/contact` | Contact form proxy (POST) |
-
----
-
-## Local development
+## Quick start
 
 ```bash
-npm install
-npm run dev          # Next.js at http://localhost:3000
+npm run install:all     # installs frontend and backend dependencies
+npm run dev             # frontend at http://localhost:3000
+npm run backend:dev     # backend at http://localhost:8787
 ```
 
-Optional local contact secret (`.dev.vars`, gitignored):
+Root scripts delegate to the right folder, so you rarely need to `cd`.
 
-```
-NEXTJS_ENV=development
-WEB3FORMS_ACCESS_KEY=your-key
-```
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Frontend dev server |
+| `npm run build` | Production build of the frontend |
+| `npm run deploy` | Deploy the frontend to Cloudflare |
+| `npm run sync:documents` | Copy `data/documents/` into the frontend |
+| `npm run backend:dev` | Backend dev server |
+| `npm run backend:deploy` | Deploy the Worker |
 
-Preview in the Workers runtime:
+## frontend/
 
-```bash
-npm run preview      # opennextjs-cloudflare build + preview
-```
+Next.js on Cloudflare Workers via OpenNext. Self-contained — its own
+`package.json`, `wrangler.jsonc`, and `vercel.json`, so it deploys on its own
+from this subdirectory.
 
----
+The contact form lives here at `src/app/api/contact/route.ts`, not in
+`backend/`. Next.js route handlers have to sit inside the Next app to deploy
+with it; see `backend/README.md`.
 
-## Build & deploy (Cloudflare Workers)
+**Deploy settings:** if you deploy through a dashboard rather than the CLI, set
+the project's root directory to `frontend`.
 
-```bash
-npm run build        # next build (runs prebuild: docs sync, sitemap, OG image)
-npm run deploy       # OpenNext build + deploy Worker named sriramkancherla
-```
+## backend/
 
-Set secrets / build env:
+A standalone Cloudflare Worker with one route (`GET /health`) and a CORS layer
+ready for real endpoints. Add routes to the `routes` map in `src/index.ts`.
 
-```bash
-wrangler secret put WEB3FORMS_ACCESS_KEY
-# Build-time (CI / Cloudflare dashboard):
-# NEXT_PUBLIC_SITE_URL=https://sriramkancherla.pages.dev
-```
+Before it goes live, add the deployed frontend origin to `ALLOWED_ORIGINS` in
+`backend/wrangler.jsonc` — it currently only allows `localhost:3000`.
 
-OpenNext deploys a **Worker**, not a static Pages `dist` folder. Point your custom domain / `pages.dev` hostname at the Worker if the dashboard still expects classic Pages.
+## data/
 
----
+Source of truth for personal documents and assets. Nothing here is served
+directly.
 
-## Environment variables
+`frontend/scripts/sync-documents.mjs` copies every PDF from `data/documents/`
+into `frontend/public/documents/` before `dev` and `build`, which is why
+`frontend/public/documents/` is gitignored — it is generated, not authored.
 
-| Name | Where | Purpose |
-|------|--------|---------|
-| `NEXT_PUBLIC_SITE_URL` | Build | Canonical / OG / sitemap base URL |
-| `WEB3FORMS_ACCESS_KEY` | Runtime secret | Contact form — **never** `NEXT_PUBLIC_` |
+**To add a certificate:** drop the PDF in `data/documents/` with the filename
+the site expects, then add its row in
+`frontend/src/components/Certifications.tsx`.
 
----
+See `data/README.md` for the full layout.
 
-## Project structure
+## _to_delete/
 
-```
-src/app/                 App Router (layout, pages, api/contact)
-src/components/          UI sections + shadcn primitives
-src/lib/                 site config, intro session helpers
-public/                  favicon, patterns, documents, og-image
-scripts/                 sync-documents, sitemap, OG image
-open-next.config.ts      OpenNext Cloudflare adapter
-wrangler.jsonc           Worker config
-next.config.ts           Next + security headers + OpenNext dev init
-```
-
----
-
-## Security
-
-- Contact key only on the server (`/api/contact`).
-- Security headers in `next.config.ts` (CSP, frame deny, nosniff, referrer, permissions).
-- `/documents/*` served with `X-Robots-Tag: noindex`.
-- `personal/` and `public/documents/` gitignored for source PDFs; documents sync at build time.
-
----
-
-## Accessibility
-
-Motion disabled under `prefers-reduced-motion`. Intro never blocks content forever (stall-safety timeout).
+The previous root-level app, superseded by `frontend/`. It is also in git
+history, so this folder is only a convenience — delete it once you are happy
+with the new build.

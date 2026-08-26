@@ -6,19 +6,45 @@ on:
   pull_request:
 
 jobs:
-  build:
+  frontend:
+    name: Frontend build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version-file: .node-version
+          node-version-file: frontend/.node-version
           cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
       - run: npm ci
 
+      # prebuild syncs ../data/documents into public/documents, so the checkout
+      # must include data/ — it does, it's committed.
       - name: Production build (Next.js)
         run: npm run build
         env:
           NEXT_PUBLIC_SITE_URL: https://sriramkancherla.pages.dev
+
+  backend:
+    name: Backend typecheck
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.node-version
+
+      # No committed lockfile yet — switch to `npm ci` with caching once
+      # `npm install` has been run in backend/ and the lockfile is committed.
+      - run: npm install
+
+      - run: npm run typecheck

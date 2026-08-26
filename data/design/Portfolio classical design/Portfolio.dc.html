@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>Sriram Kancherla — Portfolio</title>
+<link rel="stylesheet" href="_ds/classical-ff0e6cd0-6285-4514-b1a4-05774b6f84fd/styles.css">
+<script src="_ds/classical-ff0e6cd0-6285-4514-b1a4-05774b6f84fd/_ds_bundle.js"></script>
+<script src="./image-slot.js"></script>
+<style>
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; text-wrap: pretty; }
+</style>
+</helmet>
+
+<div style="background:var(--color-bg);color:var(--color-text);min-height:100vh">
+
+  <nav class="nav" style="position:sticky;top:0;z-index:10;background:var(--color-bg);flex-wrap:wrap">
+    <span class="nav-brand">Sriram Kancherla</span>
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <sc-if value="{{ showCertifications }}"><a href="#certifications">Certifications</a></sc-if>
+    <a href="#contact">Contact</a>
+    <a class="btn btn-primary" href="assets/documents/sriram-kancherla-resume.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
+  </nav>
+
+  <div style="max-width:1160px;margin:0 auto;padding:0 clamp(20px,5vw,64px)">
+
+    <section id="hero" style="padding:clamp(56px,10vw,120px) 0 64px;text-align:center">
+      <p style="font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--color-accent-700);margin:0 0 22px">Computer Science · VIT Vellore</p>
+      <h1 style="font-family:var(--font-heading);font-weight:400;font-size:clamp(48px,8vw,92px);line-height:1.05;letter-spacing:-0.01em;margin:0">Sriram Kancherla</h1>
+      <p style="font-size:clamp(16px,2vw,19px);color:var(--color-accent-700);margin:18px 0 0">ML Engineer · Data Analyst · Perpetual Student</p>
+      <p style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:color-mix(in srgb, var(--color-text) 65%, transparent);margin:16px 0 0">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+        Vellore, Tamil Nadu, India
+      </p>
+      <p style="max-width:640px;margin:24px auto 0;font-size:17px;line-height:1.7;color:color-mix(in srgb, var(--color-text) 80%, transparent)">
+        CS student at VIT Vellore who turns messy data into ML systems that actually ship — across fintech, healthcare, and cybersecurity.
+      </p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:32px">
+        <a class="btn btn-primary" href="#projects">
+          View Projects
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a class="btn btn-secondary" href="assets/documents/sriram-kancherla-resume.pdf" target="_blank" rel="noopener noreferrer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+          Download Résumé
+        </a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/sriram-kancherla-80a7b028a/" target="_blank" rel="noopener noreferrer">Connect on LinkedIn</a>
+      </div>
+    </section>
+
+    <hr class="hr">
+
+    <section id="about" style="padding:64px 0">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px">
+        <span style="font-family:var(--font-heading);font-size:14px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">01</span>
+        <span style="height:1px;width:28px;background:var(--color-divider)"></span>
+        <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent)">About</span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:clamp(32px,5vw,56px);align-items:start">
+        <div>
+          <figure class="plate" style="width:170px;margin:0 0 28px">
+            <image-slot id="portrait" shape="rect" placeholder="Add a portrait" style="width:100%;aspect-ratio:3/4"></image-slot>
+          </figure>
+          <h2 style="font-size:clamp(28px,3.6vw,38px);margin:0 0 16px">CS undergrad at VIT.<br><span style="color:var(--color-accent-700)">Building with data.</span></h2>
+          <p style="font-size:16px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 82%, transparent);max-width:52ch;text-align:justify;hyphens:auto">Computer Science @ VIT Vellore (2023–2027) — obsessed with turning raw data into things people actually use, from training and evals to APIs, dashboards, and deployment.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+          <sc-for list="{{ highlights }}" as="item" hint-placeholder-count="4">
+            <div class="card">
+              <span class="card-kicker">{{ item.title }}</span>
+              <p style="margin:0;font-size:14px;line-height:1.65;color:color-mix(in srgb, var(--color-text) 78%, transparent)">{{ item.body }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <hr class="hr">
+
+    <section id="experience" style="padding:64px 0">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <span style="font-family:var(--font-heading);font-size:14px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">02</span>
+        <span style="height:1px;width:28px;background:var(--color-divider)"></span>
+        <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent)">Experience</span>
+      </div>
+      <h2 style="font-size:clamp(28px,3.6vw,38px);margin:0 0 12px">Where I've been building.</h2>
+      <p style="font-size:16px;color:color-mix(in srgb, var(--color-text) 75%, transparent);max-width:60ch;margin:0 0 20px">Research at NUS, plus an upcoming ML engineering internship at FlyRank AI — receipts included where I've got them.</p>
+      <div>
+        <sc-for list="{{ experiences }}" as="exp" hint-placeholder-count="2">
+          <article style="padding:28px 0;border-top:1px solid var(--color-divider)">
+            <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;font-size:12.5px;color:var(--color-accent-700);font-variant-numeric:tabular-nums;margin-bottom:8px">
+              <span>{{ exp.period }}</span><span>·</span><span>{{ exp.location }}</span>
+            </div>
+            <h3 style="font-size:22px;margin:0 0 4px">{{ exp.role }}</h3>
+            <p style="font-size:15px;font-weight:600;color:var(--color-accent-700);margin:0 0 12px">{{ exp.company }}</p>
+            <p style="font-size:15px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 82%, transparent);max-width:70ch;text-align:justify;hyphens:auto;margin:0 0 16px">{{ exp.description }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+              <sc-for list="{{ exp.tags }}" as="tag" hint-placeholder-count="3">
+                <span class="tag tag-outline">{{ tag }}</span>
+              </sc-for>
+            </div>
+            <sc-if value="{{ exp.hasDoc }}">
+              <a href="{{ exp.docUrl }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--color-accent)">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+                {{ exp.docLabel }}
+              </a>
+            </sc-if>
+          </article>
+        </sc-for>
+        <div style="border-top:1px solid var(--color-divider)"></div>
+      </div>
+    </section>
+
+    <hr class="hr">
+
+    <section id="projects" style="padding:64px 0">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <span style="font-family:var(--font-heading);font-size:14px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">03</span>
+        <span style="height:1px;width:28px;background:var(--color-divider)"></span>
+        <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent)">Projects</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px;margin-bottom:8px">
+        <h2 style="font-size:clamp(28px,3.6vw,38px);margin:0">Things I've built.</h2>
+        <div style="display:flex;gap:20px;flex-wrap:wrap">
+          <sc-for list="{{ filterTabs }}" as="f" hint-placeholder-count="5">
+            <button type="button" onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="5">
+          <article style="padding:28px 0;border-top:1px solid var(--color-divider)">
+            <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12.5px;color:color-mix(in srgb, var(--color-text) 60%, transparent);font-variant-numeric:tabular-nums;margin-bottom:8px">
+              <span>{{ p.period }}</span><span>·</span><span>{{ p.categoryLine }}</span>
+            </div>
+            <h3 style="font-size:22px;margin:0 0 10px">{{ p.title }}</h3>
+            <sc-if value="{{ p.highlightLive }}">
+              <a href="{{ p.liveUrl }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--color-accent);margin-bottom:10px">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                {{ p.liveLabel }}
+              </a>
+            </sc-if>
+            <p style="font-size:15px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 82%, transparent);max-width:72ch;text-align:justify;hyphens:auto;margin:0 0 14px">{{ p.description }}</p>
+            <p style="font-size:14px;color:color-mix(in srgb, var(--color-text) 65%, transparent);font-variant-numeric:tabular-nums;margin:0 0 6px">{{ p.metricsLine }}</p>
+            <p style="font-size:14px;color:color-mix(in srgb, var(--color-text) 65%, transparent);margin:0 0 18px">{{ p.techLine }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:20px">
+              <sc-if value="{{ p.hasLive }}">
+                <a href="{{ p.liveUrl }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--color-accent)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                  Live
+                </a>
+              </sc-if>
+              <sc-if value="{{ p.hasCode }}">
+                <a href="{{ p.codeUrl }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--color-accent)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+                  Code
+                </a>
+              </sc-if>
+              <sc-if value="{{ p.hasDetails }}">
+                <a href="{{ p.detailsUrl }}" target="{{ p.detailsTarget }}" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--color-accent)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                  {{ p.detailsLabel }}
+                </a>
+              </sc-if>
+            </div>
+          </article>
+        </sc-for>
+        <div style="border-top:1px solid var(--color-divider)"></div>
+      </div>
+    </section>
+
+    <hr class="hr">
+
+    <section id="skills" style="padding:64px 0">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <span style="font-family:var(--font-heading);font-size:14px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">04</span>
+        <span style="height:1px;width:28px;background:var(--color-divider)"></span>
+        <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent)">Skills</span>
+      </div>
+      <h2 style="font-size:clamp(28px,3.6vw,38px);margin:0 0 12px">Skills &amp; technologies.</h2>
+      <p style="font-size:15px;color:color-mix(in srgb, var(--color-text) 70%, transparent);max-width:60ch;margin:0 0 24px">Hover any category to see what's inside.</p>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(24px,4vw,40px);align-items:start">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ skillCategories }}" as="cat" hint-placeholder-count="6">
+            <div class="card" style="{{ cat.cardStyle }}" onMouseEnter="{{ cat.onEnter }}" onMouseLeave="{{ cat.onLeave }}">
+              <h3 class="card-title" style="margin:0">{{ cat.label }}</h3>
+              <p style="margin:0;font-size:12.5px;color:color-mix(in srgb, var(--color-text) 60%, transparent)">{{ cat.skills.length }} tools</p>
+            </div>
+          </sc-for>
+        </div>
+        <div class="card" style="min-height:280px">
+          <span class="card-kicker">Work Stack</span>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+            <sc-for list="{{ skillPool }}" as="s" hint-placeholder-count="20">
+              <span class="tag tag-outline" style="{{ s.style }}">{{ s.name }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <sc-if value="{{ showCertifications }}" hint-placeholder-val="{{ true }}">
+      <hr class="hr">
+      <section id="certifications" style="padding:64px 0">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+          <span style="font-family:var(--font-heading);font-size:14px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">05</span>
+          <span style="height:1px;width:28px;background:var(--color-divider)"></span>
+          <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent)">Certifications</span>
+        </div>
+        <h2 style="font-size:clamp(28px,3.6vw,38px);margin:0 0 12px">Certifications &amp; achievements.</h2>
+        <p style="font-size:16px;color:color-mix(in srgb, var(--color-text) 75%, transparent);max-width:60ch;margin:0 0 20px">The receipts — Microsoft, IIT Kanpur, Oracle, AWS, and more.</p>
+        <div>
+          <sc-for list="{{ certifications }}" as="c" hint-placeholder-count="9">
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:baseline;padding:18px 0;border-top:1px solid var(--color-divider)">
+              <div>
+                <p style="margin:0;font-size:15px;font-weight:600">{{ c.title }}</p>
+                <p style="margin:4px 0 0;font-size:13.5px;color:color-mix(in srgb, var(--color-text) 65%, transparent)">{{ c.issuer }}</p>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px">
+                <span style="font-size:12.5px;color:color-mix(in srgb, var(--color-text) 55%, transparent);font-variant-numeric:tabular-nums">{{ c.date }}</span>
+                <a href="{{ c.url }}" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:5px;font-size:13.5px;color:var(--color-accent)">
+                  View
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                </a>
+              </div>
+            </div>
+          </sc-for>
+          <div style="border-top:1px solid var(--color-divider)"></div>
+        </div>
+      </section>
+    </sc-if>
+
+    <hr class="hr">
+
+    <section id="contact" style="padding:64px 0">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:20px">
+        <span style="font-family:var(--font-heading);font-size:14px;color:var(--color-accent-700);font-variant-numeric:tabular-nums">06</span>
+        <span style="height:1px;width:28px;background:var(--color-divider)"></span>
+        <span style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:color-mix(in srgb, var(--color-text) 60%, transparent)">Contact</span>
+      </div>
+      <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(32px,5vw,56px);align-items:start">
+        <div>
+          <h2 style="font-size:clamp(28px,3.6vw,38px);margin:0 0 16px">Let's build something together.</h2>
+          <p style="font-size:16px;line-height:1.75;color:color-mix(in srgb, var(--color-text) 82%, transparent);max-width:56ch;text-align:justify;hyphens:auto">Open to internships, full-time roles, research collabs, and interesting projects in ML, data analytics, and AI engineering. Based in Vellore, Tamil Nadu.</p>
+          <a class="btn btn-primary" href="mailto:kancherlasriram2006@gmail.com" style="margin-top:20px">Say hello</a>
+        </div>
+        <div style="{{ contactRowStyle }}">
+          <a href="mailto:kancherlasriram2006@gmail.com" style="display:inline-flex;align-items:center;gap:10px;font-size:14.5px;color:var(--color-text)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            kancherlasriram2006@gmail.com
+          </a>
+          <a href="https://www.linkedin.com/in/sriram-kancherla-80a7b028a/" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:10px;font-size:14.5px;color:var(--color-text)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+            linkedin.com/in/sriram-kancherla
+          </a>
+          <a href="https://github.com/sriramkancherla" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:10px;font-size:14.5px;color:var(--color-text)">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+            github.com/sriramkancherla
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer style="border-top:1px solid var(--color-divider);padding:28px 0 48px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:16px">
+      <div>
+        <p style="margin:0;font-family:var(--font-heading);font-weight:600;font-size:16px">Sriram Kancherla</p>
+        <p style="margin:2px 0 0;font-size:12.5px;color:color-mix(in srgb, var(--color-text) 60%, transparent)">ML Intern @ FlyRank AI · VIT Vellore</p>
+      </div>
+      <div style="display:flex;gap:18px">
+        <a href="https://github.com/sriramkancherla" target="_blank" rel="noopener noreferrer" aria-label="GitHub" style="color:var(--color-text)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/sriram-kancherla-80a7b028a/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" style="color:var(--color-text)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <a href="mailto:kancherlasriram2006@gmail.com" aria-label="Email" style="color:var(--color-text)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        </a>
+      </div>
+      <p style="margin:0;font-size:12.5px;color:color-mix(in srgb, var(--color-text) 55%, transparent)">© {{ year }} Sriram Kancherla. All rights reserved.</p>
+    </footer>
+
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultProjectFilter&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;All&quot;,&quot;options&quot;:[&quot;All&quot;,&quot;ML&quot;,&quot;Analytics&quot;,&quot;AI&quot;,&quot;Full-Stack&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Projects&quot;},&quot;showCertifications&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Sections&quot;},&quot;contactLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;inline&quot;,&quot;options&quot;:[&quot;stacked&quot;,&quot;inline&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Contact&quot;}}">
+class Component extends DCLogic {
+  state = { activeFilter: null };
+
+  highlights = [
+    { title: "Education", body: "B.Tech in CS & Engineering at VIT Vellore (Aug 2023 – Aug 2027). Deep in DSA, OOP, NLP, and AI/ML coursework." },
+    { title: "Focus Areas", body: "ML, data analytics, and fintech — plus side quests into computer vision, NLP, anomaly detection, and full-stack ML apps with FastAPI and Docker." },
+    { title: "Goal", body: "Build AI products that actually matter — solid ML engineering meets clean, scalable software design." },
+    { title: "Languages", body: "Native in English, Telugu & Tamil. Still leveling up my Hindi & French." },
+  ];
+
+  experiences = [
+    {
+      role: "Machine Learning Engineering Intern",
+      company: "FlyRank AI (FlyRank Corp.)",
+      period: "Jul 2026 — Aug 2026",
+      location: "Remote · 8 weeks",
+      description: "Landed a spot in FlyRank AI's ML Engineering Internship — 8 weeks (Jul 1 – Aug 26, 2026) of real ML engineering: experimentation, workflows, and pipelines built for production, not just notebooks.",
+      tags: ["Machine Learning", "ML Engineering", "FlyRank AI"],
+      hasDoc: false, docUrl: "", docLabel: "",
+    },
+    {
+      role: "Academic Intern",
+      company: "National University of Singapore (NUS)",
+      period: "Jun 2025",
+      location: "Singapore",
+      description: "Dug through large-scale user activity and system logs to spot behavioral patterns and insider threat signals. Built and evaluated an ML model for insider threat detection using big data analytics and deep learning, then presented the findings under faculty supervision.",
+      tags: ["EDA", "Insider Threat Detection", "Deep Learning", "Research"],
+      hasDoc: true, docUrl: "https://credentials.nus.edu.sg/profile/sriramkancherla155324/wallet", docLabel: "NUS Digital Certificate",
+    },
+  ];
+
+  rawProjects = [
+    {
+      title: "Image Based Wafer Map Pattern Intelligence",
+      period: "Feb 2026 — Present",
+      category: ["ML", "AI"],
+      description: "End-to-end computer vision pipeline that classifies silicon wafer defect patterns with a CNN — handling variable wafer sizes, gnarly legacy dataset formats, and confusion-matrix-backed evals. Real ML engineering problems, real semiconductor yield stakes.",
+      tech: ["Python", "PyTorch", "OpenCV", "NumPy", "Pandas", "scikit-learn"],
+      metrics: [{ label: "Defect Classes", value: "8+" }, { label: "Train/Test Split", value: "80/20" }, { label: "Domain", value: "Semiconductor" }],
+      codeUrl: "https://github.com/SriramKancherla/Image-based-Wafer-Map-Pattern-intelligence",
+    },
+    {
+      title: "Ainvestify — Stock Insights",
+      period: "Dec 2025 — Present",
+      category: ["ML", "Full-Stack", "Analytics"],
+      description: "Full-stack stock analysis platform with ML-driven fundamentals scoring, news sentiment, and interactive charts — plus an AI chatbot, all backed by production FastAPI endpoints. Live on Render, so go ahead and try it.",
+      tech: ["Python", "FastAPI", "XGBoost", "TensorFlow", "Docker", "REST APIs"],
+      metrics: [{ label: "ML Models", value: "4+" }, { label: "API Endpoints", value: "5" }, { label: "Deployed", value: "Render" }],
+      codeUrl: "https://github.com/SriramKancherla/AInvestify",
+      liveUrl: "https://ainvestify.onrender.com",
+      highlightLive: true,
+      liveLabel: "ainvestify.onrender.com",
+    },
+    {
+      title: "Shiksha Sahayak",
+      period: "Feb 2026",
+      category: ["AI", "Full-Stack"],
+      description: "Full-stack learning platform running entirely on local infrastructure with a self-hosted LLM. Teachers upload study material and get auto-generated worksheets and assessments; students get a context-aware AI tutor powered by FAISS semantic search and embeddings.",
+      tech: ["FastAPI", "Streamlit", "MySQL", "FAISS", "JWT", "Firebase"],
+      metrics: [{ label: "Auth", value: "JWT" }, { label: "Search", value: "FAISS" }, { label: "Privacy", value: "Local LLM" }],
+      codeUrl: "https://github.com/SriramKancherla/Shiksha-Sahayak",
+    },
+    {
+      title: "Healthcare Analytics — IITK D&G Capstone",
+      period: "Sep 2025 — Nov 2025",
+      category: ["ML", "Analytics"],
+      description: "Predicts 30-day hospital readmission risk from patient demographics, medical history, admission details, procedures, and discharge outcomes — helping hospitals catch high-risk patients before costs pile up.",
+      tech: ["Machine Learning", "Data Analytics", "Python", "scikit-learn"],
+      metrics: [{ label: "Risk Window", value: "30 days" }, { label: "Data Sources", value: "6+" }, { label: "Partner", value: "IITK D&G" }],
+      codeUrl: "https://github.com/SriramKancherla/Healthcare-Management---IITK-D-G-Capstone-Project",
+      detailsUrl: "assets/documents/iitk-dg-professional-certificate.pdf",
+      detailsLabel: "Certificate",
+    },
+    {
+      title: "Insider Threat Detection",
+      period: "Aug 2025 — Oct 2025",
+      category: ["ML", "AI"],
+      description: "A User Behavior Analytics system built on the CERT Insider Threat dataset — fusing logon, email, HTTP, file, and USB logs into one dataset, engineering behavioral features, and stacking a hybrid anomaly pipeline with Autoencoders, Isolation Forest, and LightGBM.",
+      tech: ["Python", "LightGBM", "Autoencoders", "Isolation Forest", "UBA"],
+      metrics: [{ label: "Log Sources", value: "5" }, { label: "Models", value: "3" }, { label: "Features", value: "120+" }],
+      detailsUrl: "https://credentials.nus.edu.sg/profile/sriramkancherla155324/wallet",
+      detailsLabel: "NUS Certificate",
+    },
+  ];
+
+  skillCategories = [
+    { id: "frontend", label: "Frontend", skills: ["HTML", "CSS", "JavaScript", "React.js", "React Native"] },
+    { id: "backend", label: "Backend", skills: ["JavaScript", "Node.js", "Firebase", "Python", "FastAPI", "REST APIs", "Postman API"] },
+    { id: "devops", label: "DevOps", skills: ["Docker", "Git", "GitHub", "CI/CD"] },
+    { id: "databases", label: "Databases", skills: ["MySQL", "SQL", "FAISS"] },
+    { id: "cloud", label: "Cloud", skills: ["Azure", "AWS", "OCI", "AWS Glue", "Amazon S3"] },
+    { id: "other", label: "Other", skills: ["Python", "MATLAB", "C/C++", "Tableau", "Excel", "TensorFlow", "PyTorch", "Java", "scikit-learn"] },
+  ];
+
+  certifications = [
+    { title: "Microsoft Azure Fundamentals (AZ-900)", issuer: "Microsoft", date: "Jul 2026", url: "https://www.linkedin.com/in/sriram-kancherla-80a7b028a/details/certifications/" },
+    { title: "Professional Certificate in Data Analytics and Generative AI", issuer: "E&ICT Academy, IIT Kanpur", date: "Dec 2025", url: "assets/documents/iitk-dg-professional-certificate.pdf" },
+    { title: "Oracle Cloud Infrastructure Generative AI Professional", issuer: "Oracle", date: "Jul 2025", url: "assets/documents/oci-genai-professional.pdf" },
+    { title: "Supervised Machine Learning: Regression and Classification", issuer: "DeepLearning.AI · Coursera", date: "May 2025", url: "assets/documents/supervised-ml-coursera.pdf" },
+    { title: "NumPy", issuer: "CodeChef", date: "Mar 2025", url: "https://codechef.com/certificates/public/508d224" },
+    { title: "Pandas", issuer: "CodeChef", date: "Mar 2025", url: "https://codechef.com/certificates/public/84eb5d2" },
+    { title: "AWS AI Practitioner Challenge", issuer: "Amazon Web Services", date: "Jun 2025", url: "assets/documents/aws-ai-practitioner.pdf" },
+    { title: "Docker Foundations Professional", issuer: "Docker", date: "Mar 2025", url: "assets/documents/docker-foundations.pdf" },
+    { title: "Foundations of GenAI", issuer: "Udacity", date: "Dec 2024", url: "assets/documents/foundations-genai-udacity.pdf" },
+  ];
+
+  filters = ["All", "ML", "Analytics", "AI", "Full-Stack"];
+
+  setFilter = (f) => this.setState({ activeFilter: f });
+  setActiveSkillCat = (id) => this.setState({ activeSkillCat: id });
+
+  renderVals() {
+    const activeFilter = this.state.activeFilter ?? (this.props.defaultProjectFilter ?? "All");
+
+    const filterTabs = this.filters.map((f) => {
+      const isActive = f === activeFilter;
+      return {
+        label: f,
+        onClick: () => this.setFilter(f),
+        style: `padding:6px 0;background:none;border:none;border-bottom:2px solid ${isActive ? "var(--color-accent)" : "transparent"};color:${isActive ? "var(--color-accent)" : "var(--color-text)"};font-family:var(--font-heading);font-size:14px;font-weight:600;cursor:pointer`,
+      };
+    });
+
+    const activeSkillCat = this.state.activeSkillCat ?? null;
+    const skillCategories = this.skillCategories.map((cat) => ({
+      ...cat,
+      isActive: cat.id === activeSkillCat,
+      onEnter: () => this.setActiveSkillCat(cat.id),
+      onLeave: () => this.setActiveSkillCat(null),
+      cardStyle: `cursor:default;transition:border-color .2s,background .2s;${cat.id === activeSkillCat ? "border-color:var(--color-accent);background:color-mix(in srgb, var(--color-accent) 6%, transparent)" : ""}`,
+    }));
+
+    const skillPoolMap = new Map();
+    for (const cat of this.skillCategories) {
+      for (const skill of cat.skills) {
+        if (!skillPoolMap.has(skill)) skillPoolMap.set(skill, []);
+        skillPoolMap.get(skill).push(cat.id);
+      }
+    }
+    const skillPool = Array.from(skillPoolMap.entries()).map(([name, cats]) => {
+      const dimmed = activeSkillCat !== null && !cats.includes(activeSkillCat);
+      const lit = activeSkillCat !== null && cats.includes(activeSkillCat);
+      return {
+        name,
+        style: `transition:opacity .2s,border-color .2s,color .2s,transform .2s;opacity:${dimmed ? "0.32" : "1"};${lit ? "border-color:var(--color-accent);color:var(--color-accent-700);transform:scale(1.04)" : ""}`,
+      };
+    });
+
+    const filtered = activeFilter === "All" ? this.rawProjects : this.rawProjects.filter((p) => p.category.includes(activeFilter));
+
+    const projects = filtered.map((p) => ({
+      ...p,
+      categoryLine: p.category.join(", "),
+      metricsLine: p.metrics.map((m) => `${m.value} ${m.label}`).join(" · "),
+      techLine: p.tech.join(" · "),
+      hasLive: !!p.liveUrl && !p.highlightLive,
+      hasCode: !!p.codeUrl,
+      hasDetails: !!p.detailsUrl,
+      detailsTarget: p.detailsUrl && p.detailsUrl.startsWith("http") ? "_blank" : "_blank",
+    }));
+
+    return {
+      highlights: this.highlights,
+      experiences: this.experiences,
+      filterTabs,
+      projects,
+      skillCategories,
+      skillPool,
+      certifications: this.certifications,
+      showCertifications: this.props.showCertifications ?? true,
+      contactRowStyle: (this.props.contactLayout ?? "stacked") === "inline"
+        ? "display:flex;flex-direction:row;flex-wrap:wrap;gap:24px"
+        : "display:flex;flex-direction:column;gap:14px",
+      year: new Date().getFullYear(),
+    };
+  }
+}
+</script>
+</body>
+</html>

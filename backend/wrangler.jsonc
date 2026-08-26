@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sriramkancherla-backend",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+
+  // Comma-separated list of origins allowed to call this Worker.
+  // Add the deployed frontend origin here before going live.
+  "vars": {
+    "ALLOWED_ORIGINS": "http://localhost:3000"
+  }
+
+  // Secrets are NOT set here. Use `wrangler secret put NAME`, or put them in
+  // .dev.vars for local development. See .dev.vars.example.
+}
