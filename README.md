@@ -21,7 +21,7 @@ npm run dev             # frontend at http://localhost:3000
 | Command | What it does |
 | --- | --- |
 | `npm run dev` | Frontend dev server |
-| `npm run build` | Production build of the frontend |
+| `npm run build` | Production OpenNext build of the frontend (installs `frontend/` deps first) |
 | `npm run deploy` | Deploy the frontend to Cloudflare (OpenNext Worker) |
 | `npm run sync:documents` | Copy `data/documents/` into the frontend |
 | `npm run backend:dev` | Backend dev server |
@@ -55,3 +55,5 @@ See `data/README.md` for the full layout.
 GitHub is still configured to publish from the **`/docs`** folder on `main` (for `github.io/portfolio/` redirects). That folder is **not** the Next.js app — it only contains static redirect stubs to [sriramkancherla.pages.dev](https://sriramkancherla.pages.dev). The `.nojekyll` file skips Jekyll so the build does not fail on an empty site.
 
 The live portfolio is deployed from **`frontend/`** to Cloudflare Workers via OpenNext.
+
+**Cloudflare Pages (Git):** leave the project root at the **repository root** with build command `npm run build`. The root `prebuild` runs `npm ci --prefix frontend`, then `opennextjs-cloudflare build`. Root `wrangler.jsonc` points at `frontend/.open-next/` so the Workers adapter is detected. Set `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in the Cloudflare project environment.
