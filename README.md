@@ -49,3 +49,9 @@ Source of truth for PDFs and assets. Nothing here is served directly.
 `frontend/scripts/sync-documents.mjs` copies PDFs from `data/documents/` into `frontend/public/documents/` before `dev` and `build`. Files in `_originals/` are never copied. Private letters (e.g. internship confirmations) belong in `_originals/`, not the public documents folder.
 
 See `data/README.md` for the full layout.
+
+## GitHub Pages (`docs/`)
+
+GitHub is still configured to publish from the **`/docs`** folder on `main` (for `github.io/portfolio/` redirects). That folder is **not** the Next.js app — it only contains static redirect stubs to [sriramkancherla.pages.dev](https://sriramkancherla.pages.dev). The `.nojekyll` file skips Jekyll so the build does not fail on an empty site.
+
+The live portfolio is deployed from **`frontend/`** to Cloudflare Workers via OpenNext.
