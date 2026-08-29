@@ -7,6 +7,15 @@ import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/site";
 
+/**
+ * Web3Forms rejects server-side submissions on the free plan ("Use our API in
+ * client side..."), so the browser posts straight to them. Their access key is
+ * public by design — protect it with the domain allowlist in the Web3Forms
+ * dashboard, not by hiding it.
+ */
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY ?? "";
+
 const LIMITS = { name: 100, email: 254, subject: 200, message: 5000 } as const;
 const isValidEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
@@ -55,28 +64,49 @@ export const Contact = () => {
       return;
     }
 
+    if (!ACCESS_KEY) {
+      console.error(
+        "[contact] NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY is empty. It is inlined at " +
+          "compile time — restart the dev server after changing .env.local.",
+      );
+      toast.error("That didn't send. The form isn't connected yet.", {
+        description: `Email me directly at ${EMAIL}.`,
+      });
+      return;
+    }
+
     setSending(true);
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch(WEB3FORMS_ENDPOINT, {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ name, email, subject: subject || "Portfolio contact", message, botcheck }),
+        body: JSON.stringify({
+          access_key: ACCESS_KEY,
+          name: name || "Portfolio visitor",
+          email,
+          subject: subject || "Portfolio contact",
+          message,
+          replyto: email,
+          from_name: "Portfolio — Sriram Kancherla",
+          botcheck,
+        }),
       });
 
       const result = await res.json().catch(() => ({} as { success?: boolean; message?: string }));
 
       if (!res.ok || !result.success) {
-        if (res.status === 503) {
-          window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(subject || "Portfolio contact")}&body=${encodeURIComponent(message)}`;
-          return;
-        }
+        // Print the raw upstream answer — a toast truncates the useful part.
+        console.error("[contact] Web3Forms rejected:", res.status, result);
         throw new Error(result.message || "Failed to send.");
       }
 
       toast.success("Sent. I'll get back to you.");
       form.reset();
-    } catch {
-      toast.error("That didn't send. Email me directly instead.");
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "Something went wrong.";
+      toast.error(`That didn't send. ${reason}`, {
+        description: `Email me directly at ${EMAIL}.`,
+      });
     } finally {
       setSending(false);
     }
@@ -84,7 +114,6 @@ export const Contact = () => {
 
   return (
     <section id="contact" aria-labelledby="contact-heading">
-      <div className="hairline" />
       <div className="section-container section-spacing">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 max-w-5xl">
 

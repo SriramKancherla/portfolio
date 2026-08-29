@@ -10,7 +10,6 @@ import { Skills } from "@/components/Skills";
 import { Certifications } from "@/components/Certifications";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
-import { PatternDivider } from "@/components/PatternDivider";
 import { hasIntroCompleted } from "@/lib/intro";
 
 function isIntroDoneInitially() {
@@ -31,7 +30,6 @@ export default function HomePage() {
         <main>
           <Hero onIntroComplete={() => setIntroDone(true)} />
           <div className={introDone ? undefined : "hidden"} aria-hidden={!introDone}>
-            <PatternDivider />
             <About />
             <Experience />
             <Projects />

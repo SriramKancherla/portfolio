@@ -30,6 +30,11 @@ frontend/public/og-image.png
 # Staged for manual deletion — superseded by frontend/
 _to_delete/
 
+# Local archives / originals not for the repo
+data/**/*.tar.gz
+data/images/*-original*
+data/documents/_originals/
+
 # Logs
 logs/
 *.log
@@ -45,3 +50,6 @@ pnpm-debug.log*
 .DS_Store
 *.swp
 *.swo
+
+# Temporary local probe — contains the access key
+frontend/public/web3forms-test.html

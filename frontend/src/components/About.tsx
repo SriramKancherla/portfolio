@@ -4,7 +4,7 @@ import { SectionEyebrow } from "./SectionEyebrow";
 const cards = [
   {
     kicker: "EDUCATION",
-    body: "B.Tech in Computer Science & Engineering, VIT Vellore — Aug 2023 to Aug 2027, currently final year. Coursework in DSA, OOP, NLP, and AI/ML. CGPA 7.29/10.",
+    body: "B.Tech in Computer Science & Engineering, VIT Vellore — Aug 2023 to Aug 2027, currently in my final year. Coursework in DSA, OOP, NLP, and AI/ML.",
   },
   {
     kicker: "FOCUS",
@@ -12,7 +12,7 @@ const cards = [
   },
   {
     kicker: "GOAL",
-    body: "Build AI products people actually use — ideally ones that don't quietly fall over in production.",
+    body: "Work as an ML engineer on systems that run in production — with the pipelines, evaluation, and monitoring that keep them dependable.",
   },
   {
     kicker: "LANGUAGES",
@@ -23,7 +23,6 @@ const cards = [
 export const About = () => {
   return (
     <section id="about" aria-labelledby="about-heading">
-      <div className="hairline" />
       <div className="section-container section-spacing">
         <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] gap-12 lg:gap-16 items-start">
 
@@ -43,7 +42,7 @@ export const About = () => {
                   marginBottom: "1.25rem",
                 }}
               >
-                The short version.
+                What I work on.
               </h2>
               <p
                 style={{
@@ -53,7 +52,7 @@ export const About = () => {
                   fontSize: "1rem",
                 }}
               >
-                CS at VIT Vellore, now in my final year. I like the unglamorous half of machine learning — the pipelines, the feature engineering, the evaluation, the part where the model has to work for someone who isn't me. Most of what I've built has landed in finance, healthcare, and security, which wasn't the plan so much as what kept turning out to be interesting.
+I&apos;m a final-year Computer Science student at VIT Vellore. Most of my work sits between building a model and shipping it — data pipelines, feature engineering, evaluation, and the API or interface that makes the result usable. So far that has covered insider threat detection at NUS, hospital readmission risk, semiconductor defect classification, and an ML-driven stock screener.
               </p>
             </div>
           </Reveal>

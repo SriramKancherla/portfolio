@@ -1,20 +1,25 @@
 import { ExternalLink } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
-import { LINKEDIN_CERTS_URL } from "@/lib/site";
 
 const certifications = [
   {
     title: "AWS Certified Cloud Practitioner (CLF-C02)",
     issuer: "Amazon Web Services",
     date: "Aug 2026",
-    url: LINKEDIN_CERTS_URL,
+    url: "https://cp.certmetrics.com/amazon/en/public/verify/credential/4b4952d39ea84a0981cc3f9784f87c4b",
   },
   {
     title: "Microsoft Azure Fundamentals (AZ-900)",
     issuer: "Microsoft",
     date: "Jul 2026",
-    url: LINKEDIN_CERTS_URL,
+    url: "https://learn.microsoft.com/en-us/users/sriramkancherla-7782/credentials/dfc1c2459573f240",
+  },
+  {
+    title: "Docker Foundations Professional",
+    issuer: "Docker",
+    date: "Mar 2026",
+    url: "/documents/docker-foundations.pdf",
   },
   {
     title: "Professional Certificate in Data Analytics and Generative AI",
@@ -26,7 +31,8 @@ const certifications = [
     title: "Postman API Fundamentals Student Expert",
     issuer: "Postman",
     date: "Aug 2025",
-    url: LINKEDIN_CERTS_URL,
+    // Verifies without the identity__email query param, so the address stays private.
+    url: "https://badges.parchment.com/public/assertions/oLU0Ia-kQOqkxFDZW5DYHQ",
   },
   {
     title: "Oracle Cloud Infrastructure 2025 Certified Generative AI Professional",
@@ -59,12 +65,6 @@ const certifications = [
     url: "https://codechef.com/certificates/public/84eb5d2",
   },
   {
-    title: "Docker Foundations Professional",
-    issuer: "Docker",
-    date: "Mar 2025",
-    url: "/documents/docker-foundations.pdf",
-  },
-  {
     title: "Foundations of GenAI",
     issuer: "Udacity",
     date: "Dec 2024",
@@ -75,7 +75,6 @@ const certifications = [
 export const Certifications = () => {
   return (
     <section id="certifications" aria-labelledby="certifications-heading">
-      <div className="hairline" />
       <div className="section-container section-spacing">
         <Reveal>
           <SectionEyebrow index="05">CERTIFICATIONS</SectionEyebrow>

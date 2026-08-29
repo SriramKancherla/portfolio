@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, Inter_Tight, JetBrains_Mono } from "next/font/google";
 
 import { Providers } from "@/components/Providers";
 import { EMAIL, GITHUB_URL, LINKEDIN_URL } from "@/lib/site";
@@ -12,6 +12,13 @@ const inter = Inter({
   display: "swap",
 });
 
+const interTight = Inter_Tight({
+  subsets: ["latin"],
+  variable: "--font-display",
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
@@ -19,7 +26,8 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || "https://portfolio7967.builtwithrocket.new").replace(/\/$/, "");
+const DEFAULT_SITE_URL = "https://sriramkancherla.pages.dev";
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL).replace(/\/$/, "");
 
 const description =
   "I build machine learning systems that have to survive contact with production — mostly in finance, healthcare, and security. A couple of them are live right now.";
@@ -86,16 +94,12 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable}`} style={{ backgroundColor: "#0A0A0B" }}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
-</head>
-      <body style={{ backgroundColor: "#0A0A0B", color: "#F2F0ED" }}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${interTight.variable} ${jetbrainsMono.variable}`}
+      style={{ backgroundColor: "#08111C" }}
+    >
+      <body style={{ backgroundColor: "#08111C", color: "#E8EEF5" }}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { ArrowRight, FileText, MapPin } from "lucide-react";
 import Link from "next/link";
 import { NameIntro } from "./NameIntro";
+import { WaferField } from "./WaferField";
 import { LINKEDIN_URL, RESUME_PAGE_PATH, ROLES_LINE } from "@/lib/site";
 import { prepareHomeIntro, hasIntroCompleted, markIntroCompleted } from "@/lib/intro";
 
@@ -68,10 +69,9 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
     const dy = e.clientY - cy;
     const dist = Math.sqrt(dx * dx + dy * dy);
     const radius = 40;
-    if (dist < radius) {
-      const strength = (1 - dist / radius) * 6;
-      el.style.transform = `translate(${(dx / dist) * strength}px, ${(dy / dist) * strength}px)`;
-    }
+    if (dist < 1 || dist >= radius) return;
+    const strength = (1 - dist / radius) * 6;
+    el.style.transform = `translate(${(dx / dist) * strength}px, ${(dy / dist) * strength}px)`;
   };
   const handleMagneticLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const el = e.currentTarget as HTMLElement;
@@ -97,31 +97,19 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
         }}
       />
 
-      {/* Film grain overlay */}
-      <div
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 1,
-          pointerEvents: "none",
-          opacity: 0.035,
-          mixBlendMode: "overlay",
-        }}
-      >
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <filter id="grain">
-            <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="4" stitchTiles="stitch" />
-            <feColorMatrix type="saturate" values="0" />
-          </filter>
-          <rect width="100%" height="100%" filter="url(#grain)" />
-        </svg>
-      </div>
+      {/* Interactive wafer die-map — reveals under the cursor */}
+      <WaferField />
+      <div className="hero-scrim" aria-hidden="true" />
 
       {showIntro && <NameIntro onComplete={handleIntroComplete} />}
 
       <div className="section-container flex-1 flex items-center py-16" style={{ position: "relative", zIndex: 2 }}>
-        <div className="w-full max-w-3xl mx-auto text-center">
+        <div className="w-full max-w-6xl mx-auto">
+          {/* Portrait beside the name on desktop; stacked above it on mobile. */}
+          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16 text-center lg:text-left">
+
+            {/* Text column */}
+            <div className="order-2 lg:order-1 flex-1 min-w-0">
 
           {/* Mono eyebrow */}
           <p
@@ -143,7 +131,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
             style={{
               fontFamily: "var(--font-display), 'Inter Tight', 'Inter', sans-serif",
               fontWeight: 600,
-              fontSize: "clamp(3.5rem, 13vw, 10rem)",
+              fontSize: "clamp(3rem, 8vw, 6.5rem)",
               letterSpacing: "-0.045em",
               lineHeight: 0.92,
             }}
@@ -168,7 +156,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
 
           {/* Credential line — replaces status pill */}
           <p
-            className="mb-5 mx-auto"
+            className="mb-5 mx-auto lg:mx-0"
             style={{
               fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
               fontSize: "13px",
@@ -192,7 +180,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
 
           {/* Location */}
           <div
-            className="flex items-center justify-center gap-1.5 mb-7"
+            className="flex items-center justify-center lg:justify-start gap-1.5 mb-7"
             style={{ color: "#8697AD", fontSize: "14px" }}
           >
             <MapPin size={13} style={{ color: "#4DA3FF" }} aria-hidden="true" />
@@ -201,7 +189,7 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
 
           {/* Tagline */}
           <p
-            className="mx-auto mb-10"
+            className="mx-auto lg:mx-0 mb-10"
             style={{
               maxWidth: "62ch",
               fontSize: "1rem",
@@ -209,11 +197,11 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
               color: "#8697AD",
             }}
           >
-            I build machine learning systems that have to hold up outside a notebook — wafer defects, market signals, and the log entries nobody wants to find. One of them is live right now.
+            I build and deploy machine learning systems — computer vision, anomaly detection, and applied analytics, with work across finance, healthcare, and cybersecurity.
           </p>
 
           {/* CTA buttons */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 px-2 sm:px-0">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3 px-2 sm:px-0">
             {/* See the work — magnetic primary */}
             <a
               href="#projects"
@@ -262,6 +250,38 @@ export const Hero = ({ onIntroComplete }: { onIntroComplete?: () => void }) => {
             >
               LinkedIn ↗
             </a>
+          </div>
+
+            </div>
+
+            {/* Portrait column */}
+            <div className="order-1 lg:order-2 shrink-0">
+            <picture>
+              <source srcSet="/portrait.webp" type="image/webp" />
+              <img
+                src="/portrait.jpg"
+                alt="Sriram Kancherla"
+                width={720}
+                height={960}
+                // Above the fold: load eagerly and reserve the box so the hero
+                // never shifts as it arrives.
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                style={{
+                  // Portrait, not a circle — a circle crops the hands off.
+                  width: "clamp(240px, 32vw, 380px)",
+                  aspectRatio: "3 / 4",
+                  height: "auto",
+                  borderRadius: "20px",
+                  objectFit: "cover",
+                  border: "1px solid rgba(232,238,245,0.14)",
+                  boxShadow: "0 0 0 8px rgba(77,163,255,0.05), inset 0 1px 0 rgba(232,238,245,0.07)",
+                }}
+              />
+            </picture>
+            </div>
+
           </div>
         </div>
       </div>

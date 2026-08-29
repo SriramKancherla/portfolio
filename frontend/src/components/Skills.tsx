@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Reveal } from "./Reveal";
 import { SectionEyebrow } from "./SectionEyebrow";
 
@@ -16,7 +16,11 @@ const categories: Category[] = [
   {
     id: "ml-data",
     label: "ML & Data",
-    skills: ["Python", "Machine Learning", "Deep Learning", "TensorFlow", "PyTorch", "scikit-learn", "Pandas", "NumPy", "NLP", "EDA", "ETL", "Big Data", "Joblib"],
+    skills: [
+      "Python", "Machine Learning", "Deep Learning", "Computer Vision", "NLP",
+      "TensorFlow", "PyTorch", "scikit-learn", "XGBoost", "LightGBM",
+      "Random Forest", "OpenCV", "Pandas", "NumPy", "EDA", "ETL", "Big Data", "Joblib",
+    ],
   },
   {
     id: "analytics",
@@ -26,7 +30,7 @@ const categories: Category[] = [
   {
     id: "backend",
     label: "Backend",
-    skills: ["Python", "FastAPI", "Node.js", "JavaScript", "REST APIs", "Postman API", "Firebase"],
+    skills: ["Python", "FastAPI", "Streamlit", "Node.js", "JavaScript", "REST APIs", "Postman API", "JWT", "Firebase"],
   },
   {
     id: "databases",
@@ -50,92 +54,56 @@ const categories: Category[] = [
   },
 ];
 
-// Build deduplicated skill pool with category memberships
 type SkillEntry = { name: string; categories: CategoryId[] };
 
-const buildSkillPool = (): SkillEntry[] => {
+/**
+ * One tag per skill, in first-seen order, carrying every category it belongs to
+ * so a skill in two categories lights up for both.
+ */
+/**
+ * Deterministic PRNG. The order MUST be identical on the server and the client,
+ * so this cannot use Math.random() — that would desync hydration and reshuffle
+ * the grid on every re-render, including every hover.
+ */
+function mulberry32(seed: number) {
+  return () => {
+    seed |= 0;
+    seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** Chosen by scoring seeds for the most even spread of every category's tags. */
+const SHUFFLE_SEED = 394;
+
+const skillPool: SkillEntry[] = (() => {
   const map = new Map<string, CategoryId[]>();
   for (const cat of categories) {
     for (const skill of cat.skills) {
-      if (!map.has(skill)) map.set(skill, []);
-      const cats = map.get(skill)!;
+      const cats = map.get(skill) ?? [];
       if (!cats.includes(cat.id)) cats.push(cat.id);
+      map.set(skill, cats);
     }
   }
-  return Array.from(map.entries()).map(([name, cats]) => ({ name, categories: cats }));
-};
 
-const skillPool = buildSkillPool();
-
-// Split pool into two rows for the river
-const row1 = skillPool.filter((_, i) => i % 2 === 0);
-const row2 = skillPool.filter((_, i) => i % 2 === 1);
-
-function SkillTag({
-  skill,
-  activeCategory,
-}: {
-  skill: SkillEntry;
-  activeCategory: CategoryId | null;
-}) {
-  const isHighlighted = activeCategory === null || skill.categories.includes(activeCategory);
-  const isActive = activeCategory !== null && skill.categories.includes(activeCategory);
-
-  return (
-    <span
-      style={{
-        fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
-        fontSize: "12px",
-        letterSpacing: "0.04em",
-        padding: "5px 12px",
-        borderRadius: "6px",
-        border: isActive ? "1px solid #4DA3FF" : "1px solid rgba(232,238,245,0.10)",
-        color: isHighlighted ? "#E8EEF5" : "rgba(134,151,173,0.30)",
-        opacity: isHighlighted ? 1 : 0.3,
-        transform: isActive ? "translateY(-1px)" : "none",
-        transition: "all 200ms ease",
-        cursor: "default",
-        whiteSpace: "nowrap",
-        flexShrink: 0,
-      }}
-    >
-      {skill.name}
-    </span>
-  );
-}
-
-function SkillRiverRow({
-  skills,
-  direction,
-  activeCategory,
-}: {
-  skills: SkillEntry[];
-  direction: "fwd" | "rev";
-  activeCategory: CategoryId | null;
-}) {
-  // Duplicate for seamless loop
-  const doubled = [...skills, ...skills];
-
-  return (
-    <div className="skill-river-wrap mb-2">
-      <div className={`skill-river-row skill-river-row--${direction}`}>
-        {doubled.map((skill, i) => (
-          <SkillTag key={`${skill.name}-${i}`} skill={skill} activeCategory={activeCategory} />
-        ))}
-      </div>
-    </div>
-  );
-}
+  // Category order would light up one solid block on hover. Scatter it once,
+  // at module scope, so the highlight reads as a constellation across the grid.
+  const pool = Array.from(map, ([name, cats]) => ({ name, categories: cats }));
+  const random = mulberry32(SHUFFLE_SEED);
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool;
+})();
 
 export const Skills = () => {
   const [activeCategory, setActiveCategory] = useState<CategoryId | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
 
   return (
     <section id="skills" aria-labelledby="skills-heading">
-      <div className="hairline" />
       <div className="section-container section-spacing">
         <Reveal>
           <SectionEyebrow index="04">SKILLS</SectionEyebrow>
@@ -148,14 +116,11 @@ export const Skills = () => {
               letterSpacing: "-0.03em",
               lineHeight: 1.05,
               color: "#E8EEF5",
-              marginBottom: "0.5rem",
+              marginBottom: "3rem",
             }}
           >
             The stack.
           </h2>
-          <p style={{ color: "#8697AD", fontSize: "1rem", marginBottom: "3rem" }}>
-            Hover a category. Everything that doesn't belong gets out of the way.
-          </p>
         </Reveal>
 
         <Reveal delay={60}>
@@ -181,6 +146,8 @@ export const Skills = () => {
                     onMouseLeave={() => setActiveCategory(null)}
                     onFocus={() => setActiveCategory(cat.id)}
                     onBlur={() => setActiveCategory(null)}
+                    // Tap toggles on touch, where there is no hover.
+                    onClick={() => setActiveCategory((current) => (current === cat.id ? null : cat.id))}
                     aria-pressed={isActive}
                   >
                     <p
@@ -210,44 +177,43 @@ export const Skills = () => {
               })}
             </div>
 
-            {/* Right: skill tag river */}
+            {/* Right: the full pool, always visible — nothing scrolls out of reach */}
             <div
               style={{
                 border: "1px solid rgba(232,238,245,0.10)",
                 borderRadius: "20px",
                 background: "#0F1B2A",
                 boxShadow: "inset 0 1px 0 rgba(232,238,245,0.07)",
-                padding: "1.5rem",
-                minHeight: "200px",
-                overflow: "hidden",
+                padding: "1.75rem",
               }}
             >
-              {mounted ? (
-                <>
-                  <SkillRiverRow skills={row1} direction="fwd" activeCategory={activeCategory} />
-                  <SkillRiverRow skills={row2} direction="rev" activeCategory={activeCategory} />
-                </>
-              ) : (
-                <div className="flex flex-wrap gap-2">
-                  {skillPool.map((skill) => (
+              <div className="flex flex-wrap gap-2">
+                {skillPool.map((skill) => {
+                  const matches = activeCategory !== null && skill.categories.includes(activeCategory);
+                  const dimmed = activeCategory !== null && !matches;
+                  return (
                     <span
                       key={skill.name}
                       style={{
                         fontFamily: "var(--font-mono), 'JetBrains Mono', monospace",
                         fontSize: "12px",
                         letterSpacing: "0.04em",
-                        padding: "5px 12px",
+                        padding: "6px 12px",
                         borderRadius: "6px",
-                        border: "1px solid rgba(232,238,245,0.10)",
-                        color: "#E8EEF5",
+                        border: matches ? "1px solid #4DA3FF" : "1px solid rgba(232,238,245,0.10)",
+                        color: matches ? "#4DA3FF" : "#E8EEF5",
+                        opacity: dimmed ? 0.28 : 1,
+                        transform: matches ? "translateY(-1px)" : "none",
+                        transition: "opacity 200ms ease, border-color 200ms ease, color 200ms ease, transform 200ms ease",
                         cursor: "default",
+                        whiteSpace: "nowrap",
                       }}
                     >
                       {skill.name}
                     </span>
-                  ))}
-                </div>
-              )}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </Reveal>

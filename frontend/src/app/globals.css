@@ -65,7 +65,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter Tight', var(--font-sans), 'Inter', system-ui, sans-serif;
+    font-family: var(--font-display), 'Inter Tight', var(--font-sans), 'Inter', system-ui, sans-serif;
     font-weight: 500;
     letter-spacing: -0.03em;
     line-height: 1.05;
@@ -101,8 +101,10 @@
   }
 
   .section-spacing {
-    padding-top: clamp(72px, 10vw, 128px);
-    padding-bottom: clamp(72px, 10vw, 128px);
+    /* No divider rules any more — this gap is the only separation, so it is
+       tuned to read as continuous flow rather than as separate pages. */
+    padding-top: clamp(56px, 7vw, 96px);
+    padding-bottom: clamp(56px, 7vw, 96px);
   }
 
   /* ── Hairline rule — fades at both ends ── */
@@ -110,6 +112,27 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(232,238,245,0.10) 15%, rgba(232,238,245,0.10) 85%, transparent);
     border: none;
+  }
+
+  /* ── Hero scrim — sits between the wafer canvas and the hero copy so the
+     die-map never competes with the text it sits behind. ── */
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 55% at 50% 45%, rgba(8,17,28,0.88), rgba(8,17,28,0.35) 70%, transparent 100%);
+  }
+  @media (min-width: 1024px) {
+    .hero-scrim {
+      background: linear-gradient(
+        90deg,
+        rgba(8,17,28,0.94) 0%,
+        rgba(8,17,28,0.86) 30%,
+        rgba(8,17,28,0.45) 48%,
+        transparent 64%
+      );
+    }
   }
 
   /* ── Cards — with surface elevation and top-edge highlight ── */
@@ -391,36 +414,16 @@
 
   /* ── Pattern divider ── */
   .pattern-divider {
-    @apply relative h-14 md:h-16 overflow-hidden opacity-80;
+    @apply relative h-14 md:h-16 overflow-hidden opacity-40;
     mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
   }
   .pattern-divider--kolam {
     background-image: url("/patterns/kolam-border.svg");
     background-size: 64px 24px;
+    /* One band, not a stack — the motif must not tile down the strip. */
+    background-repeat: repeat-x;
+    background-position: center center;
     animation: pattern-drift 45s linear infinite;
-  }
-
-  /* ── Skill tag river (two rows drifting in opposite directions) ── */
-  .skill-river-row {
-    display: flex;
-    width: max-content;
-    gap: 0.5rem;
-    padding: 0.25rem 0;
-  }
-  .skill-river-row--fwd {
-    animation: skill-river-fwd 40s linear infinite;
-  }
-  .skill-river-row--rev {
-    animation: skill-river-rev 40s linear infinite;
-  }
-  .skill-river-row:hover,
-  .skill-river-row--fwd:hover,
-  .skill-river-row--rev:hover {
-    animation-play-state: paused;
-  }
-  .skill-river-wrap {
-    overflow: hidden;
-    mask-image: linear-gradient(90deg, transparent, black 5%, black 95%, transparent);
   }
 
   /* ── Fluid marquee ── */
@@ -501,16 +504,6 @@
   to { transform: translateX(-50%); }
 }
 
-@keyframes skill-river-fwd {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@keyframes skill-river-rev {
-  from { transform: translateX(-50%); }
-  to { transform: translateX(0); }
-}
-
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
@@ -541,10 +534,6 @@
     animation: none;
   }
   .pattern-divider--kolam {
-    animation: none;
-  }
-  .skill-river-row--fwd,
-  .skill-river-row--rev {
     animation: none;
   }
   .card-bordered {
