@@ -56,4 +56,4 @@ GitHub is still configured to publish from the **`/docs`** folder on `main` (for
 
 The live portfolio is deployed from **`frontend/`** to Cloudflare Workers via OpenNext.
 
-**Cloudflare Pages (Git):** leave the project root at the **repository root** with build command `npm run build`. The root `prebuild` runs `npm ci --prefix frontend`, then `opennextjs-cloudflare build`. Root `wrangler.jsonc` points at `frontend/.open-next/` so the Workers adapter is detected. Set `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in the Cloudflare project environment.
+**Cloudflare Pages (Git):** leave the project root at the **repository root** with build command `npm run build`. The root `prebuild` runs `npm ci --prefix frontend`, then OpenNext builds and `prepare-pages-output.mjs` stages `frontend/.open-next/` for Pages (`_worker.js`, static assets, `_routes.json`). Root `wrangler.jsonc` sets `pages_build_output_dir` to that folder. Set `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` in the Cloudflare project environment.

@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "pages:build": "opennextjs-cloudflare build",
+    "pages:build": "opennextjs-cloudflare build && node scripts/prepare-pages-output.mjs",
     "start": "next start",
     "lint": "next lint",
     "generate:og": "node scripts/generate-og-image.mjs",

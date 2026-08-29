@@ -1,20 +1,7 @@
 {
   "$schema": "./frontend/node_modules/wrangler/config-schema.json",
-  "main": "frontend/.open-next/worker.js",
   "name": "sriramkancherla",
+  "pages_build_output_dir": "frontend/.open-next",
   "compatibility_date": "2025-03-01",
-  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
-  "assets": {
-    "directory": "frontend/.open-next/assets",
-    "binding": "ASSETS"
-  },
-  "services": [
-    {
-      "binding": "WORKER_SELF_REFERENCE",
-      "service": "sriramkancherla"
-    }
-  ],
-  "images": {
-    "binding": "IMAGES"
-  }
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"]
 }
