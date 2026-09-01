@@ -1,8 +1,19 @@
+# Cloudflare Pages applies these at the edge.
+# Under `output: "export"` Next.js ignores headers() in next.config.ts, so this
+# file is the only place security headers are set. Keep it in sync with any CSP
+# change — a wrong connect-src here silently kills the contact form.
+
 /*
-  Security headers for static assets. App-wide headers also set in next.config.ts.
-*/
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://cdn.simpleicons.org https://cdn.jsdelivr.net https://raw.githubusercontent.com; connect-src 'self' https://api.web3forms.com; frame-src 'self'; base-uri 'self'; form-action 'self'
+
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
+
+/documents/*
+  X-Robots-Tag: noindex
 
 /og-image.png
   Content-Type: image/png
@@ -11,6 +22,3 @@
 /og-image.svg
   Content-Type: image/svg+xml
   Cache-Control: public, max-age=3600
-
-/documents/*
-  X-Robots-Tag: noindex
